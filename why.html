@@ -110,6 +110,14 @@
       </div>
     </section>
 
+    <section>
+      <h2>Why the ESP32-S3?</h2>
+      <p>The hardware-in-the-loop rig runs on an Espressif ESP32-S3, and that choice has two reasons behind it.</p>
+      <p>The main one is practical: Espressif publish a genuine reference path end to end &mdash; the <strong>ESP-DL</strong> inference runtime, <strong>ESP-IDF</strong>, quantised face detection and recognition models, and documentation for all of it. That means the pipeline, sensor to embedding to accept/reject, can be stood up and inspected in full, rather than reverse-engineered from a sealed product. An assurance study needs exactly that.</p>
+      <p>The other is professional: this SoC turns up inside a lot of white-label products &mdash; door entry, access control &mdash; so findings on it transfer to devices already in the field, not just to a lab board.</p>
+      <p>One caveat: this is a target of convenience and representativeness, not a judgement on Espressif. The method &mdash; perturb an identity, map where a device flips from accepting to rejecting it &mdash; is meant to apply to any embedded recognition stack; see <a href="why-rigs.html">why the rig is built the way it is</a> for how that generalises.</p>
+    </section>
+
     <footer>Identity Acceptance Surfaces &middot; quantifying the discriminatory power of an authenticator</footer>
   </main>
 </body>

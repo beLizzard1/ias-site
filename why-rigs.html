@@ -80,6 +80,7 @@
       <h2>HiL: the real device</h2>
       <p>The hardware-in-the-loop apparatus is the actual ESP32-S3 with the model on it, driven by a custom application that feeds it data &mdash; the same shape as the integrator's position above. It is slower and less observable: you get back whatever the device is willing to expose, a verdict or a score, not the tensors behind it. What it gives you in return is that it is the ground truth. It is also the only way to answer the question the SiL cannot answer about itself: run the same images through both, compare the embeddings or verdicts, and the gap between them is the SiL's parity error.</p>
       <p>Where even the application layer is not available &mdash; the end-user position &mdash; the same device has to be driven through the product's own sensor path instead of a custom feed. That is the black-box case: harder to control, but still HiL in spirit, since it is the real hardware doing the inference.</p>
+      <p>On why this target: see <a href="why.html">Why</a>.</p>
     </section>
 
     <section>
