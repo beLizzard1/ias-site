@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Explorer &mdash; IAS</title>
-  <meta name="description" content="The first measured acceptance surface: 20 directions around one identity, bisected against the ESP-DL edge model. The boundary is a star, not a circle &mdash; the widest bounded direction tolerates 7.2&times; more drift than the narrowest.">
+  <meta name="description" content="The full experiment chain behind the measured acceptance surface: nine experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, and hardware-in-the-loop parity.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -14,12 +14,14 @@
       --ex-paper:#fbfcfb; --ex-ink:#1b1f1e; --ex-muted:#5a5f5d; --ex-line:#e8ebe6;
       --ex-card:#ffffff; --ex-accent:#2f5d62; --ex-accent-soft:rgba(47,93,98,.14);
       --ex-warn:#9a6a2a; --ex-warn-soft:rgba(154,106,42,.16); --ex-grid:#e2e6e2;
+      --ex-flag:#8a3b52; --ex-flag-soft:rgba(138,59,82,.14);
     }
     @media (prefers-color-scheme: dark){
       :root{
         --ex-paper:#0d1110; --ex-ink:#e6ebe6; --ex-muted:#9aa39c; --ex-line:#242a26;
         --ex-card:#141a17; --ex-accent:#6fb8ae; --ex-accent-soft:rgba(111,184,174,.16);
         --ex-warn:#e0a24a; --ex-warn-soft:rgba(224,162,74,.18); --ex-grid:#232823;
+        --ex-flag:#d98aa2; --ex-flag-soft:rgba(217,138,162,.16);
       }
     }
     body{background:var(--ex-paper)}
@@ -41,14 +43,37 @@
     .sw{width:10px;height:10px;border-radius:50%;display:inline-block}
     .sw.bounded{background:var(--ex-accent)}
     .sw.censored{background:var(--ex-warn)}
+    .sw.weak{background:var(--ex-flag)}
+    .sw.rejected{background:none;border:1.4px solid var(--ex-muted);border-radius:0;width:9px;height:9px;transform:rotate(45deg)}
     .sw.ideal{width:14px;height:0;border-top:2px dashed var(--ex-accent);border-radius:0}
+    .sw.band{width:14px;height:8px;border-radius:2px;background:var(--ex-accent-soft);border:1px solid var(--ex-accent)}
     @media (max-width:760px){.figures{grid-template-columns:1fr}}
-    .prose{margin-top:40px}
-    .prose h2{font-family:'Newsreader',serif;font-weight:500;font-size:20px;margin:30px 0 8px;color:var(--ex-ink)}
-    .prose h2:first-child{margin-top:0}
-    .prose p{font-size:14.5px;line-height:1.65;color:var(--ex-ink);opacity:.88;margin:0 0 10px;max-width:70ch}
-    .prose code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--ex-accent-soft);padding:1px 5px;border-radius:4px}
-    .callout{margin:30px 0 8px;background:var(--ex-warn-soft);border:1px solid var(--ex-line);border-left:3px solid var(--ex-warn);border-radius:6px;padding:18px 20px}
+
+    /* contents / jump list */
+    .bridge{margin:30px 0 0;font-size:14.5px;line-height:1.65;color:var(--ex-ink);opacity:.88;max-width:70ch}
+    .toc{margin:16px 0 0;padding:16px 20px;background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px}
+    .toc-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ex-muted);margin-bottom:8px}
+    .toc ol{margin:0;padding:0;list-style:none;columns:2;column-gap:28px}
+    .toc li{break-inside:avoid;margin:0 0 7px}
+    .toc a{font-size:13.5px;color:var(--ex-ink);opacity:.86;text-decoration:none}
+    .toc a:hover{color:var(--ex-accent);opacity:1}
+    .toc .n{font-family:'IBM Plex Mono',monospace;color:var(--ex-accent);margin-right:7px;font-size:12px}
+    @media (max-width:600px){.toc ol{columns:1}}
+
+    /* experiment chain */
+    .chain{margin-top:40px}
+    .chain > .chain-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ex-muted);margin:0 0 14px}
+    .exp{scroll-margin-top:76px;position:relative;padding:22px 22px 20px 74px;margin:0 0 16px;background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px}
+    .exp-num{position:absolute;left:22px;top:24px;font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:500;color:var(--ex-accent-soft);line-height:1}
+    .exp h2{margin:0 0 2px;font-family:'Newsreader',serif;font-weight:500;font-size:19px;color:var(--ex-ink)}
+    .exp .exp-tag{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ex-muted);margin:0 0 10px}
+    .beat{font-size:14px;line-height:1.62;color:var(--ex-ink);opacity:.9;margin:0 0 8px;max-width:74ch}
+    .beat:last-child{margin-bottom:0}
+    .beat b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ex-accent);font-weight:500;margin-right:2px}
+    .beat code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--ex-accent-soft);padding:1px 5px;border-radius:4px}
+    @media (max-width:560px){.exp{padding:20px 18px 18px 18px}.exp-num{position:static;display:block;margin-bottom:4px;font-size:15px}}
+
+    .callout{margin:34px 0 8px;background:var(--ex-warn-soft);border:1px solid var(--ex-line);border-left:3px solid var(--ex-warn);border-radius:6px;padding:18px 20px}
     .callout h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:17px;color:var(--ex-ink)}
     .callout ul{margin:0;padding-left:18px}
     .callout li{font-size:14px;line-height:1.6;color:var(--ex-ink);opacity:.88;margin:6px 0}
@@ -63,63 +88,167 @@
   </header>
 
   <main class="wrap">
-    <section class="head">
-      <div class="eyebrow">First real findings</div>
+    <section class="head" id="surface">
+      <div class="eyebrow">The experiment chain</div>
       <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
-      <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 20 directions</div>
-      <p class="lead">The first acceptance surface out of the pipeline: 20 fixed directions around one real identity (Dr James&rsquo;), each one bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle.</p>
+      <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 64 directions</div>
+      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and getting to this figure took nine experiments, each one forced by a problem or a surprise the last one turned up. This page walks the whole chain, not just the headline.</p>
     </section>
 
     <div class="stats">
-      <div class="stat">bounded <b>18 / 20</b></div>
-      <div class="stat">censored <b>2 / 20</b></div>
-      <div class="stat">boundary angle <b>32.7&deg; &plusmn; 12.9&deg;</b></div>
-      <div class="stat">range <b>6.8&deg; &ndash; 49.5&deg;</b></div>
-      <div class="stat">anisotropy <b>7.2&times;</b></div>
+      <div class="stat">well-determined <b>51 / 64</b></div>
+      <div class="stat">censored <b>7 / 64</b></div>
+      <div class="stat">anchor-rejected <b>3 / 64</b></div>
+      <div class="stat">flagged (&lt;4 evals) <b>3 / 64</b></div>
+      <div class="stat">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
+      <div class="stat">extremes ratio <b>7.6&times;</b></div>
+      <div class="stat">robust P90/P10 <b>3.8&times;</b></div>
     </div>
 
     <div class="figures">
       <div class="fig">
         <h2>Boundary by direction</h2>
-        <p class="sub">Each spoke is one of the 20 measured rays, spaced evenly for legibility &mdash; only the radius carries meaning.</p>
-        <svg id="ex-polar" viewBox="0 0 380 380" role="img" aria-label="Polar plot of the 20 measured boundary angles, showing a star-shaped surface rather than a circle"></svg>
+        <p class="sub">64 spokes, spaced evenly for legibility &mdash; only the radius carries meaning. Anchor-rejected rays sit at the centre.</p>
+        <svg id="ex-polar" viewBox="0 0 380 380" role="img" aria-label="Polar plot of 64 measured boundary angles, showing a star-shaped surface rather than a circle, with censored, flagged and anchor-rejected rays marked separately"></svg>
       </div>
       <div class="fig">
-        <h2>Same 20 rays, sorted</h2>
-        <p class="sub">Bounded rays sorted by boundary angle; the two censored rays never flipped within the dataset and sit at the right, marked open.</p>
-        <svg id="ex-bars" viewBox="0 0 380 380" role="img" aria-label="Bar chart of the 20 boundary angles sorted ascending, with censored rays marked as open-ended"></svg>
+        <h2>Same 64 rays, sorted</h2>
+        <p class="sub">Bounded rays sorted by boundary angle. Censored rays sit at the right, marked open; flagged rays (fewer than 4 evaluations) are hatched.</p>
+        <svg id="ex-bars" viewBox="0 0 380 380" role="img" aria-label="Bar chart of 64 boundary angles sorted ascending, with censored and flagged rays marked distinctly"></svg>
       </div>
     </div>
     <div class="legend">
-      <span><i class="sw bounded"></i>bounded &mdash; boundary found by bisection</span>
-      <span><i class="sw censored"></i>censored &mdash; still accepted at the dataset edge (cos 0.60); true boundary is further out</span>
-      <span><i class="sw ideal"></i>isotropic reference &mdash; the mean boundary (32.7&deg;), i.e. what a direction-blind discriminator would draw</span>
+      <span><i class="sw bounded"></i>well-determined &mdash; &ge;4 evaluations, bisected boundary</span>
+      <span><i class="sw censored"></i>censored &mdash; still accepted at the dataset edge (cos 0.60)</span>
+      <span><i class="sw weak"></i>flagged &mdash; boundary decided by &lt;4 evaluations, excluded from headline stats</span>
+      <span><i class="sw rejected"></i>anchor-rejected &mdash; the unperturbed render itself was rejected</span>
+      <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
     </div>
 
-    <div class="prose">
-      <h2>What a ray is</h2>
-      <p>An anchor is one real identity: the centroid embedding of nine of Dr James&rsquo; photos, a single point in the recognition model&rsquo;s 512-dimensional space. A <em>ray</em> is one fixed direction out from that point. Twenty directions were drawn once, early in the pilot, and kept fixed; walking out along a ray means rendering a face at increasing angular distance from the anchor and asking the edge model whether it still recognises it as the enrolled identity.</p>
+    <p class="bridge">What follows is the chain that produced that figure: nine experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer.</p>
 
-      <h2>What the boundary means</h2>
-      <p>For each ray, <code>shells-refine</code> bisects to find where the discriminator&rsquo;s verdict flips from accept to reject, to a tolerance of &plusmn;0.03 in the perturbation radius &epsilon;. Each test point is the median of three renders (majority verdict), so one unlucky render &mdash; a hand across the face, odd lighting &mdash; can&rsquo;t set the boundary on its own. The result is an angle: how far, in degrees, the identity can drift along that direction before the ESP-DL model (running at its default acceptance threshold, tau&nbsp;=&nbsp;0.5) stops accepting it.</p>
+    <nav class="toc" aria-label="Experiments on this page">
+      <span class="toc-label">On this page</span>
+      <ol>
+        <li><span class="n">01</span><a href="#exp1">Shell sampling and the pilot sweep</a></li>
+        <li><span class="n">02</span><a href="#exp2">Tier-0 compositing trial</a></li>
+        <li><span class="n">03</span><a href="#exp3">Per-direction refinement, 20 directions</a></li>
+        <li><span class="n">04</span><a href="#exp4">Higher angular resolution, 64 directions</a></li>
+        <li><span class="n">05</span><a href="#exp5">Four judges and FAR calibration</a></li>
+        <li><span class="n">06</span><a href="#exp6">Hardware-in-the-loop parity</a></li>
+        <li><span class="n">07</span><a href="#exp7">Boundary displacement</a></li>
+        <li><span class="n">08</span><a href="#exp8">Detector agreement</a></li>
+        <li><span class="n">09</span><a href="#exp9">Transport optimisation</a></li>
+      </ol>
+    </nav>
 
-      <h2>Why a flat circle would be the ideal</h2>
-      <p>If a discriminator treated every direction of drift identically, its boundary would be a single radius repeated at every angle &mdash; a perfect circle. That&rsquo;s the dashed line in the polar plot: not a theoretical target, just the mean of the 18 bounded rays (32.7&deg;), drawn out as a circle so the real shape can be compared against a direction-blind one. The measured boundary is nothing like it. It&rsquo;s a star: some directions hold the identity firmly, others give way after a handful of degrees.</p>
+    <div class="chain">
+      <p class="chain-label">The experiments, in order</p>
 
-      <h2>What the 7.2&times; means for assurance</h2>
-      <p>7.2&times; is the ratio between the most forgiving bounded direction (ray 18, 49.5&deg;) and the least (rays 8 and 14, tied at 6.8&deg;). For this identity and this system, how far a face can drift before recognition stops accepting it depends on <em>which way</em> it drifts by a factor of seven. A single number &mdash; &ldquo;accepts up to X degrees of change&rdquo; &mdash; would be wrong by that factor depending on direction, and an assurance case that only probes the forgiving directions could look solid while the narrow ones are already unsafe. Which directions those are, and whether they trace something meaningful (e.g. an INT8 quantisation artefact versus a property of face recognition generally), is the open question the next pass and a float-precision comparison are for.</p>
+      <article class="exp" id="exp1">
+        <div class="exp-num">01</div>
+        <span class="exp-tag">Shell sampling &middot; pilot sweep</span>
+        <h2>Shell sampling and the pilot sweep</h2>
+        <p class="beat"><b>Question</b> Before any boundary could be trusted, the basic sampling geometry needed checking: does a requested perturbation land where it&rsquo;s asked, does the SUT&rsquo;s score behave sensibly across it, and can raw renders even reach the device&rsquo;s detector?</p>
+        <p class="beat"><b>Done</b> 11 shells at equal angle from cos 0.9995 to 0.60, 512 shared directions, 20 rays rendered per shell (220 images) through the ESP-DL SiL at the vendor&rsquo;s default detector threshold.</p>
+        <p class="beat"><b>Came back</b> Achieved cosine (the render re-embedded) tracks requested cosine with slope &asymp;1 and a fixed offset &asymp;0.23 &mdash; curves have to be read against <em>achieved</em>, not requested. The SUT score curve falls smoothly, &asymp;0.70 to &asymp;0.42, crossing <code>tau</code>&nbsp;=&nbsp;0.5 around requested &asymp;0.69 / achieved &asymp;0.45. But the detector passed only 5&ndash;25% of raw renders at its default 0.5 threshold (60&ndash;80% at 0.3) &mdash; Arc2Face&rsquo;s output is too painterly to clear it.</p>
+        <p class="beat"><b>Changed</b> Curves plot against achieved cosine from here on; the corpus should concentrate shells between requested 1.0 and &asymp;0.55; and raw renders can&rsquo;t be used as-is for a detector running at its default threshold &mdash; compositing became the next question.</p>
+      </article>
 
-      <div class="callout">
-        <h2>Read this pilot for what it is</h2>
-        <ul>
-          <li>One identity, 20 directions. Not a population result &mdash; a first measurement that the shape holds at all.</li>
-          <li>Renders come from Arc2Face, so its presentation noise (hair, lighting, styling redrawn per seed) is inside the measurement, not filtered out.</li>
-          <li>The edge model&rsquo;s first-stage face detector was relaxed to a score threshold of 0.3 (vendor default 0.5) because raw renders sit under the default &mdash; see <a href="status.html">Status</a> for the compositing trial that trades this off against plate-identity bias.</li>
-          <li>This is the software-in-the-loop runner, not the physical ESP32-S3 board. Host-vs-silicon numerical parity is still unverified &mdash; see <a href="why-rigs.html">SiL &amp; HiL</a>.</li>
-          <li>2 of the 20 rays never flipped inside the sampled range and are right-censored at the dataset&rsquo;s edge (cos 0.60, &asymp;53&deg;); their true boundary is somewhere further out, unmeasured.</li>
-          <li>A second, higher-resolution pass over 44 more directions (rays 20&ndash;63) is running now &mdash; not shown here yet.</li>
-        </ul>
-      </div>
+      <article class="exp" id="exp2">
+        <div class="exp-num">02</div>
+        <span class="exp-tag">Compositing</span>
+        <h2>Tier-0 compositing trial</h2>
+        <p class="beat"><b>Question</b> Directly prompted by the detection problem above: can warping the rendered face into a real photographic plate restore normal detection without corrupting the identity being measured?</p>
+        <p class="beat"><b>Done</b> Warp the rendered face interior &mdash; a landmark-derived mask that stops below the hairline &mdash; into a real background plate. Ran 8 trial composites through the default-threshold detector, plus a control: three unrelated faces composited into the same plate.</p>
+        <p class="beat"><b>Came back</b> 8/8 trial composites pass the default 0.5 detector (det 0.81&ndash;0.99, MFN cosine 0.64&ndash;0.76). Control: the three unrelated faces score 0.26&ndash;0.37 against the enrolment (near 0 raw) &mdash; the plate alone is worth about +0.3 similarity.</p>
+        <p class="beat"><b>Changed</b> Composites are detector-faithful but identity-biased: useful for communication and figures, not for the recognition measurement itself. Raw renders at the relaxed 0.3 threshold stayed the clean recognition curve; compositing was ruled out as a stand-in for raw renders in the boundary search.</p>
+      </article>
+
+      <article class="exp" id="exp3">
+        <div class="exp-num">03</div>
+        <span class="exp-tag">First surface &middot; 20 directions</span>
+        <h2>Per-direction refinement, 20 directions</h2>
+        <p class="beat"><b>Question</b> The pilot&rsquo;s mean score curve was smooth and reassuring, but a single averaged curve can&rsquo;t show whether some directions are far more fragile than others &mdash; and per-direction behaviour, not the average, is the actual object of the study.</p>
+        <p class="beat"><b>Done</b> Bisection per ray to &plusmn;0.03 &epsilon; on the 20 pilot directions, three renders per evaluation, majority verdict on the median score so one bad render (a hand across the face) can&rsquo;t set a boundary on its own &mdash; 150 evaluations, 445 renders, &asymp;70 minutes.</p>
+        <p class="beat"><b>Came back</b> 18 of 20 rays bounded (2 right-censored at the cos-0.60 ceiling). Boundary angle mean 32.7&deg; &plusmn; 12.9&deg;, range 6.8&deg;&ndash;49.5&deg;; the most tolerant bounded direction (ray 18) reaches 7.2&times; further from the anchor than the least tolerant (rays 8/14).</p>
+        <p class="beat"><b>Changed</b> Gave the first real surface: a star, not a circle. Turned &ldquo;how far can this identity drift&rdquo; into a direction-dependent question, and set the next targets &mdash; more directions, and a way to separate an INT8 artefact from ordinary face-recognition behaviour.</p>
+      </article>
+
+      <article class="exp" id="exp4">
+        <div class="exp-num">04</div>
+        <span class="exp-tag">Headline surface &middot; 64 directions</span>
+        <h2>Higher angular resolution, 64 directions</h2>
+        <p class="beat"><b>Question</b> 20 rays established that the shape was real, but was too few to trust an individual boundary or a precise anisotropy ratio.</p>
+        <p class="beat"><b>Done</b> Three further refinement runs extended the pilot&rsquo;s 20 rays to 64 (one run&rsquo;s summary json was never written &mdash; the machine crashed before the flush &mdash; and was recovered from its sqlite), then merged with quality filtering.</p>
+        <p class="beat"><b>Came back</b> Well-determined mean boundary 37.7&deg; (95% CI 34.0&ndash;41.1&deg;), extremes ratio 7.6&times;, robust P90/P10 spread 3.8&times;, 51 of 64 rays well-determined. The merge caught two defects in the project&rsquo;s own analysis, both fixed here: three rays whose <em>unperturbed</em> render was itself rejected had been recorded as 0&deg; boundaries, which made the naive anisotropy ratio infinite; and two of the tightest rays had each been decided from only two evaluations, driving a spurious 30&times; headline (a third ray, decided from three, was caught by the same rule).</p>
+        <p class="beat"><b>Changed</b> 7.6&times; replaces 7.2&times; and the spurious 30&times; as the number to cite. Anchor-rejected, flagged and censored are now first-class fields on every ray, excluded from the headline statistic and shown rather than silently dropped &mdash; the visualisation above marks all three.</p>
+      </article>
+
+      <article class="exp" id="exp5">
+        <div class="exp-num">05</div>
+        <span class="exp-tag">Cross-judge comparison</span>
+        <h2>Four judges and FAR calibration</h2>
+        <p class="beat"><b>Question</b> Comparing the edge model against float judges needs matched operating points, not a shared numeric threshold &mdash; scores aren&rsquo;t on a common scale. Matching on genuine acceptance alone was tried first and isn&rsquo;t enough: a model that accepts every genuine pair looks maximally tolerant regardless of how promiscuous it actually is.</p>
+        <p class="beat"><b>Done</b> Scored every render through four judges &mdash; HiL, SiL, float MobileFaceNet, float ArcFace R100 &mdash; off identical crops, and calibrated each judge&rsquo;s threshold against an impostor cohort drawn from SFHQ-T2I (MIT-licensed synthetic faces).</p>
+        <p class="beat"><b>Came back</b> The impostor check immediately caught a real bug: ESP-DL emits landmarks as [LE,LM,N,RE,RM], insightface&rsquo;s <code>norm_crop</code> expects [LE,RE,N,LM,RM]. Feeding the raw order warped every float judge&rsquo;s crop (&asymp;25px landmark error) and impostors scored 0.95. Fixed with the permutation (0,3,2,1,4) &mdash; error now &asymp;2px &mdash; impostor medians fell to 0.014 (MFN) and 0.007 (R100). Separately: at each judge&rsquo;s own matched operating point, neither float judge rejects inside the current cos&nbsp;&ge;&nbsp;0.60 shell range &mdash; both stay fully censored across all 19 comparable rays.</p>
+        <p class="beat"><b>Changed</b> Voided every float-judge number computed before the fix. Established that the corpus doesn&rsquo;t yet reach far enough out for the float judges to disagree with the edge model at all &mdash; the shell range needs extending before cross-judge comparison means anything.</p>
+      </article>
+
+      <article class="exp" id="exp6">
+        <div class="exp-num">06</div>
+        <span class="exp-tag">SiL fidelity</span>
+        <h2>Hardware-in-the-loop parity</h2>
+        <p class="beat"><b>Question</b> The SiL is the vendor&rsquo;s own runtime, bit-exact against an independent reference &mdash; but that&rsquo;s agreement with a reference, not with the chip. Its fidelity to the real silicon was still unverified.</p>
+        <p class="beat"><b>Done</b> <code>idf_apps/hil_runner2</code> mirrors the host runner&rsquo;s protocol over native USB-Serial-JTAG, so identical pixel buffers can be pushed to both host and device and the returned features compared element-wise.</p>
+        <p class="beat"><b>Came back</b> With identical pixels <em>and</em> identical keypoints, host and device features agree to cosine 0.980&ndash;0.983 &mdash; not bit-exact. Letting each side run its own detector drops that to 0.905&ndash;0.938. Two separate divergences: the recognition model itself differs by &asymp;2% (max element difference &asymp;2.4&ndash;3.1e-2), and the detector disagreeing about landmarks roughly triples the total divergence.</p>
+        <p class="beat"><b>Changed</b> The SiL is a good proxy, not a substitute. A surface mapped entirely on the host is indicative; boundaries need device confirmation. Set up the next two measurements directly: how far a <em>boundary</em> actually moves (not just an embedding), and how much of the divergence is the detector&rsquo;s doing.</p>
+      </article>
+
+      <article class="exp" id="exp7">
+        <div class="exp-num">07</div>
+        <span class="exp-tag">SiL vs HiL &middot; boundaries</span>
+        <h2>Boundary displacement</h2>
+        <p class="beat"><b>Question</b> Embedding divergence isn&rsquo;t the quantity that matters for this method &mdash; what matters is whether the accept/reject <em>boundary</em> itself moves between host and device.</p>
+        <p class="beat"><b>Done</b> Took probes from the completed 20-ray refinement run, re-scored the identical bytes through both judges, and interpolated a boundary separately for each from up to six coarse probes per ray.</p>
+        <p class="beat"><b>Came back</b> 8 of 20 rays had a crossing on both sides. Mean shift device minus host: &minus;1.1&deg; on boundaries averaging &asymp;33&deg;; scatter std 4.3&deg;, largest single shift 7.9&deg;; mean paired score difference 0.013.</p>
+        <p class="beat"><b>Changed</b> The bias is small (&asymp;3%) but the per-ray disagreement isn&rsquo;t &mdash; up to 8&deg; on a 33&deg; boundary is a quarter of the radius. Recorded plainly: a host-mapped surface is sound for aggregate statistics (means, the anisotropy ratio) and marginal for per-direction claims (which exact ray is narrowest) &mdash; which is precisely the interesting part of this study. Caveat carried forward: eight rays, six coarse probes each, so interpolation error is mixed in with genuine judge disagreement.</p>
+      </article>
+
+      <article class="exp" id="exp8">
+        <div class="exp-num">08</div>
+        <span class="exp-tag">SiL vs HiL &middot; detection</span>
+        <h2>Detector agreement</h2>
+        <p class="beat"><b>Question</b> If the two detectors agreed closely enough, detection could be lifted off the device for speed &mdash; host detects, device only embeds. Does it agree closely enough?</p>
+        <p class="beat"><b>Done</b> <code>scripts/detector_parity.py</code> over 9 images, comparing bounding boxes, landmarks, detection scores, and embeddings under both a fully independent pipeline and a forced-common-landmark decomposition.</p>
+        <p class="beat"><b>Came back</b> Landmarks were never identical (0 of 9), and pixel deviation was small (mean 1.4px, max 3.6px; bounding boxes to 5px) &mdash; but detection score wasn&rsquo;t: mean absolute difference 0.194, worst case 0.44, enough for the two implementations to disagree about whether a face exists at all, not just where it sits. Full-pipeline embedding agreement: 0.900. Forcing both sides onto the same landmarks raises that to 0.975 &mdash; but only by deleting the component that actually diverges.</p>
+        <p class="beat"><b>Changed</b> Decision: the detector stays on the device. The deployed pipeline is the measurement target, not the recogniser in isolation, so the project&rsquo;s headline host&ndash;device figure is <b style="color:var(--ex-ink);font-family:inherit;text-transform:none;letter-spacing:normal">0.900</b>; 0.975 is kept only as a diagnostic decomposition, never cited as parity. Running the full pipeline on-device costs more compute per probe, which raised the priority of the transport work next.</p>
+      </article>
+
+      <article class="exp" id="exp9">
+        <div class="exp-num">09</div>
+        <span class="exp-tag">Throughput</span>
+        <h2>Transport optimisation</h2>
+        <p class="beat"><b>Question</b> HiL parity is only useful if HiL is fast enough to run at scale. At the rates seen so far &mdash; up to 10.8 s per probe &mdash; it wasn&rsquo;t.</p>
+        <p class="beat"><b>Done</b> Identified which of the board&rsquo;s two USB ports the runner was actually using. The UART bridge (CH343, <code>1a86:55d3</code>) enumerates alongside native USB-Serial-JTAG (<code>303a:1001</code>) and is easy to pick by mistake.</p>
+        <p class="beat"><b>Came back</b> The bridge tops out near 115200 baud (&asymp;11.5 kB/s) &mdash; a 57kB frame costs &asymp;5s regardless of chunking, which was most of the 6&ndash;10.8 s/probe ceiling. Native USB runs at full speed (&asymp;500 kB/s) and brought per-probe time down to &asymp;1.00 s. At those two rates, a 10,000-probe corpus is the difference between roughly 30 hours and roughly 2.8 hours.</p>
+        <p class="beat"><b>Changed</b> Switched the default transport to native USB (the stable <code>/dev/serial/by-id</code> path). Made a full-resolution HiL corpus practical rather than theoretical &mdash; and made &ldquo;how many boards in parallel&rdquo; a live question, given the device now also carries detection (experiment 8).</p>
+      </article>
+    </div>
+
+    <div class="callout">
+      <h2>Read this whole chain for what it is</h2>
+      <ul>
+        <li>One identity, still. Every number above describes Dr James&rsquo; enrolment against this SUT &mdash; not a population result. Cross-identity comparison needs the synthetic identity corpus, which is prepared but not yet run.</li>
+        <li>Renders come from Arc2Face, so its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out.</li>
+        <li>The SiL&rsquo;s detector runs at a relaxed score threshold of 0.3 (vendor default 0.5) because raw renders sit under the default &mdash; see experiment 2 for the compositing trade-off this creates.</li>
+        <li>3 of the 64 rays reject the unperturbed anchor render outright (anchor-rejected) and are excluded from the headline statistics; a further 3 were decided from fewer than 4 evaluations and are flagged rather than silently kept. Both classes are shown, not dropped &mdash; see experiment 4.</li>
+        <li>7 rays remain right-censored at the dataset&rsquo;s cos-0.60 edge; their true boundary lies further out, unmeasured.</li>
+        <li>The corpus range is too narrow for cross-judge comparison: at each judge&rsquo;s own matched operating point, neither float judge (MFN or ArcFace R100) rejects inside cos&nbsp;&ge;&nbsp;0.60 &mdash; extending the shell range is a prerequisite for experiment 5 to say anything further.</li>
+        <li>Host-vs-silicon parity is settled only at pilot scale: 8 rays for boundary displacement (six coarse probes each) and 9 images for detector agreement &mdash; not yet run over the full 64-direction surface.</li>
+        <li>This is the software-in-the-loop runner as the primary source for the headline surface. It is a good proxy for the ESP32-S3, not a substitute (experiment 6): cosine agreement 0.980&ndash;0.983 with shared keypoints, 0.900 full pipeline.</li>
+        <li>A landmark-order bug voided every float-judge number computed before it was fixed (commit <code>49a10c8</code>) &mdash; flagged here so it can&rsquo;t be silently re-cited.</li>
+      </ul>
     </div>
 
     <footer>unit(anchor + &epsilon; &middot; tangent) &middot; modality-free core</footer>
@@ -290,40 +419,91 @@
 
   <script>
   (function(){
-    // Per-ray boundary data, copied from docs/figures/refined_surface_lizjames.json
-    // (identity-acceptance-surfaces repo, 2026-08-22 refine run: 20 rays, bisection
-    // to ±0.03 ε, 3 renders/eval, median score + majority verdict).
+    // Per-ray boundary data, copied from docs/figures/surface64_lizjames.json
+    // (identity-acceptance-surfaces repo, 2026-08-22: 64 directions merged from
+    // three refinement runs, quality-filtered — see experiment 4 above).
+    // a = boundary angle in degrees (null = anchor-rejected, no boundary exists);
+    // c = censored (still accepted at the cos-0.60 dataset edge);
+    // w = flagged (decided from fewer than 4 evaluations, excluded from headline stats);
+    // x = anchor-rejected (the unperturbed render itself was rejected).
     var RAYS = [
-      {ray:0,  angle:42.46, censored:false},
-      {ray:1,  angle:35.18, censored:false},
-      {ray:2,  angle:53.13, censored:true},
-      {ray:3,  angle:16.70, censored:false},
-      {ray:4,  angle:39.01, censored:false},
-      {ray:5,  angle:53.10, censored:true},
-      {ray:6,  angle:39.41, censored:false},
-      {ray:7,  angle:37.95, censored:false},
-      {ray:8,  angle:6.84,  censored:false},
-      {ray:9,  angle:37.34, censored:false},
-      {ray:10, angle:37.34, censored:false},
-      {ray:11, angle:41.99, censored:false},
-      {ray:12, angle:46.00, censored:false},
-      {ray:13, angle:20.56, censored:false},
-      {ray:14, angle:6.84,  censored:false},
-      {ray:15, angle:24.94, censored:false},
-      {ray:16, angle:36.87, censored:false},
-      {ray:17, angle:21.53, censored:false},
-      {ray:18, angle:49.48, censored:false},
-      {ray:19, angle:48.59, censored:false}
+      {r:0,a:42.46,c:false,w:false,x:false},
+      {r:1,a:35.18,c:false,w:false,x:false},
+      {r:2,a:53.13,c:true,w:false,x:false},
+      {r:3,a:16.7,c:false,w:false,x:false},
+      {r:4,a:39.01,c:false,w:false,x:false},
+      {r:5,a:53.13,c:true,w:false,x:false},
+      {r:6,a:39.41,c:false,w:false,x:false},
+      {r:7,a:37.95,c:false,w:false,x:false},
+      {r:8,a:6.84,c:false,w:false,x:false},
+      {r:9,a:37.34,c:false,w:false,x:false},
+      {r:10,a:37.34,c:false,w:false,x:false},
+      {r:11,a:41.99,c:false,w:false,x:false},
+      {r:12,a:46.0,c:false,w:false,x:false},
+      {r:13,a:20.56,c:false,w:false,x:false},
+      {r:14,a:6.84,c:false,w:false,x:false},
+      {r:15,a:24.94,c:false,w:false,x:false},
+      {r:16,a:36.87,c:false,w:false,x:false},
+      {r:17,a:21.53,c:false,w:true,x:false},
+      {r:18,a:49.48,c:false,w:false,x:false},
+      {r:19,a:48.59,c:false,w:false,x:false},
+      {r:20,a:51.12,c:false,w:false,x:false},
+      {r:21,a:52.15,c:false,w:false,x:false},
+      {r:22,a:53.13,c:true,w:false,x:false},
+      {r:23,a:14.31,c:false,w:false,x:false},
+      {r:24,a:44.52,c:false,w:false,x:false},
+      {r:25,a:46.49,c:false,w:false,x:false},
+      {r:26,a:46.49,c:false,w:false,x:false},
+      {r:27,a:40.03,c:false,w:false,x:false},
+      {r:28,a:35.75,c:false,w:false,x:false},
+      {r:29,a:13.5,c:false,w:false,x:false},
+      {r:30,a:13.5,c:false,w:false,x:false},
+      {r:31,a:32.21,c:false,w:false,x:false},
+      {r:32,a:47.11,c:false,w:false,x:false},
+      {r:33,a:45.19,c:false,w:false,x:false},
+      {r:34,a:30.96,c:false,w:false,x:false},
+      {r:35,a:13.5,c:false,w:false,x:false},
+      {r:36,a:53.13,c:true,w:false,x:false},
+      {r:37,a:53.13,c:true,w:false,x:false},
+      {r:38,a:42.46,c:false,w:false,x:false},
+      {r:39,a:null,c:false,w:false,x:true},
+      {r:40,a:52.15,c:false,w:false,x:false},
+      {r:41,a:24.23,c:false,w:false,x:false},
+      {r:42,a:1.72,c:false,w:true,x:false},
+      {r:43,a:46.49,c:false,w:false,x:false},
+      {r:44,a:50.58,c:false,w:false,x:false},
+      {r:45,a:45.85,c:false,w:false,x:false},
+      {r:46,a:41.02,c:false,w:false,x:false},
+      {r:47,a:40.03,c:false,w:false,x:false},
+      {r:48,a:32.21,c:false,w:false,x:false},
+      {r:49,a:13.5,c:false,w:false,x:false},
+      {r:50,a:47.73,c:false,w:false,x:false},
+      {r:51,a:50.04,c:false,w:false,x:false},
+      {r:52,a:51.64,c:false,w:false,x:false},
+      {r:53,a:40.03,c:false,w:false,x:false},
+      {r:54,a:52.15,c:false,w:false,x:false},
+      {r:55,a:47.73,c:false,w:false,x:false},
+      {r:56,a:51.12,c:false,w:false,x:false},
+      {r:57,a:1.72,c:false,w:true,x:false},
+      {r:58,a:53.13,c:true,w:false,x:false},
+      {r:59,a:52.15,c:false,w:false,x:false},
+      {r:60,a:53.13,c:true,w:false,x:false},
+      {r:61,a:46.49,c:false,w:false,x:false},
+      {r:62,a:null,c:false,w:false,x:true},
+      {r:63,a:null,c:false,w:false,x:true}
     ];
-    var SUMMARY = {nBounded:18, nCensored:2, meanDeg:32.72, stdDeg:12.90, minDeg:6.84, maxDeg:49.48, anisotropy:7.23};
+    var SUMMARY = {meanDeg:37.68, ciLo:33.98, ciHi:41.07, extremes:7.62, p90p10:3.79, nWD:51, nCensored:7, nRejected:3, nFlagged:3};
 
     var accent = getComputedStyle(document.documentElement).getPropertyValue('--ex-accent').trim() || '#2f5d62';
     var warn   = getComputedStyle(document.documentElement).getPropertyValue('--ex-warn').trim()   || '#9a6a2a';
+    var flag   = getComputedStyle(document.documentElement).getPropertyValue('--ex-flag').trim()   || '#8a3b52';
     var grid   = getComputedStyle(document.documentElement).getPropertyValue('--ex-grid').trim()   || '#e2e6e2';
     var muted  = getComputedStyle(document.documentElement).getPropertyValue('--ex-muted').trim()  || '#5a5f5d';
     var accentSoft = getComputedStyle(document.documentElement).getPropertyValue('--ex-accent-soft').trim() || 'rgba(47,93,98,.14)';
 
     var SCALE_MAX = 56; // degrees at the outer edge of both charts
+
+    function colorFor(pt){ return pt.x ? muted : (pt.c ? warn : (pt.w ? flag : accent)); }
 
     // ---------- polar chart ----------
     (function polar(){
@@ -336,37 +516,39 @@
         s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(1)+'" fill="none" stroke="'+grid+'" stroke-width="1"/>';
         s += '<text x="'+(cx+4)+'" y="'+(cy-r-3).toFixed(1)+'" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">'+d+'&deg;</text>';
       });
-      // isotropic reference: dashed circle at the mean bounded angle
-      var rMean = SUMMARY.meanDeg/SCALE_MAX*R;
+      // 95% CI band + mean, well-determined rays only
+      var rLo = SUMMARY.ciLo/SCALE_MAX*R, rHi = SUMMARY.ciHi/SCALE_MAX*R, rMean = SUMMARY.meanDeg/SCALE_MAX*R;
+      s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+((rLo+rHi)/2).toFixed(1)+'" fill="none" stroke="'+accentSoft+'" stroke-width="'+(rHi-rLo).toFixed(1)+'"/>';
       s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+rMean.toFixed(1)+'" fill="none" stroke="'+accent+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
 
       var n = RAYS.length, poly = '';
       RAYS.forEach(function(pt, i){
         var theta = (-90 + i*360/n) * Math.PI/180;
-        var r = Math.min(pt.angle, SCALE_MAX)/SCALE_MAX*R;
+        var ang = pt.a===null ? 0 : pt.a;
+        var r = Math.min(ang, SCALE_MAX)/SCALE_MAX*R;
         var x = cx + r*Math.cos(theta), y = cy + r*Math.sin(theta);
-        // faint spoke
         var xEdge = cx + R*Math.cos(theta), yEdge = cy + R*Math.sin(theta);
-        s += '<line x1="'+cx+'" y1="'+cy+'" x2="'+xEdge.toFixed(1)+'" y2="'+yEdge.toFixed(1)+'" stroke="'+grid+'" stroke-width="1"/>';
-        poly += (i===0?'M':'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+        s += '<line x1="'+cx+'" y1="'+cy+'" x2="'+xEdge.toFixed(1)+'" y2="'+yEdge.toFixed(1)+'" stroke="'+grid+'" stroke-width="0.6"/>';
+        if (!pt.x) poly += (poly===''?'M':'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
         pt._x = x; pt._y = y; pt._theta = theta;
       });
-      s += '<path d="'+poly+'Z" fill="'+accentSoft+'" stroke="'+accent+'" stroke-width="1.3" stroke-linejoin="round"/>';
+      s += '<path d="'+poly+'Z" fill="'+accentSoft+'" stroke="'+accent+'" stroke-width="1" stroke-linejoin="round" opacity="0.85"/>';
 
       RAYS.forEach(function(pt){
-        if (pt.censored){
-          // open diamond + short outward arrow: true boundary lies further out, unmeasured
-          var ax = pt._x, ay = pt._y;
+        if (pt.x){
+          s += '<rect x="'+(pt._x-3.2).toFixed(1)+'" y="'+(pt._y-3.2).toFixed(1)+'" width="6.4" height="6.4" transform="rotate(45 '+pt._x.toFixed(1)+' '+pt._y.toFixed(1)+')" fill="none" stroke="'+muted+'" stroke-width="1.3"/>';
+        } else if (pt.c){
           var dx = Math.cos(pt._theta), dy = Math.sin(pt._theta);
-          var ex = ax+dx*14, ey = ay+dy*14;
-          s += '<line x1="'+ax.toFixed(1)+'" y1="'+ay.toFixed(1)+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="'+warn+'" stroke-width="1.6" stroke-dasharray="2 3"/>';
-          s += '<path d="M '+(ex-dy*3.5-dx*4).toFixed(1)+' '+(ey+dx*3.5-dy*4).toFixed(1)+' L '+ex.toFixed(1)+' '+ey.toFixed(1)+' L '+(ex+dy*3.5-dx*4).toFixed(1)+' '+(ey-dx*3.5-dy*4).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
-          s += '<rect x="'+(ax-4.2).toFixed(1)+'" y="'+(ay-4.2).toFixed(1)+'" width="8.4" height="8.4" transform="rotate(45 '+ax.toFixed(1)+' '+ay.toFixed(1)+')" fill="var(--ex-card)" stroke="'+warn+'" stroke-width="1.8"/>';
+          var ex = pt._x+dx*12, ey = pt._y+dy*12;
+          s += '<line x1="'+pt._x.toFixed(1)+'" y1="'+pt._y.toFixed(1)+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="'+warn+'" stroke-width="1.4" stroke-dasharray="2 3"/>';
+          s += '<rect x="'+(pt._x-3.4).toFixed(1)+'" y="'+(pt._y-3.4).toFixed(1)+'" width="6.8" height="6.8" transform="rotate(45 '+pt._x.toFixed(1)+' '+pt._y.toFixed(1)+')" fill="var(--ex-card)" stroke="'+warn+'" stroke-width="1.5"/>';
+        } else if (pt.w){
+          s += '<circle cx="'+pt._x.toFixed(1)+'" cy="'+pt._y.toFixed(1)+'" r="3.4" fill="var(--ex-card)" stroke="'+flag+'" stroke-width="1.6"/>';
         } else {
-          s += '<circle cx="'+pt._x.toFixed(1)+'" cy="'+pt._y.toFixed(1)+'" r="4" fill="'+accent+'" stroke="var(--ex-card)" stroke-width="1.2"/>';
+          s += '<circle cx="'+pt._x.toFixed(1)+'" cy="'+pt._y.toFixed(1)+'" r="3" fill="'+accent+'" stroke="var(--ex-card)" stroke-width="1"/>';
         }
       });
-      s += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="'+muted+'"/>';
+      s += '<circle cx="'+cx+'" cy="'+cy+'" r="3.5" fill="'+muted+'"/>';
       s += '<text x="'+cx+'" y="'+(cy+R+16)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="'+muted+'">anchor at centre &middot; radius = boundary angle</text>';
       svg.innerHTML = s;
     })();
@@ -374,10 +556,10 @@
     // ---------- sorted bar chart ----------
     (function bars(){
       var svg = document.getElementById('ex-bars');
-      var sorted = RAYS.slice().sort(function(a,b){ return a.angle - b.angle; });
-      var W = 380, H = 380, padL = 28, padR = 10, padT = 14, padB = 34;
+      var sorted = RAYS.slice().sort(function(a,b){ var av=a.a===null?-1:a.a, bv=b.a===null?-1:b.a; return av - bv; });
+      var W = 380, H = 380, padL = 28, padR = 6, padT = 14, padB = 20;
       var plotW = W - padL - padR, plotH = H - padT - padB;
-      var n = sorted.length, gap = 4;
+      var n = sorted.length, gap = 1.2;
       var bw = (plotW - gap*(n-1))/n;
       var s = '';
       [10,20,30,40,50].forEach(function(d){
@@ -385,23 +567,30 @@
         s += '<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+y.toFixed(1)+'" stroke="'+grid+'" stroke-width="1"/>';
         s += '<text x="'+(padL-4)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">'+d+'</text>';
       });
-      // isotropic reference line at the mean
+      // 95% CI band + mean line, well-determined rays only
+      var yLo = padT + plotH - SUMMARY.ciLo/SCALE_MAX*plotH, yHi = padT + plotH - SUMMARY.ciHi/SCALE_MAX*plotH;
+      s += '<rect x="'+padL+'" y="'+yHi.toFixed(1)+'" width="'+plotW+'" height="'+(yLo-yHi).toFixed(1)+'" fill="'+accentSoft+'"/>';
       var yMean = padT + plotH - SUMMARY.meanDeg/SCALE_MAX*plotH;
       s += '<line x1="'+padL+'" y1="'+yMean.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yMean.toFixed(1)+'" stroke="'+accent+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
 
       sorted.forEach(function(pt, i){
         var x = padL + i*(bw+gap);
-        var val = Math.min(pt.angle, SCALE_MAX);
+        var val = pt.a===null ? 0 : Math.min(pt.a, SCALE_MAX);
         var barH = val/SCALE_MAX*plotH;
         var y = padT + plotH - barH;
-        var col = pt.censored ? warn : accent;
-        s += '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+barH.toFixed(1)+'" fill="'+col+'" opacity="'+(pt.censored?0.55:0.85)+'"'+(pt.censored?' stroke="'+warn+'" stroke-width="1.2" stroke-dasharray="2 2"':'')+'/>';
-        if (pt.censored){
-          var mx = x+bw/2;
-          s += '<path d="M '+(mx-4).toFixed(1)+' '+(y+6).toFixed(1)+' L '+mx.toFixed(1)+' '+(y-2).toFixed(1)+' L '+(mx+4).toFixed(1)+' '+(y+6).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+        var col = colorFor(pt);
+        if (pt.x){
+          s += '<rect x="'+x.toFixed(1)+'" y="'+(padT+plotH-2).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="2" fill="'+col+'"/>';
+        } else {
+          var dash = pt.c ? ' stroke="'+warn+'" stroke-width="1" stroke-dasharray="2 1.5"' : (pt.w ? ' stroke="'+flag+'" stroke-width="1" stroke-dasharray="1 1"' : '');
+          s += '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+barH.toFixed(1)+'" fill="'+col+'" opacity="'+(pt.c||pt.w?0.55:0.88)+'"'+dash+'/>';
         }
-        s += '<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-padB+12)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="'+muted+'" transform="rotate(90 '+(x+bw/2).toFixed(1)+' '+(H-padB+12)+')" >r'+pt.ray+'</text>';
+        if (pt.c){
+          var mx = x+bw/2;
+          s += '<path d="M '+(mx-2.5).toFixed(1)+' '+(y+4).toFixed(1)+' L '+mx.toFixed(1)+' '+(y-1.5).toFixed(1)+' L '+(mx+2.5).toFixed(1)+' '+(y+4).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>';
+        }
       });
+      s += '<text x="'+(padL+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">64 rays, sorted by boundary angle (degrees, left axis)</text>';
       svg.innerHTML = s;
     })();
   })();
