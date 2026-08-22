@@ -43,7 +43,7 @@
     <section class="head">
       <div class="eyebrow">Where we are</div>
       <h1>Project status</h1>
-      <div class="updated">Last updated 2026-08-21</div>
+      <div class="updated">Last updated 2026-08-22</div>
       <p class="lead">A running snapshot of what's built, the findings that are steering the work, and what's in flight. Honest about the rough edges.</p>
     </section>
 
@@ -78,17 +78,24 @@
     </div>
 
     <div class="row">
-      <div><h3>Edge model (ESP-DL)</h3><div class="st"><span class="pill prog">Builds; output bug</span></div></div>
+      <div><h3>Edge model (ESP-DL)</h3><div class="st"><span class="pill prog">Fixed &amp; verified; chip parity open</span></div></div>
       <div>
-        <p>The published plaintext models <strong>build and load off-device</strong> through the standard ESP-IDF Linux target &mdash; the runner starts and returns a 512-D vector, so the detect&nbsp;&rarr;&nbsp;crop&nbsp;&rarr;&nbsp;recognise wiring runs. Build feasibility is settled; encryption was never the issue.</p>
-        <p>But <strong>inference is not yet correct</strong>: different faces come back with the same, heavily-saturated vector, and multi-image runs hang. So the host build works while the host <em>math</em> does not yet &mdash; most likely the C/C++ operator fallback not reproducing the chip's int8 arithmetic (a per-call state issue is also possible). That parity question is exactly what the on-device path exists to settle; until then the native runner isn't a trustworthy discriminator.</p>
+        <p>The &ldquo;identical embeddings&rdquo; bug is resolved. Differential testing against an independent int8 reference &mdash; tracing every node, each tensor in its own buffer &mdash; localised three defects, all in the vendor's generic C/C++ fallback path that only a host build exercises: a packed Conv filter layout the loader didn't unpack, a PReLU kernel skipping requantisation, and a memory planner aliasing every tensor to the same offset. Two are reported upstream (<a href="https://github.com/espressif/esp-dl/issues/319">#319</a>, <a href="https://github.com/espressif/esp-dl/issues/320">#320</a>); the #319 fix is submitted as <a href="https://github.com/espressif/esp-dl/pull/321">PR #321</a>, and the memory-planner defect was already fixed on esp-dl's own <code>master</code>.</p>
+        <p>The submodule has since been bumped to esp-dl v3.3.9 &mdash; which needed one more host-only fix, for pixel-conversion Kconfig symbols left undefined off-device &mdash; and results are unchanged: black/noise frames return no face, same-identity pairs score roughly 0.6&ndash;0.78 cosine, cross-identity pairs roughly &plusmn;0.16. That's agreement with an independent reference, not with the chip &mdash; the open question the on-device harness exists to close.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Shell generation &amp; SiL sweep</h3><div class="st"><span class="pill prog">In progress</span></div></div>
+      <div>
+        <p>Underway now that the host SiL runner is trustworthy: generating identity shells around real anchors, rendering a subset of points, and running them through the runner &mdash; the first end-to-end pass of the full pipeline built so far.</p>
       </div>
     </div>
 
     <div class="row">
       <div><h3>On-device harness</h3><div class="st"><span class="pill next">Next</span></div></div>
       <div>
-        <p>A transport-agnostic path that talks to the real ESP32 device, for measurements that are faithful to the hardware. Its slowness is exactly what the boundary search is built for &mdash; a handful of evaluations per direction, rendered on demand, rather than brute-forcing every point.</p>
+        <p>A transport-agnostic path that talks to the real ESP32 device, for measurements that are faithful to the hardware and to settle the chip-parity question above. Not yet started &mdash; the board isn't visible inside the dev container yet. Its slowness is exactly what the boundary search is built for &mdash; a handful of evaluations per direction, rendered on demand, rather than brute-forcing every point.</p>
       </div>
     </div>
 
