@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why SiL and HiL &mdash; Identity Acceptance Surfaces</title>
+  <meta name="description" content="Why the project builds two separate test rigs for the same system under test &mdash; a software-in-the-loop host runner and a hardware-in-the-loop real device &mdash; rather than picking the cheaper one and living with it.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .wrap{max-width:820px;margin:0 auto;padding:0 28px}
+    .head{padding:52px 0 6px}
+    .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
+    .lead{font-size:18px;line-height:1.55;color:#33383a;max-width:60ch;margin:0}
+    section{padding:26px 0;border-top:1px solid var(--line)}
+    section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
+    section p{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 12px;max-width:66ch}
+    section p:last-child{margin-bottom:0}
+    section ul{margin:0 0 12px;padding-left:20px;max-width:66ch}
+    section li{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 8px}
+    section li:last-child{margin-bottom:0}
+    .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+    strong{color:#23282a;font-weight:600}
+    code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:#f0f2ef;padding:1px 5px;border-radius:4px}
+    .tblwrap{overflow-x:auto;margin:6px 0 12px}
+    table{border-collapse:collapse;width:100%;font-size:14.5px}
+    th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:500;border-bottom:1px solid var(--line)}
+    tbody tr:last-child td{border-bottom:none}
+    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:#9aa09d;font-family:'IBM Plex Mono',monospace;font-size:12px}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="why-rigs.html" class="on">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer (TBC)</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+  </header>
+
+  <main class="wrap">
+    <section class="head" style="border:0">
+      <div class="k">Test rig design</div>
+      <h1>Why both a SiL and a HiL apparatus</h1>
+      <p class="lead">This note explains why the project builds two separate test rigs for the same system under test, rather than picking the cheaper one and living with it.</p>
+    </section>
+
+    <section>
+      <h2>The customer sits in one of three places</h2>
+      <p>An assurance engagement for an embedded face-recognition system is shaped almost entirely by where the customer sits relative to the system, because that determines what you are physically allowed to touch. There are three positions worth naming, because each rules a different apparatus in or out:</p>
+      <ul>
+        <li><strong>The manufacturer of the system.</strong> They own the models, so you can, in principle, get the model files and hook them up directly &mdash; feed in embeddings or images, read back whatever the model produces, no device needed at all.</li>
+        <li><strong>An integrator using the model as a supply-chain component.</strong> They bought a chip or module with the model burnt in and want to know its impacts and limitations before they ship it inside their own product. What they can hand you is the end device, running the vendor's model, plus whatever custom application they wrote to feed data into it &mdash; the model itself is not available as a separate artefact.</li>
+        <li><strong>An end user or deployer.</strong> Worst case, you can only interrogate the finished product &mdash; point a camera at it, present a card, watch what it does. This is close to black-box: no access to the model, often no access to the application layer, only the product's own sensor path.</li>
+      </ul>
+
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr><th>Customer position</th><th>What you can touch</th><th>Apparatus that fits</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Manufacturer</td><td>The models themselves</td><td>SiL</td></tr>
+            <tr><td>Integrator</td><td>End device + custom application</td><td>HiL</td></tr>
+            <tr><td>End user / deployer</td><td>The product's own sensor input</td><td>HiL, via a controlled input path</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Two apparatus map onto those three positions &mdash; not because two was a convenient number, but because the manufacturer's position and the integrator/end-user positions genuinely need different things from a rig.</p>
+    </section>
+
+    <section>
+      <h2>SiL: the host runner</h2>
+      <p>The software-in-the-loop apparatus is the host runner in <code>idf_apps/</code> &mdash; the vendor's own ESP-DL runtime, built for the Linux target instead of the ESP32-S3, executing the same quantised <code>.espdl</code> model files the device ships with. It is cheap, fast, and fully observable: every tensor at every layer can be read out, which is what makes tensor-level diagnosis and regression/golden tests possible at all.</p>
+      <p>That observability is only useful if the SiL actually behaves like the silicon, and that faithfulness cannot be assumed &mdash; it has to be established. In this project it wasn't free: reaching a plausible SiL meant tracking down three defects in the vendor runtime's generic C/C++ fallback path &mdash; a Conv filter layout the host loader failed to unpack, a PReLU kernel that skipped requantisation on part of its output, and a memory planner that let every internal buffer alias the same offset when PSRAM wasn't configured &mdash; all in the fallback path that only a non-ESP32 host build exercises, since real ESP32-S3/P4 builds take the assembly-optimised paths and never touch it. Fixing those got the SiL to bit-exact agreement with an independent reference on every node, but that is agreement with a reference, not with the chip: whether the host's rounding matches the ESP32-S3's TIE728 kernels bit-for-bit is still open.</p>
+    </section>
+
+    <section>
+      <h2>HiL: the real device</h2>
+      <p>The hardware-in-the-loop apparatus is the actual ESP32-S3 with the model on it, driven by a custom application that feeds it data &mdash; the same shape as the integrator's position above. It is slower and less observable: you get back whatever the device is willing to expose, a verdict or a score, not the tensors behind it. What it gives you in return is that it is the ground truth. It is also the only way to answer the question the SiL cannot answer about itself: run the same images through both, compare the embeddings or verdicts, and the gap between them is the SiL's parity error.</p>
+      <p>Where even the application layer is not available &mdash; the end-user position &mdash; the same device has to be driven through the product's own sensor path instead of a custom feed. That is the black-box case: harder to control, but still HiL in spirit, since it is the real hardware doing the inference.</p>
+    </section>
+
+    <section>
+      <h2>What it took to build the SiL</h2>
+      <p>Most of this project's effort so far has gone into the SiL, and the difficulty is itself an assurance finding, worth stating plainly.</p>
+      <p>ESP-DL is written for its own chips. The host/Linux target is a generic C/C++ fallback path the vendor rarely exercises &mdash; normal use takes the ESP32-S3/P4 assembly or PSRAM-aware paths instead. Just getting it to compile needed submodules initialised and an in-repo host compatibility layer: stub headers standing in for ESP-IDF, FreeRTOS, and heap-allocation APIs the vendor code assumes are present, a host-side flatbuffer model loader, and a <code>&lt;format&gt;</code> shim because the older host compiler doesn't ship C++20's <code>&lt;format&gt;</code> header.</p>
+      <p>Building is not the same as being correct. The first binary compiled cleanly and produced an answer for every input &mdash; but the same answer: identical, saturated embeddings regardless of what went in, so a black frame &ldquo;detected a face&rdquo; at the same score as a real photo. That output was deterministic and superficially resembled int8 saturation, and was initially misread that way. It wasn't. The lesson generalises: a SiL that runs and produces plausible-looking numbers has not thereby been shown faithful; it has to be checked against an independent reference, layer by layer, not just run.</p>
+      <p>That differential testing &mdash; tracing every node against an independent int8 reference, each tensor given its own private buffer &mdash; found three distinct defects, all in the vendor's generic fallback path: Conv filters shipped pre-packed for the chip's own SIMD layout that the host loader didn't unpack, a PReLU kernel that silently skipped output requantisation, and a memory planner that placed every tensor at the same offset when PSRAM wasn't configured. Each was fixed as a small, documented override of the specific upstream file rather than a patch to the vendor submodule, so the fix stays visible and easy to re-check when the vendor code is updated.</p>
+      <p>After all that, the SiL is bit-exact against the independent reference on every node &mdash; but that proves agreement with the reference, not with the chip. Whether its rounding matches the ESP32-S3's own arithmetic is still unproven, which is exactly why the HiL exists: the only apparatus that can close that question. The assurance takeaway is short: a SiL built from vendor code inherits the vendor's untested paths, and the real effort is in proving it faithful, not in getting it to run.</p>
+    </section>
+
+    <section>
+      <h2>Why both, not one</h2>
+      <p>SiL earns its keep on breadth: many directions, many shells, tensor-level diagnosis, regression tests that run in seconds. HiL earns its keep on truth: it settles parity, it is where INT8 cliffs and aliasing effects that only exist in real silicon actually show up, and once parity is demonstrated it becomes the system of record for surface mapping. Neither covers every customer position on its own, which is the actual reason this project carries both rigs rather than standardising on one.</p>
+    </section>
+
+    <section>
+      <h2>Future work</h2>
+      <p>Two extensions are anticipated but not started.</p>
+      <p><strong>An image-to-CSI-2/MIPI input adapter.</strong> For the black-box, product-only scenario, inputs currently have to be presented by pointing the product's camera at a screen. An adapter that replaces the camera sensor and injects image data directly onto the device's CSI-2/MIPI input would let the same controlled image set drive the black-box scenario that already drives the SiL and the application-level HiL.</p>
+      <p><strong>Presentation Attack Detection (PAD).</strong> PAD &mdash; detecting spoofing attempts such as photos or masks presented to a sensor &mdash; is a distinct problem from the one this project addresses. This project maps the acceptance surface in embedding space: whether a system accepts or rejects a legitimate embedding perturbed by a known amount. PAD is about whether a presented input is a genuine live subject at all, upstream of embedding space entirely. The two are complementary and worth treating separately rather than folding one into the other.</p>
+    </section>
+
+    <footer>Identity Acceptance Surfaces &middot; quantifying the discriminatory power of an authenticator</footer>
+  </main>
+</body>
+</html>
