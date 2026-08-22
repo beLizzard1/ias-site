@@ -89,21 +89,55 @@
       <div><h3>Refined acceptance surface</h3><div class="st"><span class="pill done">First surface measured</span></div></div>
       <div>
         <p>Per-direction boundary search on 20 rays around one real identity (Dr James&rsquo;), bisected against the ESP-DL SiL to &plusmn;0.03 &epsilon;, three renders per test point (median score, majority verdict). 18 of 20 rays bounded inside the dataset; 2 right-censored at the dataset's cos&nbsp;0.60 edge.</p>
-        <p>Boundary angle mean 32.7&deg; &plusmn; 12.9&deg;, range 6.8&deg;&ndash;49.5&deg;. The most tolerant bounded direction reaches <strong>7.2&times;</strong> further from the anchor than the least tolerant &mdash; an isotropic discriminator would draw a flat circle; this INT8 model draws a star. See the <a href="explorer.html">Explorer</a> for the plotted surface and the caveats (pilot scale, one identity, renderer noise inside the measurement, detector threshold relaxed to 0.3, host-vs-silicon parity still open).</p>
+        <p>Boundary angle mean 32.7&deg; &plusmn; 12.9&deg;, range 6.8&deg;&ndash;49.5&deg;, anisotropy 7.2&times; &mdash; an isotropic discriminator would draw a flat circle; this INT8 model draws a star. <em>These are the pilot's numbers, superseded by the 64-direction pass below; the figure to cite is 7.6&times;.</em> See the <a href="explorer.html">Explorer</a> for the plotted surface and the caveats (one identity, renderer noise inside the measurement, detector threshold relaxed to 0.3).</p>
       </div>
     </div>
 
     <div class="row">
-      <div><h3>Higher-resolution refine pass</h3><div class="st"><span class="pill prog">In progress</span></div></div>
+      <div><h3>Higher-resolution refine pass</h3><div class="st"><span class="pill done">Done &mdash; 64 directions</span></div></div>
       <div>
-        <p>Refining 44 more directions (rays 20&ndash;63) against the same anchor and SiL, to fill out the surface beyond the first 20 rays. Running now &mdash; no results yet.</p>
+        <p>All 64 directions are now bisected against the same anchor and SiL. Of the 64: 3 rays had their <em>unperturbed</em> render rejected by the detector and cannot carry a boundary, 7 are right-censored at the corpus edge (cos&nbsp;0.60), and 3 resolved on too few evaluations to trust. The remaining <strong>51 usable rays</strong> give a boundary angle of <strong>37.7&deg; &plusmn; 13.3&deg;</strong>, range 6.8&deg;&ndash;52.1&deg; &mdash; an anisotropy ratio of <strong>7.6&times;</strong>.</p>
+        <p>Two measurement bugs were caught and fixed on the way, and both had made the result look more dramatic than it is. Rays resolved on only two evaluations produced a spurious 30&times; ratio until a minimum-evaluation filter was added; and detection <em>failures</em> were initially plotted as scores of zero, which drew convincing but entirely fictitious &ldquo;identity cliffs&rdquo;. A score of zero means no face was found, not a face that scored badly, and the two are now drawn separately.</p>
       </div>
     </div>
 
     <div class="row">
       <div><h3>On-device harness</h3><div class="st"><span class="pill prog">Started</span></div></div>
       <div>
-        <p>The ESP32-S3 board is now visible to the toolchain inside the dev container. The esp-dl <code>human_face_recognition</code> firmware was built and flashed today, and the device produced its first inference: similarity 0.797307 on the example's own faces, versus 0.787880 for the same pair on the host runner. That's a first parity datapoint, not yet a parity study &mdash; settling host-vs-device agreement across a real spread of inputs is the next step before the device can serve as the faithful SUT for surface mapping.</p>
+        <p>The board now speaks the host protocol over its native USB, and host-versus-device parity has been measured rather than guessed. Feed both sides identical pixels <em>and</em> identical keypoints and their features agree to cosine <strong>0.980&ndash;0.983</strong> &mdash; close, but not bit-exact. Let each side run its own detector and that drops to <strong>0.900</strong>, because the two detectors place landmarks differently: never identical, boxes up to 5&nbsp;px apart, detection scores differing by 0.194 on average.</p>
+        <p>Most importantly, the thing that actually matters moved very little. Re-measuring boundaries on the device rather than the host displaced them by <strong>&minus;1.1&deg; &plusmn; 4.3&deg;</strong> across 8 rays &mdash; within noise. So the host SiL is a good proxy for bulk surface mapping, and the device is the arbiter.</p>
+        <p>Detection could be lifted onto the host, which would raise agreement from 0.900 to 0.975. It will not be. The measurement target is the deployed pipeline &mdash; detect, crop, embed, decide &mdash; and improving the number by deleting the divergent component would be measuring a system nobody ships.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>The threshold band</h3><div class="st"><span class="pill done">Measured</span></div></div>
+      <div>
+        <p>Any decision threshold between <strong>0.269 and 0.602</strong> gives zero false accepts and zero false rejects on this subject's nine photographs and 1,164 synthetic impostors. Every choice inside that 0.334-wide band reports identical FAR and FRR &mdash; and yet across it the acceptance region goes from &ldquo;95% of directions still accepted at the edge of the corpus&rdquo; to &ldquo;a bounded star averaging 28.8&deg;&rdquo;.</p>
+        <p>That is the finding with the sharpest governance edge on this page. An operator tuning a threshold has the usual error rates to look at, and inside this band they are flat and perfect. Nothing in that view reveals that the shape of what the system accepts is changing enormously underneath.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>How an identity is enrolled</h3><div class="st"><span class="pill done">Settled</span></div></div>
+      <div>
+        <p>Anchoring on the mean of several photographs rather than one beats a single image by <strong>+0.115</strong> leave-one-out, and widens the margin over impostors from +0.462 to +0.623. The centroid stays. Synthetic identities therefore get several images each rather than the real subject being cut down to one &mdash; and it is worth saying plainly that real enrolment takes multiple angles anyway, mixed with liveness and robustness checks, so a single-image anchor was never the realistic case.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Do the renders look like the person?</h3><div class="st"><span class="pill done">Tested</span></div></div>
+      <div>
+        <p>The recognition model said the renders were <em>more</em> like the subject than her own photographs are like each other. The subject said she did not see herself in them. A forced-choice test with the reference photograph visible settles the direction: observers picked correctly on <strong>16 of 16</strong> trials targeting her, including an observer who had never met her.</p>
+        <p>So both statements survive, and stating them together is the finding: the renders sit above stranger-level identity signal and below felt likeness. It is a floor, not a ceiling &mdash; the distractors in that run sat around 0.08 cosine away, plainly different people. The <a href="perceptual.html">version on this site</a> is 2.6&times; harder, and because its per-trial distances are known it can measure human accuracy as a function of embedding distance.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Is the subject poorly represented?</h3><div class="st"><span class="pill prog">Answered, with one open confound</span></div></div>
+      <div>
+        <p>A fair worry, given her anchor sits further from the synthetic pool than a synthetic anchor does. On the evidence, no. Her renders land at the <strong>50th percentile</strong> of 20 comparison identities, so the generator reproduces her about as well as it reproduces anyone; and part of the distance gap is arithmetic, since averaging several photographs demonstrably pushes an anchor away from the pool.</p>
+        <p>The inference also runs the other way: distance from an impostor pool is what good separation looks like, not evidence of neglect. Underrepresentation would show as compressed genuine scores or impostors crowding the threshold, and neither is present. What cannot yet be settled with one real identity is whether real faces <em>generally</em> sit off a synthetic pool's manifold &mdash; that needs several real anchors, which the corpus does not have.</p>
       </div>
     </div>
 

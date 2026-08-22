@@ -65,6 +65,7 @@
     .btn[disabled]{opacity:.4;cursor:not-allowed;pointer-events:none}
     .scorepanel{display:none;margin:22px 0 0;background:#f4f8f5;border:1px solid #e2ebe4;border-left:3px solid var(--teal);border-radius:6px;padding:20px 22px}
     .scorepanel.show{display:block}
+    .capturenote{margin:12px 0 0;font-size:13.5px;line-height:1.6;color:#6b716d;max-width:66ch}
     .scorepanel .n{font-family:'Newsreader',serif;font-size:38px;color:var(--teal-d);margin:2px 0 8px}
     .scorepanel p{margin:0 0 10px;font-size:15.5px;line-height:1.6;color:#3d423f;max-width:66ch}
     .scorepanel p:last-child{margin-bottom:0}
@@ -94,7 +95,8 @@
     <section>
       <div class="callout">
         <span class="k">Nothing is recorded, and no one real is depicted</span>
-        <p>This page collects nothing. Every answer is held in a variable in your browser tab and compared to the key by JavaScript running locally; nothing is sent anywhere, logged, or stored. Reload the page and it is gone. There is no server behind this test.</p>
+        <p id="noCaptureNote">This page collects nothing. Every answer is held in a variable in your browser tab and compared to the key by JavaScript running locally; nothing is sent anywhere, logged, or stored. Reload the page and it is gone. There is no server behind this test.</p>
+        <p id="captureNoteTop" hidden>When you reveal your score, this page records your sixteen answers and how long each took, so that responses can be pooled across visitors. <strong>Nothing identifying is stored</strong> &mdash; no name, no address, no device details, no cookie &mdash; and a stored record cannot be traced back to you. Your answers are compared to the key by JavaScript running in your own browser either way.</p>
         <p><strong>Every face on this page is synthetic and depicts no real person.</strong> The reference photographs come from SFHQ-T2I, an MIT-licensed dataset of AI-generated faces &mdash; not photographs of anyone who exists. The two options in each trial are Arc2Face renders, generated from a face-identity embedding, exactly like the renders discussed elsewhere on this site.</p>
       </div>
       <p>In each trial, one option was rendered from the same identity embedding as the reference photo; the other was rendered from a different, unrelated synthetic identity &mdash; the one the recognition model finds most confusable with the reference, out of a large candidate pool. You are not told which is which. Eight of the sixteen trials share a single recurring reference identity; the other eight each use a different reference identity, appearing only once, so you cannot simply learn one face over the course of the test and pattern-match to it.</p>
@@ -114,7 +116,14 @@
         </table>
       </div>
       <p class="pull">A render built purely from an identity embedding can sit closer to that identity&rsquo;s enrolled template, by the model&rsquo;s own metric, than a real person&rsquo;s own photographs sit to each other.</p>
-      <p>That is the gap this test asks you to feel rather than take on trust: a face can sit comfortably inside the &ldquo;genuine&rdquo; region of a recognition system while carrying little or no identity signal a human can use &mdash; even with a reference photo right next to it. See <a href="discrimination.html">Discrimination</a> for why population metrics can&rsquo;t catch this, and the wider threshold picture behind the 0.269 figure above.</p>
+      <p>The subject&rsquo;s reaction to those renders was that she did not see herself in them. An earlier version of this page took that at face value and said the renders carried little identity signal a human could use. That claim has since been tested, and it was wrong &mdash; see below. See <a href="discrimination.html">Discrimination</a> for why population metrics can&rsquo;t catch this, and the wider threshold picture behind the 0.269 figure above.</p>
+    </section>
+
+    <section>
+      <h2>What happened when we ran this properly</h2>
+      <p>The same test was run on the study&rsquo;s subject and one other observer, using her real identity rather than the synthetic one on this page. On the trials that targeted her, observers picked the correct render <strong>16 times out of 16</strong>, in about a second per trial &mdash; including the observer who had never met her and was working purely from the reference photograph.</p>
+      <p>So the renders do carry identity a human can match. Her reaction and that result are both true at once, and stating them together is the actual finding: <strong>these renders sit above stranger-level identity signal and below felt likeness.</strong> &ldquo;I can tell which one came from my photograph&rdquo; and &ldquo;that does not look like me&rdquo; are different claims, and a cosine similarity speaks to neither.</p>
+      <p>That result came from an easy version of the test. The distractors in it were the most confusable faces in a 250-face pool, but they still sat around 0.08 cosine from her template &mdash; plainly different people. <strong>The test on this page is substantially harder:</strong> its distractors sit 2.6&times; closer, a median of 0.208 and a maximum of 0.336. If you find these trials difficult, that is the test working, not you failing. The difficulty is the measurement.</p>
     </section>
 
     <section>
@@ -130,6 +139,8 @@
         <button class="btn primary" id="revealBtn" disabled type="button">See my score</button>
         <span class="progress" id="hintText">Answer all sixteen to unlock this.</span>
       </div>
+
+      <p class="capturenote" id="captureNote" hidden>When you reveal your score, your sixteen answers and how long each took are recorded anonymously to build an aggregate across visitors. Nothing identifying is stored &mdash; no name, no address, no device details &mdash; and the record cannot be traced back to you.</p>
 
       <div class="scorepanel" id="scorepanel">
         <span class="k">Your result</span>
@@ -151,7 +162,7 @@
       <h2>How to read your score</h2>
       <p>Chance on sixteen binary trials is 8/16, and with only sixteen trials the ordinary spread around chance is wide &mdash; anywhere from about 5 to 11 is unremarkable even for pure guessing, so treat one run as suggestive, not conclusive. The score panel computes the exact two-sided binomial p-value for your particular result against a chance rate of 0.5; a small p-value means a score that far from 8/16 would be unlikely from guessing alone, at this sample size.</p>
       <ul>
-        <li><strong>Near 8/16 (p not small):</strong> the renders are not giving you, personally, any usable identity signal beyond the reference photo. That is consistent with what this project measured: a model-genuine score with no reliable human-perceptible correlate, even with a reference to compare against.</li>
+        <li><strong>Near 8/16 (p not small):</strong> the renders are not giving you, personally, any usable identity signal at this difficulty. On an easier version of the same test &mdash; distractors 2.6&times; further away &mdash; observers scored 16/16. Both can hold: identity signal that is obvious against a stranger can vanish against a near neighbour, and the recognition model&rsquo;s similarity score does not tell you which situation you are in.</li>
         <li><strong>Well above 8/16 (p small):</strong> either these particular renders carry some cue a human can use &mdash; expression, framing, something about the impostor pool&rsquo;s style &mdash; worth being sceptical of rather than assuming it generalises, or it&rsquo;s a run of luck on a small sample. Sixteen trials cannot tell those apart on their own.</li>
       </ul>
       <p>A single visitor&rsquo;s score, however it lands, is not a substitute for the model&rsquo;s own numbers above; it is a companion to them, meant to make the gap between &ldquo;scores as genuine&rdquo; and &ldquo;reads as that person to a human&rdquo; something you can feel rather than take on trust.</p>
@@ -187,6 +198,23 @@
     ];
     var N = TRIALS.length;
     var chosen = new Array(N).fill(null);
+
+    // Set this to the deployed Cloudflare Worker URL to record anonymous
+    // results; leave empty and the page records nothing. Scoring is done in
+    // the page either way, so a visitor who reads this file can submit any
+    // score they like -- the aggregate is engagement telemetry, not a
+    // controlled measurement, and is described that way wherever it is shown.
+    var CAPTURE_ENDPOINT = '';
+
+    if (CAPTURE_ENDPOINT){
+      // The page must not claim to collect nothing while it is collecting.
+      document.getElementById('captureNote').hidden = false;
+      document.getElementById('captureNoteTop').hidden = false;
+      document.getElementById('noCaptureNote').hidden = true;
+    }
+
+    var times = new Array(N).fill(null);
+    var lastAt = Date.now();
 
     var trialsEl = document.getElementById('trials');
     var frag = document.createDocumentFragment();
@@ -240,6 +268,9 @@
       if (!btn || btn.disabled) return;
       var i = parseInt(btn.getAttribute('data-i'), 10);
       var choice = btn.getAttribute('data-choice');
+      var now = Date.now();
+      if (times[i] === null) times[i] = now - lastAt;
+      lastAt = now;
       chosen[i] = choice;
       var pair = btn.parentElement;
       var opts = pair.querySelectorAll('.opt');
@@ -303,7 +334,7 @@
       var dist = Math.abs(score - 8);
       var interp;
       if (dist <= 3){
-        interp = 'That is close to chance (8/16), and ' + formatP(p) + ' reflects it: nothing here rules out pure guessing. On this test, the renders gave you no reliable identity signal to work with beyond the reference photo — which is exactly what the model’s own “genuine” score of 0.816 does not tell you.';
+        interp = 'That is close to chance (8/16), and ' + formatP(p) + ' reflects it: nothing here rules out pure guessing. These distractors sit close to their reference in embedding terms, and at that range the renders gave you nothing reliable to work with — even though the same renders would be easy to match against a stranger. The model’s own “genuine” score of 0.816 does not distinguish those two situations.';
       } else if (score > 8){
         interp = 'That is above chance, and ' + formatP(p) + '. With only sixteen trials this can still be luck, but a small p-value is also consistent with some cue in these particular renders being usable by a human — worth being sceptical of before assuming it generalises to other renders or other observers.';
       } else {
@@ -325,6 +356,20 @@
       }
       resultsBody.innerHTML = '';
       resultsBody.appendChild(rows);
+
+      if (CAPTURE_ENDPOINT){
+        try {
+          fetch(CAPTURE_ENDPOINT, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              answers: chosen,
+              times: times.map(function(t){ return t === null ? 0 : t; }),
+              trial_set: 'public_synthetic'
+            })
+          }).catch(function(){});
+        } catch (err) { /* recording is never allowed to break the test */ }
+      }
 
       scorepanel.classList.add('show');
       revealBtn.disabled = true;

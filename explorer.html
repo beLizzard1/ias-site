@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Explorer &mdash; IAS</title>
-  <meta name="description" content="The full experiment chain behind the measured acceptance surface: nine experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, and hardware-in-the-loop parity.">
+  <meta name="description" content="The full experiment chain behind the measured acceptance surface: eleven experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, hardware-in-the-loop parity, and a human check on whether the renders carry the identity at all.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -92,7 +92,7 @@
       <div class="eyebrow">The experiment chain</div>
       <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
       <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 64 directions</div>
-      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and getting to this figure took nine experiments, each one forced by a problem or a surprise the last one turned up. This page walks the whole chain, not just the headline.</p>
+      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and getting to this figure took eleven experiments, each one forced by a problem or a surprise the last one turned up. This page walks the whole chain, not just the headline.</p>
     </section>
 
     <div class="stats">
@@ -125,7 +125,7 @@
       <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
     </div>
 
-    <p class="bridge">What follows is the chain that produced that figure: nine experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer.</p>
+    <p class="bridge">What follows is the chain that produced that figure: eleven experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer.</p>
 
     <nav class="toc" aria-label="Experiments on this page">
       <span class="toc-label">On this page</span>
@@ -233,6 +233,26 @@
         <p class="beat"><b>Done</b> Identified which of the board&rsquo;s two USB ports the runner was actually using. The UART bridge (CH343, <code>1a86:55d3</code>) enumerates alongside native USB-Serial-JTAG (<code>303a:1001</code>) and is easy to pick by mistake.</p>
         <p class="beat"><b>Came back</b> The bridge tops out near 115200 baud (&asymp;11.5 kB/s) &mdash; a 57kB frame costs &asymp;5s regardless of chunking, which was most of the 6&ndash;10.8 s/probe ceiling. Native USB runs at full speed (&asymp;500 kB/s) and brought per-probe time down to &asymp;1.00 s. At those two rates, a 10,000-probe corpus is the difference between roughly 30 hours and roughly 2.8 hours.</p>
         <p class="beat"><b>Changed</b> Switched the default transport to native USB (the stable <code>/dev/serial/by-id</code> path). Made a full-resolution HiL corpus practical rather than theoretical &mdash; and made &ldquo;how many boards in parallel&rdquo; a live question, given the device now also carries detection (experiment 8).</p>
+      </article>
+
+      <article class="exp" id="exp10">
+        <div class="exp-num">10</div>
+        <span class="exp-tag">Anchor &amp; threshold</span>
+        <h2>How an identity is enrolled, and where the threshold goes</h2>
+        <p class="beat"><b>Question</b> Two choices had been made by default rather than by evidence: anchoring on the mean of nine photographs rather than one image, and picking a decision threshold. Both set the origin and the scale of every surface measured here, so both needed testing before more identities were added &mdash; otherwise everything would have to be re-run.</p>
+        <p class="beat"><b>Done</b> Leave-one-out comparison of centroid against single-image anchors, and a sweep of every threshold that separates the subject&rsquo;s nine photographs from 1,164 synthetic impostors.</p>
+        <p class="beat"><b>Came back</b> The centroid beats a single image by +0.115 and widens the impostor margin from +0.462 to +0.623. And <em>any</em> threshold from 0.269 to 0.602 gives zero false accepts and zero false rejects &mdash; a band 0.334 wide in which every choice reports identical error rates, while the acceptance region across it goes from 95% of directions unbounded to a star averaging 28.8&deg;.</p>
+        <p class="beat"><b>Changed</b> The centroid stays, and synthetic identities get several images each rather than the real subject being cut to one. The threshold band became a headline finding in its own right: an operator tuning against FAR and FRR alone sees a flat, perfect region and no indication that the shape of what they accept is changing enormously underneath.</p>
+      </article>
+
+      <article class="exp" id="exp11">
+        <div class="exp-num">11</div>
+        <span class="exp-tag">Human vs model</span>
+        <h2>Do the renders carry the identity?</h2>
+        <p class="beat"><b>Question</b> The whole method assumes a render conditioned on an identity embedding stands in for that person. The recognition model agreed emphatically &mdash; renders at 0.816 median against the anchor, versus 0.754 for the subject&rsquo;s own photographs against each other. The subject disagreed: she did not see herself in them. A cosine cannot settle that, because the same family of model produced both the score and the render.</p>
+        <p class="beat"><b>Done</b> Two-alternative forced choice with the reference photograph visible. Both options are renders, so photographic style gives nothing away; half the trials target a synthetic identity as a control; showing the reference makes it a matching task, so a stranger can attempt it too.</p>
+        <p class="beat"><b>Came back</b> 16 of 16 on subject-targeted trials, at about a second each, including an observer who had never met the subject. The renders do carry matchable identity. Both statements survive: they sit above stranger-level identity signal and below felt likeness, and those are different things a single cosine does not distinguish.</p>
+        <p class="beat"><b>Changed</b> The surface is a surface of the person, not of a nearby region of the generator&rsquo;s manifold &mdash; the framing the rest of this site uses is sound. But it is a floor: those distractors sat about 0.08 away, plainly different people. The <a href="perceptual.html">public version</a> is 2.6&times; harder (median 0.208, max 0.336), and because its per-trial distances are known, pooled responses measure human accuracy as a function of embedding distance &mdash; the human boundary and the model boundary in the same units. A first correction came out of this too: an early claim that the public test was the <em>easier</em> one was an assumption, never measured, and was wrong.</p>
       </article>
     </div>
 
