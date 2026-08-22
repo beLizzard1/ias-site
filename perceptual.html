@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can you tell her from a stranger? &mdash; Identity Acceptance Surfaces</title>
+  <meta name="description" content="An interactive two-alternative test: sixteen pairs of synthetic renders, one from the subject's own identity embedding, one from her most confusable synthetic impostor. Nothing you answer is recorded.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .wrap{max-width:820px;margin:0 auto;padding:0 28px}
+    .head{padding:52px 0 6px}
+    .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
+    .lead{font-size:18px;line-height:1.55;color:#33383a;max-width:60ch;margin:0}
+    section{padding:26px 0;border-top:1px solid var(--line)}
+    section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
+    section p{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 12px;max-width:66ch}
+    section p:last-child{margin-bottom:0}
+    section ul{margin:0 0 12px;padding-left:20px;max-width:66ch}
+    section li{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 8px}
+    section li:last-child{margin-bottom:0}
+    .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+    strong{color:#23282a;font-weight:600}
+    em{color:#23282a}
+    .tblwrap{overflow-x:auto;margin:6px 0 12px}
+    table{border-collapse:collapse;width:100%;font-size:14.5px}
+    th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:500;border-bottom:1px solid var(--line)}
+    tbody tr:last-child td{border-bottom:none}
+    .callout{margin:6px 0 16px;background:#f4f8f5;border:1px solid #e2ebe4;border-left:3px solid var(--teal);border-radius:6px;padding:18px 20px}
+    .callout p{margin:0 0 8px}
+    .callout p:last-child{margin-bottom:0}
+    .callout .k{margin-bottom:6px;display:block}
+    .pull{font-family:'Newsreader',serif;font-size:19px;line-height:1.5;color:var(--teal-d);border-left:3px solid var(--teal);padding:4px 0 4px 16px;margin:10px 0 0}
+    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:#9aa09d;font-family:'IBM Plex Mono',monospace;font-size:12px}
+
+    /* the test itself */
+    .testhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+    .progress{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted)}
+    .progress strong{color:var(--ink)}
+    .trials{display:grid;gap:16px;margin:18px 0 6px}
+    .trial{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--card)}
+    .tnum{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .opt{appearance:none;-webkit-appearance:none;border:2px solid var(--line);border-radius:6px;padding:8px;background:var(--paper);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:inherit;text-align:center}
+    .opt img{width:100%;height:auto;border-radius:4px;display:block;pointer-events:none}
+    .opt .lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--muted)}
+    .opt:hover{border-color:#c9d2ce}
+    .opt.selected{border-color:var(--teal)}
+    .opt.selected .lbl{color:var(--teal-d);font-weight:500}
+    .opt:disabled{cursor:default}
+    .opt.correct{border-color:var(--teal);background:#f4f8f5}
+    .opt.correct .lbl{color:var(--teal-d);font-weight:600}
+    .opt.correct .lbl::after{content:" \2713"}
+    .opt.incorrect{border-color:#b5533f}
+    .opt.incorrect .lbl{color:#b5533f}
+    .opt.incorrect.selected .lbl::after{content:" \2717"}
+    .testctl{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:20px 0 0}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;pointer-events:none}
+    .scorepanel{display:none;margin:22px 0 0;background:#f4f8f5;border:1px solid #e2ebe4;border-left:3px solid var(--teal);border-radius:6px;padding:20px 22px}
+    .scorepanel.show{display:block}
+    .scorepanel .n{font-family:'Newsreader',serif;font-size:38px;color:var(--teal-d);margin:2px 0 8px}
+    .scorepanel p{margin:0 0 10px;font-size:15.5px;line-height:1.6;color:#3d423f;max-width:66ch}
+    .scorepanel p:last-child{margin-bottom:0}
+    @media (max-width:560px){
+      .pair{grid-template-columns:1fr 1fr;gap:8px}
+      .trial{padding:12px}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a><a href="perceptual.html" class="on">Perceptual test</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+  </header>
+
+  <main class="wrap">
+    <section class="head" style="border:0">
+      <div class="k">Interactive perceptual test</div>
+      <h1>Can you tell her from a stranger?</h1>
+      <p class="lead">The recognition model in this project says a render of the subject scores <em>higher</em> against her enrolled template than her own photographs score against each other. Below are sixteen pairs it was asked to judge. See if you can do better than it did &mdash; or than she could.</p>
+    </section>
+
+    <section>
+      <div class="callout">
+        <span class="k">Nothing is recorded</span>
+        <p>This page collects nothing. Every answer is held in a variable in your browser tab and compared to the key by JavaScript running locally; nothing is sent anywhere, logged, or stored. Reload the page and it is gone. There is no server behind this test.</p>
+      </div>
+      <p>All sixteen images are <strong>synthetic</strong>: generated from a face-identity embedding by a generative renderer, not photographs of any real person. Half of each pair is a render conditioned on the subject&rsquo;s own anchor embedding &mdash; the identity her template was built from. The other half is a render of the synthetic identity the recognition model finds <em>most confusable</em> with her, out of 1,164 candidates. You are not told which is which, and there is no reference photo on this page to compare them against &mdash; because there wasn&rsquo;t one for the model either. It made its call from the embedding alone.</p>
+    </section>
+
+    <section>
+      <h2>What the model says versus what a person sees</h2>
+      <p>In the project&rsquo;s own recognition space, over the subject&rsquo;s nine real photographs and renders of her anchor:</p>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>Comparison</th><th>Cosine similarity to her enrolled template</th></tr></thead>
+          <tbody>
+            <tr><td>Renders of her own anchor embedding</td><td><strong>0.816</strong> median (0.751&ndash;0.840)</td></tr>
+            <tr><td>Her nine real photographs, pairwise</td><td>0.754 median (0.624&ndash;0.836)</td></tr>
+            <tr><td>1,164 synthetic impostors</td><td>0.269 max</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="pull">A render built purely from her identity embedding sits closer to her template, by the model&rsquo;s own metric, than her actual photographs sit to each other.</p>
+      <p>And yet, shown these renders, the subject does not recognise herself in them. That is the gap this test asks you to feel rather than take on trust: a face can sit comfortably inside the &ldquo;genuine&rdquo; region of a recognition system while not reading as that person to a human at all &mdash; not to a stranger, and not always to the person herself. See <a href="discrimination.html">Discrimination</a> for why population metrics can&rsquo;t catch this, and the wider threshold picture behind the 0.269 figure above.</p>
+    </section>
+
+    <section>
+      <h2>The test</h2>
+      <p>Sixteen trials. In each, click the image you think is the render of the subject&rsquo;s own identity &mdash; the other is the confusable impostor. There is no feedback per trial and no way to learn across trials; your score is revealed only once all sixteen are answered.</p>
+      <div class="testhead">
+        <span class="progress">Answered <strong id="progressCount">0</strong> of 16</span>
+      </div>
+
+      <div class="trials" id="trials"></div>
+
+      <div class="testctl">
+        <button class="btn primary" id="revealBtn" disabled type="button">See my score</button>
+        <span class="progress" id="hintText">Answer all sixteen to unlock this.</span>
+      </div>
+
+      <div class="scorepanel" id="scorepanel">
+        <span class="k">Your result</span>
+        <div class="n" id="scoreText">&ndash; / 16</div>
+        <p id="scoreInterp"></p>
+        <p id="scoreCaveatN"></p>
+        <p><a class="btn" href="perceptual.html">Take it again</a></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>How to read your score</h2>
+      <p>Chance on sixteen binary trials is 8/16, and with only sixteen trials the ordinary spread around chance is wide &mdash; anywhere from about 5 to 11 is unremarkable even for pure guessing, so treat one run as suggestive, not conclusive.</p>
+      <ul>
+        <li><strong>Near 8/16:</strong> the renders are not giving you, personally, any usable identity signal. That is consistent with what this project measured: a model-genuine score with no human-perceptible correlate.</li>
+        <li><strong>Well above 8/16:</strong> either you got lucky, or these particular renders do carry some cue a human can use &mdash; expression, framing, something about the impostor pool&rsquo;s style &mdash; worth being sceptical of rather than assuming it generalises.</li>
+      </ul>
+      <p>The comparison that actually matters here is not your score against chance. It is your score against <strong>hers</strong>. The subject is the only observer whose judgement is authoritative about her own face, because she is the only person who genuinely knows what she looks like. A stranger scoring at chance is consistent with the renders lacking human-legible identity; it doesn&rsquo;t prove it the way her own non-recognition does. Strangers guessing at random is compatible with several stories &mdash; some renders might be recognisable to people who know her, for instance, if you happen to. Her not recognising herself rules that out directly.</p>
+    </section>
+
+    <section>
+      <h2>Related</h2>
+      <p>This test is a companion to <a href="discrimination.html">Discrimination</a>, on why two enrolled people don&rsquo;t get equal protection from the same threshold, and to <a href="why-rigs.html">why SiL and HiL</a>, on the two rigs used to score renders like these against the actual deployed system rather than the paper model.</p>
+    </section>
+
+    <footer>Identity Acceptance Surfaces &middot; quantifying the discriminatory power of an authenticator</footer>
+  </main>
+
+  <script>
+  (function(){
+    var ANSWERS = ["A","B","A","B","B","B","A","B","A","A","B","A","B","B","B","B"];
+    var N = ANSWERS.length;
+    var chosen = new Array(N).fill(null);
+
+    var trialsEl = document.getElementById('trials');
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < N; i++){
+      var n = i + 1;
+      var pad = n < 10 ? '0' + n : '' + n;
+      var trial = document.createElement('div');
+      trial.className = 'trial';
+      trial.innerHTML =
+        '<div class="tnum">Trial ' + n + '</div>' +
+        '<div class="pair">' +
+          '<button class="opt" type="button" data-i="' + i + '" data-choice="A">' +
+            '<img src="img/perceptual/trial' + pad + 'a.jpg" width="220" height="220" alt="Trial ' + n + ', option A" loading="lazy">' +
+            '<span class="lbl">A</span>' +
+          '</button>' +
+          '<button class="opt" type="button" data-i="' + i + '" data-choice="B">' +
+            '<img src="img/perceptual/trial' + pad + 'b.jpg" width="220" height="220" alt="Trial ' + n + ', option B" loading="lazy">' +
+            '<span class="lbl">B</span>' +
+          '</button>' +
+        '</div>';
+      frag.appendChild(trial);
+    }
+    trialsEl.appendChild(frag);
+
+    var progressCount = document.getElementById('progressCount');
+    var revealBtn = document.getElementById('revealBtn');
+    var hintText = document.getElementById('hintText');
+
+    function answeredCount(){
+      var c = 0;
+      for (var i = 0; i < N; i++) if (chosen[i]) c++;
+      return c;
+    }
+
+    function updateProgress(){
+      var c = answeredCount();
+      progressCount.textContent = c;
+      var done = c === N;
+      revealBtn.disabled = !done;
+      hintText.textContent = done ? 'All sixteen answered.' : 'Answer all sixteen to unlock this.';
+    }
+
+    trialsEl.addEventListener('click', function(e){
+      var btn = e.target.closest('.opt');
+      if (!btn || btn.disabled) return;
+      var i = parseInt(btn.getAttribute('data-i'), 10);
+      var choice = btn.getAttribute('data-choice');
+      chosen[i] = choice;
+      var pair = btn.parentElement;
+      var opts = pair.querySelectorAll('.opt');
+      for (var k = 0; k < opts.length; k++) opts[k].classList.remove('selected');
+      btn.classList.add('selected');
+      updateProgress();
+    });
+
+    var scorepanel = document.getElementById('scorepanel');
+    var scoreText = document.getElementById('scoreText');
+    var scoreInterp = document.getElementById('scoreInterp');
+    var scoreCaveatN = document.getElementById('scoreCaveatN');
+
+    revealBtn.addEventListener('click', function(){
+      if (answeredCount() !== N) return;
+      var score = 0;
+      var allOpts = trialsEl.querySelectorAll('.opt');
+      for (var j = 0; j < allOpts.length; j++){
+        var opt = allOpts[j];
+        opt.disabled = true;
+        var i = parseInt(opt.getAttribute('data-i'), 10);
+        var choice = opt.getAttribute('data-choice');
+        if (choice === ANSWERS[i]) opt.classList.add('correct');
+        else if (chosen[i] === choice) opt.classList.add('incorrect');
+      }
+      for (var i2 = 0; i2 < N; i2++) if (chosen[i2] === ANSWERS[i2]) score++;
+
+      scoreText.textContent = score + ' / 16';
+      var dist = Math.abs(score - 8);
+      var interp;
+      if (dist <= 3){
+        interp = 'That is close to chance (8/16). On this test, the renders gave you no reliable identity signal to work with — which is exactly what the model’s own “genuine” score of 0.816 does not tell you.';
+      } else if (score > 8){
+        interp = 'That is above chance. With only sixteen trials this can easily be luck, but it is also consistent with some cue in these particular renders being usable by a human — worth being sceptical of before assuming it generalises to other renders or other observers.';
+      } else {
+        interp = 'That is below chance. With sixteen trials that is well within the range pure guessing produces, but it is at least as consistent with the renders offering no usable signal as a near-8 score is.';
+      }
+      scoreInterp.textContent = interp;
+      scoreCaveatN.textContent = 'Remember: these are synthetic renders from an embedding, not photographs of anyone, and your result here says less than the subject’s own non-recognition of these same images does.';
+      scorepanel.classList.add('show');
+      revealBtn.disabled = true;
+      hintText.textContent = 'Scroll up to see which you got right.';
+      scorepanel.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+
+    updateProgress();
+  })();
+  </script>
+</body>
+</html>
