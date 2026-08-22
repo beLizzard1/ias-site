@@ -127,6 +127,41 @@
     </section>
 
     <section>
+      <h2>What makes hardware-in-the-loop hard</h2>
+      <p>The four-judge design argues for scoring on real hardware. It says nothing about what that costs to arrange. Having a HiL rig at all is an engineering commitment that most people evaluating a face-recognition system never make &mdash; which is exactly why a vendor's own numbers usually go unchallenged: hardly anyone is set up to check them. What follows is what that commitment turned out to involve here, roughly in the order it was encountered.</p>
+
+      <p>The device looks dead when it is merely busy. Loading the models from flash into PSRAM takes about 30 seconds after any reset, and several early &ldquo;the firmware is broken&rdquo; conclusions were tests that gave up after 8&ndash;12 seconds. Anything that resets the board &mdash; including the DTR/RTS toggle the flashing tool uses to trigger the ROM loader &mdash; buys another 30 seconds of silence. Keeping the runner resident pays that cost once rather than on every exchange.</p>
+
+      <p>Transport is the throughput ceiling, and which transport is in use is not obvious from the outside. The board exposes two USB ports, and they behave very differently:</p>
+
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr><th>Port</th><th>Enumerates as</th><th>Practical rate</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>UART bridge</td><td><code>1a86:55d3</code> (CH343)</td><td>11.5 kB/s at 115200 baud</td><td>baud is a real limit</td></tr>
+            <tr><td>Native USB (OTG)</td><td><code>303a:1001</code> USB JTAG/serial</td><td>~500 kB/s</td><td>baud setting is ignored</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Over the bridge, a single 57 kB frame costs about 5 seconds. A quick way to tell the two apart without opening anything up: set a mismatched baud rate and send a command. Native USB ignores the setting and still replies; a real UART goes silent.</p>
+
+      <p>Flow control is not optional. The device's receive buffer is far smaller than an image, so an unpaced sender overruns it &mdash; and the lost bytes are then parsed as commands. The symptom looks like a protocol bug, an <code>ERR UNKNOWN_COMMAND</code> full of image data, when the actual cause is a buffer.</p>
+
+      <p>The peripheral can only have one owner. If the console is configured on USB-Serial-JTAG, installing the driver for the protocol asserts, because the console already owns the peripheral. The arrangement that works is console on UART0, so logs stay visible on the bridge port, with the driver owning the native USB port for the protocol itself. Getting this the wrong way round produces a device that is completely silent &mdash; indistinguishable from a hang.</p>
+
+      <p>Anything sharing the stream will corrupt it. Models load lazily, so a log line can appear in the middle of an exchange and be read as a reply.</p>
+
+      <p>The device node is not stable. Every reset re-enumerates the USB device, and under a rootless container the node can reappear with no permissions at all: the host's udev rules cover the bridge's vendor ID but not Espressif's, and neither <code>chmod</code> nor <code>mknod</code> is permitted inside the container, so this has to be fixed on the host.</p>
+
+      <p>The board serves one client at a time, and that client can be left mid-sentence. If it dies during a payload, the device keeps counting bytes and swallows whatever arrives next. The fix is for the client to resynchronise on connect rather than reset the board &mdash; a reset would cost the 30-second reload.</p>
+
+      <p>The consequence for the method: even fully optimised, the device is the slowest judge in the set &mdash; roughly 0.15 s of transfer plus 0.4 s of inference, against about 0.1 s on the host. HiL is best understood as the instrument that validates the cheap judge, not the one that carries the volume, which is why the SiL-vs-HiL comparison has to be settled before any large corpus is run.</p>
+    </section>
+
+    <section>
       <h2>Why both, not one</h2>
       <p>SiL earns its keep on breadth: many directions, many shells, tensor-level diagnosis, regression tests that run in seconds. HiL earns its keep on truth: it settles parity, it is where INT8 cliffs and aliasing effects that only exist in real silicon actually show up, and once parity is demonstrated it becomes the system of record for surface mapping. Neither covers every customer position on its own, which is the actual reason this project carries both rigs rather than standardising on one.</p>
     </section>
