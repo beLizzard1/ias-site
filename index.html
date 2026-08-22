@@ -83,7 +83,7 @@
           </svg>
         </div>
         <div class="margin">
-          <p class="rk">All shells share one direction set, so point <em>i</em> of every shell lies on the same ray outward. Where a ray flips, two shells bracket its boundary; refinement binary-searches inside that span.</p>
+          <p class="rk">Each shell is an initial sample at known distances from the anchor identity, in the embedding metric &mdash; that first pass is run against the system under test. Per direction, those results show where a new test case is needed to pin down the acceptance threshold; across many directions that builds up the acceptance surface, which we compare to the ideal one.</p>
           <div class="reads">
             <div class="lbl">Reads as</div>
             <div class="row">cos 0.80 &rarr; &epsilon; 0.750 &rarr; 36.9&deg;</div>
