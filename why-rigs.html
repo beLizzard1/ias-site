@@ -43,6 +43,7 @@
       <div class="k">Test rig design</div>
       <h1>Why both a SiL and a HiL apparatus</h1>
       <p class="lead">This note explains why the project builds two separate test rigs for the same system under test, rather than picking the cheaper one and living with it.</p>
+      <p style="font-size:14px;color:#6b706d;margin:10px 0 0">Background: <a href="why.html">why this project exists</a> &mdash; why per-identity, directional evidence is worth building when population metrics like FAR/FRR are all that is otherwise available.</p>
     </section>
 
     <section>
@@ -91,6 +92,38 @@
       <p>That differential testing &mdash; tracing every node against an independent int8 reference, each tensor given its own private buffer &mdash; found three distinct defects, all in the vendor's generic fallback path: <a href="https://github.com/espressif/esp-dl/issues/320">Conv filters shipped pre-packed for the chip's own SIMD layout that the host loader didn't unpack</a>, <a href="https://github.com/espressif/esp-dl/issues/319">a PReLU kernel that silently skipped output requantisation</a>, and a memory planner that placed every tensor at the same offset when PSRAM wasn't configured (already fixed on esp-dl <code>master</code> as of commit <code>fff487a2</code>, June 2026, after the revision we pinned). Each was fixed as a small, documented override of the specific upstream file rather than a patch to the vendor submodule, so the fix stays visible and easy to re-check when the vendor code is updated.</p>
       <p>The two still-present defects were reported upstream (<a href="https://github.com/espressif/esp-dl/issues/319">#319</a>, <a href="https://github.com/espressif/esp-dl/issues/320">#320</a>); the #319 fix is submitted as <a href="https://github.com/espressif/esp-dl/pull/321">PR #321</a>, with the analysis disclosed as done with Claude under Liz's direction. The project has since moved to esp-dl v3.3.9, where Espressif had already fixed the memory-planner defect &mdash; but bringing the host build up to it exposed one more host-only trap: esp-dl &ge;3.3 gates every pixel conversion behind Kconfig symbols that are undefined off-device, so every frame came back &ldquo;no face&rdquo; until they were defined.</p>
       <p>After all that, the SiL is bit-exact against the independent reference on every node &mdash; but that proves agreement with the reference, not with the chip. Whether its rounding matches the ESP32-S3's own arithmetic is still unproven, which is exactly why the HiL exists: the only apparatus that can close that question. The assurance takeaway is short: a SiL built from vendor code inherits the vendor's untested paths, and the real effort is in proving it faithful, not in getting it to run.</p>
+    </section>
+
+    <section>
+      <h2>Four judges, and what each comparison isolates</h2>
+      <p>The apparatus is not one system under test but four, scored on <strong>identical stimuli through identical crops</strong>, so that only the thing being compared varies. Rendering is the expensive half, so every probe image is rendered once and shown to all four:</p>
+
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr><th>Judge</th><th>What it is</th><th>Why it is in the set</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>HiL</td><td>the quantised model on the real ESP32-S3</td><td>the deployed artefact &mdash; ground truth</td></tr>
+            <tr><td>SiL</td><td>the same quantised model, executed on a host</td><td>fast, fully observable, needs proving faithful</td></tr>
+            <tr><td>MobileFaceNet (float)</td><td>the same architecture family at full precision</td><td>isolates what quantisation costs</td></tr>
+            <tr><td>Desktop-class (float)</td><td>an unconstrained model (e.g. ArcFace R100)</td><td>isolates what the power budget costs</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Three comparisons fall out of that set, and each answers a different question:</p>
+      <p><strong>SiL vs HiL &mdash; a methodology question.</strong> Do we have to run every probe on real hardware, or is a host execution of the exact same model faithful enough to stand in? If the two agree, surface mapping can be done at software speed and the device is needed only for spot checks; if they diverge, every published number has to come off the device and the throughput of the whole method changes. This is a question about <em>how you are allowed to measure</em>, and it has to be settled before either of the others means anything.</p>
+      <p><strong>SiL or HiL vs float MobileFaceNet &mdash; a quantisation question.</strong> Same architecture family, full precision versus INT8. This is where the &ldquo;does squeezing the model into a chip change what it accepts&rdquo; question lives, and it is the comparison most likely to surface behaviour that exists only in the deployed artefact and not in anything the vendor benchmarked.</p>
+      <p><strong>SiL or HiL vs desktop-class vs MobileFaceNet &mdash; a parameterisation question.</strong> Holding precision aside, how much of the edge model&rsquo;s behaviour is down to it being small? A 1.2M-parameter MobileFaceNet and a ~65M-parameter ArcFace R100 are different answers to the same problem; comparing all three separates &ldquo;small model&rdquo; from &ldquo;quantised model&rdquo; from &ldquo;this particular model&rdquo;.</p>
+
+      <h3 style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:600;margin:18px 0 8px">Making the judges comparable</h3>
+      <p>Their scores are not on a common scale, so a shared numeric threshold would be meaningless. Two operating points are used instead, and results are always labelled with which one:</p>
+      <ul>
+        <li><strong>The vendor&rsquo;s own default</strong> (<code>tau = 0.5</code> for esp-dl) &mdash; what the deployed system actually does, the only operating point that describes the product.</li>
+        <li><strong>A matched false-accept rate</strong>, with each judge&rsquo;s threshold set from an impostor cohort of synthetic faces (SFHQ-T2I, MIT-licensed, so no real third-party identities are involved) &mdash; the only fair way to compare judges to each other.</li>
+      </ul>
+      <p>Matching on <em>genuine</em> acceptance alone is not sufficient, and was tried first: a model that accepts everything scores perfectly on genuine pairs and appears maximally tolerant. Impostors are what make the operating point real &mdash; and in this project the impostor check immediately earned its place by exposing a landmark-ordering bug that had been silently corrupting every float judge&rsquo;s input crop.</p>
     </section>
 
     <section>
