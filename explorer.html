@@ -3,57 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sample explorer &mdash; IAS</title>
-  <meta name="description" content="The real shell geometry as a rotatable point cloud: move the discriminator threshold and watch accept/reject recolour, or take the guided walkthrough.">
+  <title>Explorer (TBC) &mdash; IAS</title>
+  <meta name="description" content="The Explorer is where findings from the real ESP-DL / ESP32-S3 on-device pipeline will be presented. Not yet available.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="styles.css">
   <style>
     body.dark{display:flex;flex-direction:column;height:100vh}
-    .app{position:relative;flex:1;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#131a25 0%,#0b0e14 62%,#080a0f 100%)}
-    .stage{position:absolute;inset:0;perspective:1100px;perspective-origin:50% 46%;touch-action:none;cursor:grab}
-    .stage:active{cursor:grabbing}
-    .spin{position:absolute;left:50%;top:46%;transform-style:preserve-3d;transform:rotateX(-14deg) rotateY(20deg);will-change:transform}
-    .pt{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%}
-    .ov{position:absolute;z-index:3}
-    .title{left:28px;top:20px;max-width:34ch}
-    .title .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#7fb3d3;text-transform:uppercase}
-    .title h1{font-size:20px;font-weight:600;margin:4px 0 0}
-    .title p{font-size:13px;color:#8896a8;margin:3px 0 0;line-height:1.5}
-    .readouts{right:28px;top:20px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8896a8;line-height:1.9}
-    .readouts b{color:#dbe4ee;font-weight:400}
-    .legend{left:28px;bottom:110px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8896a8;display:flex;flex-direction:column;gap:6px}
-    .legend div{display:flex;align-items:center;gap:8px}.legend .dot{width:9px;height:9px;border-radius:50%}
-    .wcap{right:28px;bottom:112px;width:300px;background:rgba(14,20,29,.8);border:1px solid #22303f;border-radius:8px;padding:16px 18px;backdrop-filter:blur(4px);display:none}
-    .wcap .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#7fb3d3;text-transform:uppercase}
-    .wcap .t{font-size:16px;font-weight:600;margin:6px 0}
-    .wcap .b{font-size:13px;line-height:1.55;color:#9fb0c2}
-    .wcap .s{font-family:'IBM Plex Mono',monospace;margin-top:12px;font-size:11.5px;color:#7f8da0}
-    .controls{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:18px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-      background:linear-gradient(0deg,#090c11 0%,rgba(9,12,17,.8) 62%,transparent 100%)}
-    .grp{display:flex;gap:8px;align-items:center}
-    .cbtn{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px 13px;border-radius:4px;border:1px solid #2a3341;background:#141a24;color:#aeb9c8;cursor:pointer}
-    .cbtn:hover{border-color:#3d4c60;color:#dbe4ee}.cbtn.on{background:#1c2a3a;border-color:#4d7ea0;color:#cfe6f5}
-    .slider{display:flex;align-items:center;gap:12px;flex:1;max-width:420px;min-width:200px}
-    .slider span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
-    .slider .val{color:#dbe4ee;width:42px}
-    input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:#2a3341;border-radius:3px;outline:none;flex:1}
-    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#7fb3d3;cursor:pointer;box-shadow:0 0 8px rgba(127,179,211,.4)}
-    input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#7fb3d3;cursor:pointer}
-    .dots{display:flex;gap:6px;align-items:center}.dots span{width:7px;height:7px;border-radius:50%}
-    .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5f6c7e;white-space:nowrap}
-    .cloudOnly,.walkOnly{display:flex;align-items:center;gap:18px;flex:1;flex-wrap:wrap}
-    .walkOnly{display:none}
-    @media (max-width:720px){.title p,.legend{display:none}}
+    .app{position:relative;flex:1;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#131a25 0%,#0b0e14 62%,#080a0f 100%);
+      display:flex;align-items:center;justify-content:center;padding:28px}
+    .tbc{max-width:480px;text-align:center}
+    .tbc .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#7fb3d3;text-transform:uppercase}
+    .tbc h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:clamp(22px,4vw,28px);margin:12px 0 14px;color:#dbe4ee}
+    .tbc p{font-size:14.5px;line-height:1.65;color:#9fb0c2;margin:0 0 10px}
+    .tbc .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+      padding:3px 9px;border-radius:20px;background:#2a2416;color:#c99a4a;margin-bottom:16px}
+    .tbc a{color:#7fb3d3}
+    .tbc a:hover{color:#a9d0e6}
   </style>
 </head>
 <body class="dark">
   <header class="nav">
     <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fb3d3" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer (TBC)</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
   </header>
 
+  <div class="app">
+    <div class="tbc">
+      <span class="pill">TBC</span>
+      <div class="k">Sample Explorer</div>
+      <h1>Findings pending the on-device pipeline</h1>
+      <p>This page is where results from the real ESP-DL / ESP32-S3 edge model &mdash; the actual embedded face-recognition target, not a synthetic stand-in &mdash; will be presented once the on-device measurement is verified.</p>
+      <p>It isn't available yet. See <a href="status.html">Status</a> for where the ESP-DL work currently stands.</p>
+    </div>
+  </div>
+
+  <!--
+    Archived below: the earlier point-cloud / walkthrough demo, built on synthetic
+    shell geometry rather than real on-device measurements. Left inert (inside a
+    <template>, not rendered or executed) so it can be restored or repurposed once
+    real ESP-DL / ESP32-S3 findings are ready to replace it.
+  -->
+  <template id="explorer-archive">
   <div class="app">
     <div class="stage" id="stage"><div class="spin" id="spin"></div></div>
 
@@ -97,6 +89,43 @@
       </div>
     </div>
   </div>
+
+  <style>
+    .stage{position:absolute;inset:0;perspective:1100px;perspective-origin:50% 46%;touch-action:none;cursor:grab}
+    .stage:active{cursor:grabbing}
+    .spin{position:absolute;left:50%;top:46%;transform-style:preserve-3d;transform:rotateX(-14deg) rotateY(20deg);will-change:transform}
+    .pt{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%}
+    .ov{position:absolute;z-index:3}
+    .title{left:28px;top:20px;max-width:34ch}
+    .title .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#7fb3d3;text-transform:uppercase}
+    .title h1{font-size:20px;font-weight:600;margin:4px 0 0}
+    .title p{font-size:13px;color:#8896a8;margin:3px 0 0;line-height:1.5}
+    .readouts{right:28px;top:20px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8896a8;line-height:1.9}
+    .readouts b{color:#dbe4ee;font-weight:400}
+    .legend{left:28px;bottom:110px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8896a8;display:flex;flex-direction:column;gap:6px}
+    .legend div{display:flex;align-items:center;gap:8px}.legend .dot{width:9px;height:9px;border-radius:50%}
+    .wcap{right:28px;bottom:112px;width:300px;background:rgba(14,20,29,.8);border:1px solid #22303f;border-radius:8px;padding:16px 18px;backdrop-filter:blur(4px);display:none}
+    .wcap .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#7fb3d3;text-transform:uppercase}
+    .wcap .t{font-size:16px;font-weight:600;margin:6px 0}
+    .wcap .b{font-size:13px;line-height:1.55;color:#9fb0c2}
+    .wcap .s{font-family:'IBM Plex Mono',monospace;margin-top:12px;font-size:11.5px;color:#7f8da0}
+    .controls{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:18px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+      background:linear-gradient(0deg,#090c11 0%,rgba(9,12,17,.8) 62%,transparent 100%)}
+    .grp{display:flex;gap:8px;align-items:center}
+    .cbtn{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px 13px;border-radius:4px;border:1px solid #2a3341;background:#141a24;color:#aeb9c8;cursor:pointer}
+    .cbtn:hover{border-color:#3d4c60;color:#dbe4ee}.cbtn.on{background:#1c2a3a;border-color:#4d7ea0;color:#cfe6f5}
+    .slider{display:flex;align-items:center;gap:12px;flex:1;max-width:420px;min-width:200px}
+    .slider span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
+    .slider .val{color:#dbe4ee;width:42px}
+    input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:#2a3341;border-radius:3px;outline:none;flex:1}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#7fb3d3;cursor:pointer;box-shadow:0 0 8px rgba(127,179,211,.4)}
+    input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#7fb3d3;cursor:pointer}
+    .dots{display:flex;gap:6px;align-items:center}.dots span{width:7px;height:7px;border-radius:50%}
+    .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5f6c7e;white-space:nowrap}
+    .cloudOnly,.walkOnly{display:flex;align-items:center;gap:18px;flex:1;flex-wrap:wrap}
+    .walkOnly{display:none}
+    @media (max-width:720px){.title p,.legend{display:none}}
+  </style>
 
   <script>
   (function(){
@@ -171,5 +200,6 @@
     render();
   })();
   </script>
+  </template>
 </body>
 </html>
