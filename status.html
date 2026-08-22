@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Status &mdash; Identity Acceptance Surfaces</title>
+  <meta name="description" content="Where the Identity Acceptance Surfaces toolkit is: what's built, the key findings, and what's in flight.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .wrap{max-width:900px;margin:0 auto;padding:0 28px}
+    .head{padding:52px 0 8px}
+    .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(28px,5vw,40px);font-weight:400;line-height:1.1;margin:12px 0 10px}
+    .updated{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8b938c}
+    .lead{font-size:16.5px;line-height:1.6;color:#39413c;max-width:64ch;margin:8px 0 0}
+    .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;vertical-align:middle}
+    .done{background:#e6efe9;color:#2f5d62}
+    .prog{background:#f5ecdd;color:#9a6a2a}
+    .next{background:#ececeb;color:#6b6f6d}
+    .row{border-top:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;align-items:start}
+    .row h3{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:18px}
+    .row .st{margin-top:8px}
+    .row p{margin:0;font-size:14.5px;line-height:1.6;color:#41473f}
+    .row p+p{margin-top:8px}
+    .row code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:#f0f2ef;padding:1px 5px;border-radius:4px}
+    .callout{margin:30px 0 8px;background:#f4f8f5;border:1px solid #e2ebe4;border-left:3px solid var(--teal);border-radius:6px;padding:18px 20px}
+    .callout h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:19px}
+    .callout ul{margin:0;padding-left:18px}
+    .callout li{font-size:14.5px;line-height:1.6;color:#41473f;margin:5px 0}
+    footer{margin:44px 0 40px;padding-top:16px;border-top:1px solid var(--line);color:#9aa09d;font-family:'IBM Plex Mono',monospace;font-size:12px}
+    @media (max-width:640px){.row{grid-template-columns:1fr;gap:8px}}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html" class="on">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+  </header>
+
+  <main class="wrap">
+    <section class="head">
+      <div class="eyebrow">Where we are</div>
+      <h1>Project status</h1>
+      <div class="updated">Last updated 2026-08-21</div>
+      <p class="lead">A running snapshot of what's built, the findings that are steering the work, and what's in flight. Honest about the rough edges.</p>
+    </section>
+
+    <div class="row">
+      <div><h3>Perturbation core</h3><div class="st"><span class="pill done">Done</span></div></div>
+      <div>
+        <p>Embeddings-first shells with exact cosine geometry &mdash; <code>unit(anchor + &epsilon;&middot;tangent)</code>, <code>cos = 1/&radic;(1+&epsilon;&sup2;)</code> &mdash; and reproducible, index-addressable sampling. Test suite green; the documented quickstart runs end to end.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Real anchor extraction</h3><div class="st"><span class="pill done">Done</span></div></div>
+      <div>
+        <p>Real 512-D anchors extract from photos via InsightFace / antelopev2, and a shell dataset builds and probes around a real identity locally (no GPU needed for the embedding dataset itself). Fixed a recognition-model-selection bug and pinned the model pack with a verified digest.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Face compositor</h3><div class="st"><span class="pill done">Done</span></div></div>
+      <div>
+        <p>Warps and blends a generated face into a real background photo, keeping the real hair and scene. A face-interior mask removes the doubled-hairline seam; a hair-aware pass re-lays strands that fall over the face.</p>
+        <p>Finding: the compositor itself is near-lossless &mdash; putting a face back into its own photo differs by at most one level per pixel.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Rendering (Arc2Face)</h3><div class="st"><span class="pill prog">Works, with a caveat</span></div></div>
+      <div>
+        <p>Face generation from an embedding runs end to end. The limitation is fidelity: the model reconstructs facial <em>structure</em> from the identity vector but fills in hair, colour, and presentation from its own prior, so renders can look stylised and not match the person.</p>
+        <p>For the measurement this matters little &mdash; the edge model crops around facial landmarks, so background and hair realism are for human-facing figures, not for what the device sees.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>Edge model (ESP-DL)</h3><div class="st"><span class="pill prog">Builds; output bug</span></div></div>
+      <div>
+        <p>The published plaintext models <strong>build and load off-device</strong> through the standard ESP-IDF Linux target &mdash; the runner starts and returns a 512-D vector, so the detect&nbsp;&rarr;&nbsp;crop&nbsp;&rarr;&nbsp;recognise wiring runs. Build feasibility is settled; encryption was never the issue.</p>
+        <p>But <strong>inference is not yet correct</strong>: different faces come back with the same, heavily-saturated vector, and multi-image runs hang. So the host build works while the host <em>math</em> does not yet &mdash; most likely the C/C++ operator fallback not reproducing the chip's int8 arithmetic (a per-call state issue is also possible). That parity question is exactly what the on-device path exists to settle; until then the native runner isn't a trustworthy discriminator.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>On-device harness</h3><div class="st"><span class="pill next">Next</span></div></div>
+      <div>
+        <p>A transport-agnostic path that talks to the real ESP32 device, for measurements that are faithful to the hardware. Its slowness is exactly what the boundary search is built for &mdash; a handful of evaluations per direction, rendered on demand, rather than brute-forcing every point.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h2>The through-line</h2>
+      <ul>
+        <li>The perturbation stays in identity space at known amplitudes &mdash; that's what makes a boundary crossing meaningful.</li>
+        <li>Realism is for communicating with humans; the device crops to the face, so the surface it maps is unaffected by the surrounding scene.</li>
+        <li>Rendering is done lazily on a chosen subset &mdash; never all points up front &mdash; and those renders double as the inputs that seed the search on the real device.</li>
+      </ul>
+    </div>
+
+    <footer>unit(anchor + &epsilon; &middot; tangent) &middot; modality-free core</footer>
+  </main>
+</body>
+</html>

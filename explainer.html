@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The acceptance sphere &mdash; IAS</title>
+  <meta name="description" content="An interactive picture of an identity acceptance region: accepted inside, rejected outside, why a real boundary is ragged, and how the tool finds it by bracketing and bisecting along each ray.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body.dark{display:flex;flex-direction:column;height:100vh}
+    .app{position:relative;flex:1;overflow:hidden;background:radial-gradient(ellipse at 50% 44%,#131a25 0%,#0b0e14 62%,#080a0f 100%)}
+    .stage{position:absolute;inset:0;perspective:1100px;perspective-origin:50% 46%;touch-action:none;cursor:grab}
+    .stage:active{cursor:grabbing}
+    .spin{position:absolute;left:50%;top:46%;transform-style:preserve-3d;transform:rotateX(-16deg) rotateY(22deg);will-change:transform}
+    .pt{position:absolute;left:0;top:0;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%}
+    .ring{position:absolute;left:0;top:0;border:1px dashed #3f6f88;border-radius:50%;opacity:.5}
+    .face3d{position:absolute;left:0;top:0;margin:-9px 0 0 -9px}
+    .fb{display:block;transform:var(--bb,none)}
+    .slice{position:absolute;inset:0;margin:auto;display:none}
+    .ov{position:absolute;z-index:3}
+    .title{left:28px;top:20px;max-width:40ch}
+    .title .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#7fb3d3;text-transform:uppercase}
+    .title h1{font-family:'Newsreader',serif;font-size:22px;margin:5px 0 0;line-height:1.15;font-weight:400}
+    .title p{font-size:13px;color:#8896a8;margin:6px 0 0;line-height:1.5}
+    .readouts{right:28px;top:20px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8896a8;line-height:1.9}
+    .readouts b{color:#dbe4ee;font-weight:400}
+    .cap{left:28px;bottom:104px;width:360px}
+    .cap .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.10em;color:#7fb3d3;text-transform:uppercase}
+    .cap .b{font-size:13.5px;line-height:1.55;color:#c3cede;margin-top:5px}
+    .legend{right:28px;bottom:108px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8896a8;display:flex;flex-direction:column;gap:6px}
+    .legend div{display:flex;align-items:center;gap:8px}
+    .legend .dot{width:9px;height:9px;border-radius:50%}
+    .controls{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:18px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+      background:linear-gradient(0deg,#090c11 0%,rgba(9,12,17,.8) 62%,transparent 100%)}
+    .grp{display:flex;gap:8px}
+    .cbtn{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px 13px;border-radius:4px;border:1px solid #2a3341;background:#141a24;color:#aeb9c8;cursor:pointer}
+    .cbtn:hover{border-color:#3d4c60;color:#dbe4ee}
+    .cbtn.on{background:#1c2a3a;border-color:#4d7ea0;color:#cfe6f5}
+    .cbtn.play{border-color:#3d5a3f;color:#bfe0c6}
+    .cbtn.play.on{background:#183123;border-color:#4d8a5e;color:#d7f5df}
+    .slider{display:flex;align-items:center;gap:12px;flex:1;max-width:380px;min-width:200px}
+    .slider span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
+    input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:#2a3341;border-radius:3px;outline:none;flex:1}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#7fb3d3;cursor:pointer;box-shadow:0 0 8px rgba(127,179,211,.4)}
+    input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#7fb3d3;cursor:pointer}
+    .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5f6c7e;white-space:nowrap}
+    @media (max-width:720px){.title p,.legend{display:none}.cap{width:auto;right:28px}}
+  </style>
+</head>
+<body class="dark">
+  <header class="nav">
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fb3d3" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="explainer.html" class="on">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+  </header>
+
+  <div class="app" id="app">
+    <div class="stage" id="stage"><div class="spin" id="spin"></div></div>
+    <svg class="slice" id="slice" width="520" height="520" viewBox="0 0 460 460"></svg>
+
+    <div class="ov title">
+      <div class="k" id="tK">The acceptance sphere</div>
+      <h1 id="tH">How far can you drift and still be recognised as you?</h1>
+      <p id="tP">Your identity sits at the centre. Everything the system still accepts as you fills a region around it. Inside, you&rsquo;re still you; cross the edge and you&rsquo;re rejected.</p>
+    </div>
+
+    <div class="ov readouts">
+      <div>threshold&nbsp;&nbsp;<b>cos <span id="rThr">0.800</span></b></div>
+      <div>boundary&nbsp;&nbsp;<b>&epsilon; <span id="rEps">0.750</span></b></div>
+      <div id="rLine3"><span id="rLabel">inside</span>&nbsp;&nbsp;<b style="color:#7fb3d3"><span id="rPct">50</span><span id="rUnit">%</span></b></div>
+    </div>
+
+    <div class="ov cap">
+      <div class="k" id="capK">Measured &mdash; a real INT8 model</div>
+      <div class="b" id="capB"></div>
+    </div>
+
+    <div class="ov legend" id="legend">
+      <div><span class="dot" style="background:#7fb3d3;box-shadow:0 0 7px #7fb3d3"></span>accepted &mdash; still you</div>
+      <div><span class="dot" style="background:#e0965a;box-shadow:0 0 6px #e0965a"></span>rejected &mdash; over the edge</div>
+      <div><span class="dot" style="background:#f4f7fb;box-shadow:0 0 8px #fff"></span>anchor &mdash; the real identity</div>
+    </div>
+
+    <div class="controls">
+      <div class="grp"><button class="cbtn on" id="b3d">3D</button><button class="cbtn" id="b2d">2D slice</button></div>
+      <button class="cbtn play" id="bSearch">&#9658; Find the boundary</button>
+      <div class="grp"><button class="cbtn" id="bIdeal">Ideal</button><button class="cbtn on" id="bMeas">Measured</button></div>
+      <div class="slider"><span>looser</span><input type="range" id="thr" min="0.60" max="0.98" step="0.005" value="0.80"><span>stricter</span></div>
+      <span class="hint" id="hint">drag to rotate</span>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var accent="#7fb3d3", reject="#e0965a", pin="#e9c46a";
+    var state={threshold:0.80, mode:"3d", surface:"measured"};
+    var rotY=22, rotX=-16, drag=null, S3=150, S2=150;
+    function epsFor(c){return Math.sqrt(1/(c*c)-1);}
+    function wob(az){return 0.55*Math.sin(3*az+0.7)+0.28*Math.sin(5*az+2.1)+0.17*Math.sin(2*az-1.0);}
+    function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+    function localEps(az){return epsFor(state.threshold)*(1+(state.surface==="measured"?0.30*wob(az):0));}
+
+    var seed=987654321;
+    function rnd(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
+    function gauss(m,s){var u=Math.max(1e-6,rnd()),v=rnd();return m+s*Math.sqrt(-2*Math.log(u))*Math.cos(6.283185*v);}
+
+    var p3=[];for(var i=0;i<300;i++){var u=rnd()*2-1,az=rnd()*6.283185,rr=Math.sqrt(Math.max(0,1-u*u));p3.push({dx:rr*Math.cos(az),dy:u,dz:rr*Math.sin(az),az:Math.atan2(rr*Math.sin(az),rr*Math.cos(az)),eps:epsFor(clamp(gauss(0.80,0.085),0.58,0.996))});}
+    var f3=[];for(var k=0;k<14;k++){var u2=clamp((k/13)*1.7-0.85+(rnd()-0.5)*0.2,-0.92,0.92);var az2=k*2.399963,rr2=Math.sqrt(Math.max(0,1-u2*u2));var fdx=rr2*Math.cos(az2),fdz=rr2*Math.sin(az2);f3.push({dx:fdx,dy:u2,dz:fdz,az:Math.atan2(fdz,fdx),eps:epsFor(clamp(0.87-k*0.011+(rnd()-0.5)*0.02,0.73,0.93))});}
+
+    var stage=document.getElementById("stage"), spin=document.getElementById("spin"), slice=document.getElementById("slice");
+    var faceSVG='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><path d="M8.5 15 Q12 17.4 15.5 15"/></svg>';
+    function faceMarkup(x,y,z,col){return '<div class="face3d" style="transform:translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,'+z.toFixed(1)+'px)"><span class="fb" style="color:'+col+'">'+faceSVG+'</span></div>';}
+
+    // ---- the fixed pre-computed grid: shells at fixed cosines ----
+    var gridCos=[0.99,0.95,0.90,0.85,0.80,0.75,0.70,0.65,0.60];
+    var gridEps=gridCos.map(epsFor);
+    var RAYS=[]; for(var a=0;a<12;a++) RAYS.push(a/12*6.283185);
+
+    // ---- boundary search state machine ----
+    var sp={active:false,phase:"idle",ri:0,lo:0,hi:0,iter:0,maxIter:4,mid:0,pinned:[],timer:null,rays:RAYS};
+    function boundaryEps(az){return localEps(az);}
+    function bracketFor(az){ // coarse grid bracket
+      var lo=0,hi=gridEps[gridEps.length-1]*1.15,be=boundaryEps(az);
+      for(var i=0;i<gridEps.length;i++){ if(gridEps[i]<=be) lo=gridEps[i]; else { hi=gridEps[i]; break; } }
+      return [lo,hi];
+    }
+    function searchReset(){ sp.pinned=[]; sp.ri=0; sp.phase="grid"; }
+    function searchStop(){ sp.active=false; if(sp.timer){clearInterval(sp.timer);sp.timer=null;} }
+    function searchStart(){ state.mode="search"; sp.active=true; searchReset(); syncButtons(); render();
+      if(sp.timer)clearInterval(sp.timer); sp.timer=setInterval(searchTick,520); }
+    function searchTick(){
+      if(sp.phase==="grid"){ sp.phase="bracket"; sp.ri=0; var b=bracketFor(sp.rays[0]); sp.lo=b[0]; sp.hi=b[1]; sp.mid=(sp.lo+sp.hi)/2; }
+      else if(sp.phase==="bracket"){ sp.phase="bisect"; sp.iter=0; sp.mid=(sp.lo+sp.hi)/2; }
+      else if(sp.phase==="bisect"){
+        var az=sp.rays[sp.ri], acc=(sp.mid<=boundaryEps(az));
+        if(acc) sp.lo=sp.mid; else sp.hi=sp.mid;
+        sp.iter++; sp.mid=(sp.lo+sp.hi)/2;
+        if(sp.iter>=sp.maxIter){ sp.pinned.push({az:az,eps:sp.mid}); sp.ri++;
+          if(sp.ri>=sp.rays.length){ sp.phase="done"; }
+          else { sp.phase="bracket"; var b2=bracketFor(sp.rays[sp.ri]); sp.lo=b2[0]; sp.hi=b2[1]; sp.mid=(sp.lo+sp.hi)/2; } }
+      }
+      else if(sp.phase==="done"){ sp.phase="hold"; }
+      else if(sp.phase==="hold"){ searchReset(); }
+      renderSearch();
+    }
+
+    // ---- rendering ----
+    function P(az,eps){ return [ (230+Math.cos(az)*eps*S2), (230-Math.sin(az)*eps*S2) ]; }
+
+    function renderSearch(){
+      var s="";
+      // faint guide rings for the grid shells
+      s+='<g fill="none" stroke="#182230">'; for(var i=0;i<gridEps.length;i++){ s+='<circle cx="230" cy="230" r="'+(gridEps[i]*S2).toFixed(1)+'"/>'; } s+='</g>';
+      // faint TRUE boundary the search converges toward
+      var tp="",seg=96; for(var t=0;t<=seg;t++){var a=t/seg*6.283185;var r=boundaryEps(a)*S2;tp+=(t===0?"M":"L")+(230+Math.cos(a)*r).toFixed(1)+" "+(230-Math.sin(a)*r).toFixed(1)+" ";} tp+="Z";
+      s+='<path d="'+tp+'" fill="none" stroke="#33414f" stroke-width="1" stroke-dasharray="2 4"/>';
+
+      // coarse grid samples along every ray, colored accept/reject
+      for(var ri=0;ri<sp.rays.length;ri++){
+        var az=sp.rays[ri], cur=(sp.phase!=="grid"&&sp.phase!=="done"&&sp.phase!=="hold"&&ri===sp.ri), be=boundaryEps(az);
+        var dim=(sp.phase==="grid")?1:(cur?1:0.28);
+        for(var gi=0;gi<gridEps.length;gi++){ var e=gridEps[gi],pt=P(az,e),ok=e<=be;
+          s+='<circle cx="'+pt[0].toFixed(1)+'" cy="'+pt[1].toFixed(1)+'" r="'+(cur?3.1:2.4)+'" fill="'+(ok?accent:reject)+'" opacity="'+dim.toFixed(2)+'"/>'; }
+      }
+      // current ray: highlight line + bracket + bisection probe
+      if(sp.phase==="bracket"||sp.phase==="bisect"){
+        var az=sp.rays[sp.ri], end=P(az,gridEps[gridEps.length-1]*1.15);
+        s+='<line x1="230" y1="230" x2="'+end[0].toFixed(1)+'" y2="'+end[1].toFixed(1)+'" stroke="#3f5a6b" stroke-width="1"/>';
+        var a=P(az,sp.lo), b=P(az,sp.hi);
+        s+='<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'" stroke="'+pin+'" stroke-width="3" stroke-linecap="round" opacity="0.9"/>';
+        // accepting end (cyan) and rejecting end (amber) of the bracket
+        s+='<circle cx="'+a[0].toFixed(1)+'" cy="'+a[1].toFixed(1)+'" r="4" fill="'+accent+'"/>';
+        s+='<circle cx="'+b[0].toFixed(1)+'" cy="'+b[1].toFixed(1)+'" r="4" fill="'+reject+'"/>';
+        if(sp.phase==="bisect"){ var mp=P(az,sp.mid);
+          s+='<circle cx="'+mp[0].toFixed(1)+'" cy="'+mp[1].toFixed(1)+'" r="5.5" fill="none" stroke="'+pin+'" stroke-width="1.6"><animate attributeName="r" values="5.5;8;5.5" dur="0.9s" repeatCount="indefinite"/></circle>';
+          s+='<circle cx="'+mp[0].toFixed(1)+'" cy="'+mp[1].toFixed(1)+'" r="2.4" fill="'+pin+'"/>'; }
+      }
+      // pinned boundary points + connecting refined curve so far
+      if(sp.pinned.length){
+        var poly=""; for(var pi=0;pi<sp.pinned.length;pi++){ var q=P(sp.pinned[pi].az,sp.pinned[pi].eps); poly+=(pi===0?"M":"L")+q[0].toFixed(1)+" "+q[1].toFixed(1)+" "; }
+        if(sp.phase==="done"||sp.phase==="hold") poly+="Z";
+        s+='<path d="'+poly+'" fill="'+(sp.phase==="done"||sp.phase==="hold"?"rgba(233,196,106,.10)":"none")+'" stroke="'+pin+'" stroke-width="1.8" stroke-linejoin="round"/>';
+        for(var pj=0;pj<sp.pinned.length;pj++){ var qq=P(sp.pinned[pj].az,sp.pinned[pj].eps); s+='<circle cx="'+qq[0].toFixed(1)+'" cy="'+qq[1].toFixed(1)+'" r="3.2" fill="'+pin+'"/>'; }
+      }
+      s+='<circle cx="230" cy="230" r="6" fill="#f4f7fb"/><text x="230" y="250" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="#9fb0c2" text-anchor="middle">anchor</text>';
+      slice.innerHTML=s;
+
+      // captions + readouts for the search
+      var cap={
+        grid:["Step 1 — the fixed grid","The pre-computed perturbations: concentric shells of samples along every ray. Cheap to score in bulk, so each sample is already accepted (cyan) or rejected (amber). This is the low-granularity surface."],
+        bracket:["Step 2 — bracket the flip","On this ray the innermost reject sits just past the outermost accept. The crossing is somewhere in that gap — the bracket (gold)."],
+        bisect:["Step 3 — bisect","Sample halfway between the accepting and rejecting ends, score it, and keep the half that still straddles the flip. A few halvings pin the boundary to tolerance — Newton–Raphson in spirit, robust like bisection."],
+        done:["The refined surface","Repeat across ray directions and the pinned crossings trace the real boundary — far tighter than the grid alone, and only where it matters."],
+        hold:["The refined surface","Repeat across ray directions and the pinned crossings trace the real boundary — far tighter than the grid alone, and only where it matters."]
+      }[sp.phase]||["Finding the boundary",""];
+      document.getElementById("capK").textContent=cap[0];
+      document.getElementById("capB").textContent=cap[1];
+      document.getElementById("tK").textContent="Finding the boundary";
+      document.getElementById("tH").textContent="Coarse grid first, then refine where it flips";
+      document.getElementById("tP").textContent="A million points would be wasteful. Score a coarse grid, find the accept→reject bracket on each ray, and bisect only there.";
+      document.getElementById("rLabel").textContent="rays pinned";
+      document.getElementById("rUnit").textContent="";
+      document.getElementById("rPct").textContent=sp.pinned.length+" / "+sp.rays.length;
+      document.getElementById("rThr").textContent=state.threshold.toFixed(3);
+      document.getElementById("rEps").textContent=epsFor(state.threshold).toFixed(3);
+    }
+
+    function renderStatic(){
+      var th=state.threshold, measured=state.surface==="measured", baseEps=epsFor(th);
+      document.getElementById("rThr").textContent=th.toFixed(3);
+      document.getElementById("rEps").textContent=baseEps.toFixed(3);
+      document.getElementById("rLabel").textContent="inside"; document.getElementById("rUnit").textContent="%";
+      document.getElementById("tK").textContent="The acceptance sphere";
+      document.getElementById("tH").textContent="How far can you drift and still be recognised as you?";
+      document.getElementById("tP").textContent="Your identity sits at the centre. Everything the system still accepts as you fills a region around it. Inside, you’re still you; cross the edge and you’re rejected.";
+      document.getElementById("capK").textContent=measured?"Measured — a real INT8 model":"Ideal — a perfect system";
+      document.getElementById("capB").textContent=measured
+        ?"The boundary is ragged. Some directions stay accepted much farther out than others; a face just inside on one heading is already rejected on another. Mapping that raggedness is the whole point."
+        :"One crisp radius in every direction. Drift within it and you are accepted; cross it and you are not. Real edge models are almost never this clean — switch to Measured.";
+
+      if(state.mode==="3d"){
+        stage.style.display=""; slice.style.display="none";
+        var R=baseEps*S3, html="";
+        var rings=[[R,"rotateX(90deg)"],[R*0.866,"rotateX(90deg) translateZ("+(-R*0.5).toFixed(1)+"px)"],[R*0.866,"rotateX(90deg) translateZ("+(R*0.5).toFixed(1)+"px)"],[R,"rotateY(0deg)"],[R,"rotateY(90deg)"]];
+        for(var ri=0;ri<rings.length;ri++){var rr=rings[ri][0];html+='<div class="ring" style="width:'+(2*rr).toFixed(1)+'px;height:'+(2*rr).toFixed(1)+'px;margin:'+(-rr).toFixed(1)+'px 0 0 '+(-rr).toFixed(1)+'px;transform:'+rings[ri][1]+'"></div>';}
+        var inside=0;
+        for(var i=0;i<p3.length;i++){var p=p3[i];var ok=p.eps<=localEps(p.az);if(ok)inside++;var col=ok?accent:reject;html+='<div class="pt" style="transform:translate3d('+(p.dx*p.eps*S3).toFixed(1)+'px,'+(p.dy*p.eps*S3).toFixed(1)+'px,'+(p.dz*p.eps*S3).toFixed(1)+'px);background:'+col+';opacity:'+(ok?0.9:0.8)+';box-shadow:0 0 '+(ok?7:4)+'px '+col+'"></div>';}
+        for(var fi=0;fi<f3.length;fi++){var pf=f3[fi];var okf=pf.eps<=localEps(pf.az);html+=faceMarkup(pf.dx*pf.eps*S3,pf.dy*pf.eps*S3,pf.dz*pf.eps*S3,okf?accent:reject);}
+        html+='<div style="position:absolute;left:0;top:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#f4f7fb;box-shadow:0 0 16px rgba(255,255,255,.8),0 0 5px #fff"></div>';
+        spin.innerHTML=html;
+        document.getElementById("rPct").textContent=Math.round(inside/p3.length*100);
+      } else {
+        stage.style.display="none"; slice.style.display="block";
+        var s="";
+        s+='<g fill="none" stroke="#182230"><circle cx="230" cy="230" r="55"/><circle cx="230" cy="230" r="110"/><circle cx="230" cy="230" r="165"/></g>';
+        var path="",seg=96;for(var t=0;t<=seg;t++){var a=t/seg*6.283185;var r=localEps(a)*S2;path+=(t===0?"M":"L")+(230+Math.cos(a)*r).toFixed(1)+" "+(230-Math.sin(a)*r).toFixed(1)+" ";}path+="Z";
+        s+='<path d="'+path+'" fill="rgba(127,179,211,.10)" stroke="#7fb3d3" stroke-width="1.6" stroke-dasharray="'+(measured?"0":"5 4")+'"/>';
+        var ins=0,tot=0;
+        for(var az2=0;az2<RAYS.length;az2++){ for(var gi=0;gi<gridEps.length;gi++){ tot++; var e=gridEps[gi],ok2=e<=localEps(RAYS[az2]);if(ok2)ins++;var pt=P(RAYS[az2],e); s+='<circle cx="'+pt[0].toFixed(1)+'" cy="'+pt[1].toFixed(1)+'" r="2.4" fill="'+(ok2?accent:reject)+'"/>'; } }
+        s+='<circle cx="230" cy="230" r="6" fill="#f4f7fb"/><text x="230" y="250" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="#9fb0c2" text-anchor="middle">anchor</text>';
+        slice.innerHTML=s;
+        document.getElementById("rPct").textContent=Math.round(ins/tot*100);
+      }
+    }
+
+    function render(){ if(state.mode==="search"){ stage.style.display="none"; slice.style.display="block"; renderSearch(); } else { renderStatic(); } }
+
+    function syncButtons(){
+      document.getElementById("b3d").classList.toggle("on",state.mode==="3d");
+      document.getElementById("b2d").classList.toggle("on",state.mode==="2d");
+      document.getElementById("bSearch").classList.toggle("on",state.mode==="search");
+      document.getElementById("bIdeal").classList.toggle("on",state.surface!=="measured");
+      document.getElementById("bMeas").classList.toggle("on",state.surface==="measured");
+      document.getElementById("hint").style.display=state.mode==="3d"?"":"none";
+      document.getElementById("legend").style.display=state.mode==="search"?"none":"";
+    }
+
+    // rotation loop (with face billboarding)
+    function loop(){
+      if(spin){
+        spin.style.transform="rotateX("+rotX.toFixed(2)+"deg) rotateY("+rotY.toFixed(2)+"deg)";
+        spin.style.setProperty("--bb","rotateY("+(-rotY).toFixed(2)+"deg) rotateX("+(-rotX).toFixed(2)+"deg)");
+        if(state.mode==="3d"&&!drag) rotY+=0.16;
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    stage.addEventListener("pointerdown",function(e){drag={x:e.clientX,y:e.clientY,ry:rotY,rx:rotX};try{stage.setPointerCapture(e.pointerId);}catch(_){}});
+    stage.addEventListener("pointermove",function(e){if(!drag)return;rotY=drag.ry+(e.clientX-drag.x)*0.4;rotX=Math.max(-82,Math.min(82,drag.rx-(e.clientY-drag.y)*0.4));});
+    function endDrag(){drag=null;} stage.addEventListener("pointerup",endDrag);stage.addEventListener("pointerleave",endDrag);
+
+    function setView(m){ searchStop(); state.mode=m; syncButtons(); render(); }
+    document.getElementById("b3d").addEventListener("click",function(){setView("3d");});
+    document.getElementById("b2d").addEventListener("click",function(){setView("2d");});
+    document.getElementById("bSearch").addEventListener("click",function(){ if(sp.active){ setView("2d"); } else { searchStart(); } });
+    document.getElementById("bIdeal").addEventListener("click",function(){state.surface="ideal";syncButtons();render();});
+    document.getElementById("bMeas").addEventListener("click",function(){state.surface="measured";syncButtons();render();});
+    document.getElementById("thr").addEventListener("input",function(e){state.threshold=parseFloat(e.target.value); if(sp.active) searchReset(); render();});
+
+    syncButtons(); render();
+  })();
+  </script>
+</body>
+</html>

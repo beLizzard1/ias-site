@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sample explorer &mdash; IAS</title>
+  <meta name="description" content="The real shell geometry as a rotatable point cloud: move the discriminator threshold and watch accept/reject recolour, or take the guided walkthrough.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body.dark{display:flex;flex-direction:column;height:100vh}
+    .app{position:relative;flex:1;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#131a25 0%,#0b0e14 62%,#080a0f 100%)}
+    .stage{position:absolute;inset:0;perspective:1100px;perspective-origin:50% 46%;touch-action:none;cursor:grab}
+    .stage:active{cursor:grabbing}
+    .spin{position:absolute;left:50%;top:46%;transform-style:preserve-3d;transform:rotateX(-14deg) rotateY(20deg);will-change:transform}
+    .pt{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%}
+    .ov{position:absolute;z-index:3}
+    .title{left:28px;top:20px;max-width:34ch}
+    .title .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#7fb3d3;text-transform:uppercase}
+    .title h1{font-size:20px;font-weight:600;margin:4px 0 0}
+    .title p{font-size:13px;color:#8896a8;margin:3px 0 0;line-height:1.5}
+    .readouts{right:28px;top:20px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8896a8;line-height:1.9}
+    .readouts b{color:#dbe4ee;font-weight:400}
+    .legend{left:28px;bottom:110px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8896a8;display:flex;flex-direction:column;gap:6px}
+    .legend div{display:flex;align-items:center;gap:8px}.legend .dot{width:9px;height:9px;border-radius:50%}
+    .wcap{right:28px;bottom:112px;width:300px;background:rgba(14,20,29,.8);border:1px solid #22303f;border-radius:8px;padding:16px 18px;backdrop-filter:blur(4px);display:none}
+    .wcap .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#7fb3d3;text-transform:uppercase}
+    .wcap .t{font-size:16px;font-weight:600;margin:6px 0}
+    .wcap .b{font-size:13px;line-height:1.55;color:#9fb0c2}
+    .wcap .s{font-family:'IBM Plex Mono',monospace;margin-top:12px;font-size:11.5px;color:#7f8da0}
+    .controls{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:18px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+      background:linear-gradient(0deg,#090c11 0%,rgba(9,12,17,.8) 62%,transparent 100%)}
+    .grp{display:flex;gap:8px;align-items:center}
+    .cbtn{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px 13px;border-radius:4px;border:1px solid #2a3341;background:#141a24;color:#aeb9c8;cursor:pointer}
+    .cbtn:hover{border-color:#3d4c60;color:#dbe4ee}.cbtn.on{background:#1c2a3a;border-color:#4d7ea0;color:#cfe6f5}
+    .slider{display:flex;align-items:center;gap:12px;flex:1;max-width:420px;min-width:200px}
+    .slider span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
+    .slider .val{color:#dbe4ee;width:42px}
+    input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:#2a3341;border-radius:3px;outline:none;flex:1}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#7fb3d3;cursor:pointer;box-shadow:0 0 8px rgba(127,179,211,.4)}
+    input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#7fb3d3;cursor:pointer}
+    .dots{display:flex;gap:6px;align-items:center}.dots span{width:7px;height:7px;border-radius:50%}
+    .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5f6c7e;white-space:nowrap}
+    .cloudOnly,.walkOnly{display:flex;align-items:center;gap:18px;flex:1;flex-wrap:wrap}
+    .walkOnly{display:none}
+    @media (max-width:720px){.title p,.legend{display:none}}
+  </style>
+</head>
+<body class="dark">
+  <header class="nav">
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fb3d3" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+  </header>
+
+  <div class="app">
+    <div class="stage" id="stage"><div class="spin" id="spin"></div></div>
+
+    <div class="ov title">
+      <div class="k">Sample Explorer</div>
+      <h1>Acceptance surface, one anchor</h1>
+      <p>Each point is a perturbed embedding on a shell. Colour is the discriminator&rsquo;s verdict at the current threshold; radius is the true &epsilon; geometry.</p>
+    </div>
+
+    <div class="ov readouts">
+      <div>threshold&nbsp;&nbsp;<b>cos <span id="rThr">0.800</span></b></div>
+      <div>accepted&nbsp;&nbsp;<b style="color:#7fb3d3"><span id="rPct">0</span>%</b></div>
+      <div>points&nbsp;&nbsp;<b id="rTot">0</b> &middot; shells <b id="rSh">0</b></div>
+    </div>
+
+    <div class="ov legend">
+      <div><span class="dot" style="background:#7fb3d3;box-shadow:0 0 7px #7fb3d3"></span>accepted</div>
+      <div><span class="dot" style="background:#e0965a;box-shadow:0 0 6px #e0965a"></span>rejected</div>
+      <div><span class="dot" style="background:#f4f7fb;box-shadow:0 0 8px #fff"></span>anchor</div>
+    </div>
+
+    <div class="ov wcap" id="wcap">
+      <div class="k" id="wK">Overview</div>
+      <div class="t" id="wT">The anchor</div>
+      <div class="b" id="wB"></div>
+      <div class="s" id="wS"></div>
+    </div>
+
+    <div class="controls">
+      <div class="grp"><button class="cbtn on" id="bCloud">Point cloud</button><button class="cbtn" id="bWalk">Walkthrough</button></div>
+      <div class="cloudOnly" id="cloudCtl">
+        <button class="cbtn" id="bSpin">Pause spin</button>
+        <div class="slider"><span>threshold</span><input type="range" id="thr" min="0.60" max="0.999" step="0.005" value="0.80"><span class="val" id="thrVal">0.800</span></div>
+        <span class="hint">drag to rotate</span>
+      </div>
+      <div class="walkOnly" id="walkCtl">
+        <button class="cbtn" id="bPrev">&larr; Prev</button>
+        <button class="cbtn" id="bNext">Next &rarr;</button>
+        <div class="dots" id="dots"></div>
+        <span class="hint">auto-advancing</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var accent="#7fb3d3", reject="#e0965a";
+    var state={threshold:0.80, mode:"cloud", spin:true, walkStep:0};
+    var rotY=20, rotX=-14, drag=null, S=176, timer=null;
+    function epsFor(c){return Math.sqrt(1/(c*c)-1);}
+
+    var shellCos=[0.995,0.96,0.90,0.83,0.75,0.68,0.60];
+    var shells=shellCos.map(function(c){return {cos:c,eps:epsFor(c),angle:Math.atan(epsFor(c))*180/Math.PI};});
+    var seed=20240517;function rnd(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
+    var pts=[];
+    for(var si=0;si<shellCos.length;si++){var cos=shellCos[si],rad=epsFor(cos)*S,n=84;
+      for(var i=0;i<n;i++){var y=1-(i+0.5)/n*2;var rr=Math.sqrt(Math.max(0,1-y*y));var phi=Math.PI*(3-Math.sqrt(5))*i+si*0.9;var x=Math.cos(phi)*rr,z=Math.sin(phi)*rr;var jit=(rnd()-0.5)*0.05;pts.push({x:x*rad,y:y*rad,z:z*rad,shell:si,cos:cos,eff:cos+jit});}}
+
+    var stage=document.getElementById("stage"), spin=document.getElementById("spin");
+
+    function render(){
+      var th=state.threshold, mode=state.mode, step=state.walkStep, focus=(mode==="walk"&&step>0)?step-1:-1;
+      document.getElementById("rThr").textContent=th.toFixed(3);
+      document.getElementById("thrVal").textContent=th.toFixed(3);
+      document.getElementById("rTot").textContent=pts.length;
+      document.getElementById("rSh").textContent=shells.length;
+      document.getElementById("bCloud").classList.toggle("on",mode==="cloud");
+      document.getElementById("bWalk").classList.toggle("on",mode==="walk");
+      document.getElementById("cloudCtl").style.display=mode==="cloud"?"flex":"none";
+      document.getElementById("walkCtl").style.display=mode==="walk"?"flex":"none";
+      document.getElementById("wcap").style.display=mode==="walk"?"block":"none";
+      document.getElementById("bSpin").textContent=state.spin?"Pause spin":"Play spin";
+
+      var html="",inside=0;
+      for(var i=0;i<pts.length;i++){var p=pts[i];var ok=p.eff>=th;if(ok)inside++;
+        var op=0.9;if(mode==="walk"){op=step===0?0.22:(p.shell===focus?0.98:0.07);}
+        var col=ok?accent:reject;
+        html+='<div class="pt" style="transform:translate3d('+p.x.toFixed(1)+'px,'+p.y.toFixed(1)+'px,'+p.z.toFixed(1)+'px);background:'+col+';opacity:'+op.toFixed(2)+';box-shadow:0 0 '+(ok?8:5)+'px '+col+'"></div>';
+      }
+      html+='<div style="position:absolute;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#f4f7fb;box-shadow:0 0 14px rgba(255,255,255,.67),0 0 4px #fff"></div>';
+      spin.innerHTML=html;
+      document.getElementById("rPct").textContent=Math.round(inside/pts.length*100);
+
+      // walk caption + dots
+      if(mode==="walk"){
+        var wK,wT,wB,wS;
+        if(step===0){wK="Step 0 / "+shells.length;wT="The anchor";wB="One identity, a unit vector in 512-D. Every shell is built by perturbing outward from here along a fixed set of directions.";wS="cos 1.000 · ε 0.000 · 0.0°";}
+        else{var mm=shells[focus];var acc=0,cnt=0;for(var q=0;q<pts.length;q++){if(pts[q].shell===focus){cnt++;if(pts[q].eff>=th)acc++;}}
+          wK="Shell 00"+focus+" / "+shells.length;wT="cos "+mm.cos.toFixed(3);
+          wB=(acc===cnt)?"Every ray on this shell is still accepted — inside the boundary.":(acc===0)?"No ray survives here — the whole shell is rejected.":"The boundary passes through this shell: some rays accept, some reject.";
+          wS="ε "+mm.eps.toFixed(3)+" · "+mm.angle.toFixed(1)+"° · accept "+Math.round(acc/cnt*100)+"%";}
+        document.getElementById("wK").textContent=wK;document.getElementById("wT").textContent=wT;document.getElementById("wB").textContent=wB;document.getElementById("wS").textContent=wS;
+        var d="";for(var i2=0;i2<=shells.length;i2++){d+='<span style="background:'+(i2===step?accent:"#2f3a49")+'"></span>';}
+        document.getElementById("dots").innerHTML=d;
+      }
+    }
+
+    function loop(){ if(spin){ spin.style.transform="rotateX("+rotX.toFixed(2)+"deg) rotateY("+rotY.toFixed(2)+"deg)"; if(!drag&&((state.mode==="cloud"&&state.spin)||state.mode==="walk")) rotY+=state.mode==="walk"?0.12:0.22; } requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+
+    stage.addEventListener("pointerdown",function(e){drag={x:e.clientX,y:e.clientY,ry:rotY,rx:rotX};try{stage.setPointerCapture(e.pointerId);}catch(_){}});
+    stage.addEventListener("pointermove",function(e){if(!drag)return;rotY=drag.ry+(e.clientX-drag.x)*0.4;rotX=Math.max(-82,Math.min(82,drag.rx-(e.clientY-drag.y)*0.4));});
+    function endDrag(){drag=null;}stage.addEventListener("pointerup",endDrag);stage.addEventListener("pointerleave",endDrag);
+
+    function startWalk(){clearInterval(timer);timer=setInterval(function(){state.walkStep=(state.walkStep+1)%(shells.length+1);render();},3400);}
+    function stopWalk(){clearInterval(timer);timer=null;}
+
+    document.getElementById("thr").addEventListener("input",function(e){state.threshold=parseFloat(e.target.value);render();});
+    document.getElementById("bCloud").addEventListener("click",function(){state.mode="cloud";stopWalk();render();});
+    document.getElementById("bWalk").addEventListener("click",function(){state.mode="walk";state.walkStep=0;startWalk();render();});
+    document.getElementById("bSpin").addEventListener("click",function(){state.spin=!state.spin;render();});
+    document.getElementById("bPrev").addEventListener("click",function(){state.walkStep=(state.walkStep-1+(shells.length+1))%(shells.length+1);render();});
+    document.getElementById("bNext").addEventListener("click",function(){state.walkStep=(state.walkStep+1)%(shells.length+1);render();});
+
+    render();
+  })();
+  </script>
+</body>
+</html>

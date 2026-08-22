@@ -1,0 +1,40 @@
+:root{
+  --paper:#fbfcfb; --ink:#1b1f1e; --muted:#5a5f5d; --line:#e8ebe6;
+  --teal:#2f5d62; --teal-d:#1f4247; --card:#ffffff; --wash:#eef4f2;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.serif{font-family:'Newsreader',Georgia,serif}
+a{color:var(--teal);text-decoration:none}
+a:hover{color:var(--teal-d)}
+
+.nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:12px 28px;background:rgba(251,252,251,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.nav .brand{display:flex;align-items:center;gap:9px;font-family:'IBM Plex Mono',monospace;font-weight:500;letter-spacing:.13em;color:var(--ink);font-size:14px}
+.nav .brand svg{display:block}
+.nav .links{display:flex;gap:22px;font-size:14px;align-items:center}
+.nav .links a{color:var(--muted)}
+.nav .links a.on{color:var(--ink);font-weight:500}
+.nav .links a:hover{color:var(--teal)}
+
+/* dark chrome for the interactive pages */
+body.dark{background:#0b0e14;color:#dbe4ee;overflow:hidden}
+body.dark .nav{background:rgba(11,14,20,.82);border-bottom-color:#1c2530}
+body.dark .nav .brand{color:#dbe4ee}
+body.dark .nav .links a{color:#8896a8}
+body.dark .nav .links a.on{color:#dbe4ee}
+body.dark .nav .links a:hover{color:#7fb3d3}
+
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;padding:11px 18px;border-radius:4px;border:1px solid #c9d2ce;color:var(--ink);display:inline-block;text-align:center;background:transparent}
+.btn:hover{border-color:var(--teal)}
+.btn.primary{background:var(--teal-d);color:#f4f7f5;border-color:var(--teal-d)}
+.btn.primary:hover{background:var(--teal);color:#fff}
+
+@media (max-width:640px){
+  .nav{padding:10px 16px}
+  .nav .links{gap:14px;font-size:13px}
+}
