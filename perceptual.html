@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Can you tell her from a stranger? &mdash; Identity Acceptance Surfaces</title>
-  <meta name="description" content="An interactive two-alternative test: sixteen pairs of synthetic renders, one from the subject's own identity embedding, one from her most confusable synthetic impostor. Nothing you answer is recorded.">
+  <title>Can you match the render to the reference? &mdash; Identity Acceptance Surfaces</title>
+  <meta name="description" content="An interactive two-alternative test: sixteen trials, each a synthetic reference face plus two synthetic renders. Pick the render generated from the reference's identity embedding. Every face on this page is synthetic; nothing you answer is recorded.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -43,7 +43,11 @@
     .trials{display:grid;gap:16px;margin:18px 0 6px}
     .trial{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--card)}
     .tnum{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-    .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .triallayout{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:start}
+    .refbox{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .refbox img{width:100%;height:auto;border-radius:4px;display:block;border:2px solid var(--line)}
+    .refbox .lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--muted)}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
     .opt{appearance:none;-webkit-appearance:none;border:2px solid var(--line);border-radius:6px;padding:8px;background:var(--paper);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:inherit;text-align:center}
     .opt img{width:100%;height:auto;border-radius:4px;display:block;pointer-events:none}
     .opt .lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--muted)}
@@ -64,7 +68,11 @@
     .scorepanel .n{font-family:'Newsreader',serif;font-size:38px;color:var(--teal-d);margin:2px 0 8px}
     .scorepanel p{margin:0 0 10px;font-size:15.5px;line-height:1.6;color:#3d423f;max-width:66ch}
     .scorepanel p:last-child{margin-bottom:0}
+    .scorepanel .stat{font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--teal-d);background:#fff;border:1px solid #e2ebe4;border-radius:4px;padding:8px 12px;display:inline-block;margin:0 0 12px}
     @media (max-width:560px){
+      .triallayout{grid-template-columns:1fr}
+      .refbox{flex-direction:row;justify-content:center}
+      .refbox img{width:110px}
       .pair{grid-template-columns:1fr 1fr;gap:8px}
       .trial{padding:12px}
     }
@@ -79,21 +87,22 @@
   <main class="wrap">
     <section class="head" style="border:0">
       <div class="k">Interactive perceptual test</div>
-      <h1>Can you tell her from a stranger?</h1>
-      <p class="lead">The recognition model in this project says a render of the subject scores <em>higher</em> against her enrolled template than her own photographs score against each other. Below are sixteen pairs it was asked to judge. See if you can do better than it did &mdash; or than she could.</p>
+      <h1>Can you match the render to the reference?</h1>
+      <p class="lead">Every trial below shows a reference photograph of a person, plus two synthetic renders. Exactly one render was generated from that person&rsquo;s own face-identity embedding; the other is an unrelated synthetic impostor. Both options are renders, so photographic style gives you nothing to go on &mdash; only identity does. Pick the one you think matches.</p>
     </section>
 
     <section>
       <div class="callout">
-        <span class="k">Nothing is recorded</span>
+        <span class="k">Nothing is recorded, and no one real is depicted</span>
         <p>This page collects nothing. Every answer is held in a variable in your browser tab and compared to the key by JavaScript running locally; nothing is sent anywhere, logged, or stored. Reload the page and it is gone. There is no server behind this test.</p>
+        <p><strong>Every face on this page is synthetic and depicts no real person.</strong> The reference photographs come from SFHQ-T2I, an MIT-licensed dataset of AI-generated faces &mdash; not photographs of anyone who exists. The two options in each trial are Arc2Face renders, generated from a face-identity embedding, exactly like the renders discussed elsewhere on this site.</p>
       </div>
-      <p>All sixteen images are <strong>synthetic</strong>: generated from a face-identity embedding by a generative renderer, not photographs of any real person. Half of each pair is a render conditioned on the subject&rsquo;s own anchor embedding &mdash; the identity her template was built from. The other half is a render of the synthetic identity the recognition model finds <em>most confusable</em> with her, out of 1,164 candidates. You are not told which is which, and there is no reference photo on this page to compare them against &mdash; because there wasn&rsquo;t one for the model either. It made its call from the embedding alone.</p>
+      <p>In each trial, one option was rendered from the same identity embedding as the reference photo; the other was rendered from a different, unrelated synthetic identity &mdash; the one the recognition model finds most confusable with the reference, out of a large candidate pool. You are not told which is which. Eight of the sixteen trials share a single recurring reference identity; the other eight each use a different reference identity, appearing only once, so you cannot simply learn one face over the course of the test and pattern-match to it.</p>
     </section>
 
     <section>
       <h2>What the model says versus what a person sees</h2>
-      <p>In the project&rsquo;s own recognition space, over the subject&rsquo;s nine real photographs and renders of her anchor:</p>
+      <p>These figures are measurements from the underlying study &mdash; not from the images on this page, and not comparable to your score below. They come from a separate analysis of the study&rsquo;s subject: her own real photographs, and renders of her identity embedding.</p>
       <div class="tblwrap">
         <table>
           <thead><tr><th>Comparison</th><th>Cosine similarity to her enrolled template</th></tr></thead>
@@ -104,13 +113,13 @@
           </tbody>
         </table>
       </div>
-      <p class="pull">A render built purely from her identity embedding sits closer to her template, by the model&rsquo;s own metric, than her actual photographs sit to each other.</p>
-      <p>And yet, shown these renders, the subject does not recognise herself in them. That is the gap this test asks you to feel rather than take on trust: a face can sit comfortably inside the &ldquo;genuine&rdquo; region of a recognition system while not reading as that person to a human at all &mdash; not to a stranger, and not always to the person herself. See <a href="discrimination.html">Discrimination</a> for why population metrics can&rsquo;t catch this, and the wider threshold picture behind the 0.269 figure above.</p>
+      <p class="pull">A render built purely from an identity embedding can sit closer to that identity&rsquo;s enrolled template, by the model&rsquo;s own metric, than a real person&rsquo;s own photographs sit to each other.</p>
+      <p>That is the gap this test asks you to feel rather than take on trust: a face can sit comfortably inside the &ldquo;genuine&rdquo; region of a recognition system while carrying little or no identity signal a human can use &mdash; even with a reference photo right next to it. See <a href="discrimination.html">Discrimination</a> for why population metrics can&rsquo;t catch this, and the wider threshold picture behind the 0.269 figure above.</p>
     </section>
 
     <section>
       <h2>The test</h2>
-      <p>Sixteen trials. In each, click the image you think is the render of the subject&rsquo;s own identity &mdash; the other is the confusable impostor. There is no feedback per trial and no way to learn across trials; your score is revealed only once all sixteen are answered.</p>
+      <p>Sixteen trials. Each shows a reference photo and two renders, A and B. Click the render you think shares the reference&rsquo;s identity. There is no feedback per trial and no way to learn the key across trials; your score, an exact p-value against chance, and a full trial-by-trial breakdown are revealed only once all sixteen are answered.</p>
       <div class="testhead">
         <span class="progress">Answered <strong id="progressCount">0</strong> of 16</span>
       </div>
@@ -125,20 +134,27 @@
       <div class="scorepanel" id="scorepanel">
         <span class="k">Your result</span>
         <div class="n" id="scoreText">&ndash; / 16</div>
+        <div class="stat" id="scoreStat"></div>
         <p id="scoreInterp"></p>
         <p id="scoreCaveatN"></p>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Trial</th><th>Your answer</th><th>Correct</th><th>Result</th></tr></thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
         <p><a class="btn" href="perceptual.html">Take it again</a></p>
       </div>
     </section>
 
     <section>
       <h2>How to read your score</h2>
-      <p>Chance on sixteen binary trials is 8/16, and with only sixteen trials the ordinary spread around chance is wide &mdash; anywhere from about 5 to 11 is unremarkable even for pure guessing, so treat one run as suggestive, not conclusive.</p>
+      <p>Chance on sixteen binary trials is 8/16, and with only sixteen trials the ordinary spread around chance is wide &mdash; anywhere from about 5 to 11 is unremarkable even for pure guessing, so treat one run as suggestive, not conclusive. The score panel computes the exact two-sided binomial p-value for your particular result against a chance rate of 0.5; a small p-value means a score that far from 8/16 would be unlikely from guessing alone, at this sample size.</p>
       <ul>
-        <li><strong>Near 8/16:</strong> the renders are not giving you, personally, any usable identity signal. That is consistent with what this project measured: a model-genuine score with no human-perceptible correlate.</li>
-        <li><strong>Well above 8/16:</strong> either you got lucky, or these particular renders do carry some cue a human can use &mdash; expression, framing, something about the impostor pool&rsquo;s style &mdash; worth being sceptical of rather than assuming it generalises.</li>
+        <li><strong>Near 8/16 (p not small):</strong> the renders are not giving you, personally, any usable identity signal beyond the reference photo. That is consistent with what this project measured: a model-genuine score with no reliable human-perceptible correlate, even with a reference to compare against.</li>
+        <li><strong>Well above 8/16 (p small):</strong> either these particular renders carry some cue a human can use &mdash; expression, framing, something about the impostor pool&rsquo;s style &mdash; worth being sceptical of rather than assuming it generalises, or it&rsquo;s a run of luck on a small sample. Sixteen trials cannot tell those apart on their own.</li>
       </ul>
-      <p>The comparison that actually matters here is not your score against chance. It is your score against <strong>hers</strong>. The subject is the only observer whose judgement is authoritative about her own face, because she is the only person who genuinely knows what she looks like. A stranger scoring at chance is consistent with the renders lacking human-legible identity; it doesn&rsquo;t prove it the way her own non-recognition does. Strangers guessing at random is compatible with several stories &mdash; some renders might be recognisable to people who know her, for instance, if you happen to. Her not recognising herself rules that out directly.</p>
+      <p>A single visitor&rsquo;s score, however it lands, is not a substitute for the model&rsquo;s own numbers above; it is a companion to them, meant to make the gap between &ldquo;scores as genuine&rdquo; and &ldquo;reads as that person to a human&rdquo; something you can feel rather than take on trust.</p>
     </section>
 
     <section>
@@ -151,8 +167,25 @@
 
   <script>
   (function(){
-    var ANSWERS = ["A","B","A","B","B","B","A","B","A","A","B","A","B","B","B","B"];
-    var N = ANSWERS.length;
+    var TRIALS = [
+      {correct:"A", target:"synthetic"},
+      {correct:"B", target:"subject"},
+      {correct:"A", target:"synthetic"},
+      {correct:"B", target:"synthetic"},
+      {correct:"A", target:"synthetic"},
+      {correct:"A", target:"subject"},
+      {correct:"A", target:"subject"},
+      {correct:"B", target:"synthetic"},
+      {correct:"A", target:"subject"},
+      {correct:"B", target:"subject"},
+      {correct:"B", target:"synthetic"},
+      {correct:"A", target:"synthetic"},
+      {correct:"B", target:"synthetic"},
+      {correct:"B", target:"subject"},
+      {correct:"A", target:"subject"},
+      {correct:"B", target:"subject"}
+    ];
+    var N = TRIALS.length;
     var chosen = new Array(N).fill(null);
 
     var trialsEl = document.getElementById('trials');
@@ -164,15 +197,21 @@
       trial.className = 'trial';
       trial.innerHTML =
         '<div class="tnum">Trial ' + n + '</div>' +
-        '<div class="pair">' +
-          '<button class="opt" type="button" data-i="' + i + '" data-choice="A">' +
-            '<img src="img/perceptual/trial' + pad + 'a.jpg" width="220" height="220" alt="Trial ' + n + ', option A" loading="lazy">' +
-            '<span class="lbl">A</span>' +
-          '</button>' +
-          '<button class="opt" type="button" data-i="' + i + '" data-choice="B">' +
-            '<img src="img/perceptual/trial' + pad + 'b.jpg" width="220" height="220" alt="Trial ' + n + ', option B" loading="lazy">' +
-            '<span class="lbl">B</span>' +
-          '</button>' +
+        '<div class="triallayout">' +
+          '<div class="refbox">' +
+            '<img src="img/perceptual/trial' + pad + '-ref.jpg" width="150" height="150" alt="Reference photo for trial ' + n + '" loading="lazy">' +
+            '<span class="lbl">Reference</span>' +
+          '</div>' +
+          '<div class="pair">' +
+            '<button class="opt" type="button" data-i="' + i + '" data-choice="A">' +
+              '<img src="img/perceptual/trial' + pad + '-a.jpg" width="220" height="220" alt="Trial ' + n + ', option A" loading="lazy">' +
+              '<span class="lbl">A</span>' +
+            '</button>' +
+            '<button class="opt" type="button" data-i="' + i + '" data-choice="B">' +
+              '<img src="img/perceptual/trial' + pad + '-b.jpg" width="220" height="220" alt="Trial ' + n + ', option B" loading="lazy">' +
+              '<span class="lbl">B</span>' +
+            '</button>' +
+          '</div>' +
         '</div>';
       frag.appendChild(trial);
     }
@@ -209,10 +248,38 @@
       updateProgress();
     });
 
+    // exact two-sided binomial test against p = 0.5, following the
+    // standard "sum all outcomes at least as unlikely as the observed one" definition.
+    function nCk(n, k){
+      if (k < 0 || k > n) return 0;
+      k = Math.min(k, n - k);
+      var num = 1, den = 1;
+      for (var i = 0; i < k; i++){ num *= (n - i); den *= (i + 1); }
+      return num / den;
+    }
+    function binomPMF(k, n, p){
+      return nCk(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+    }
+    function exactBinomTestTwoSided(k, n, p){
+      var pmfs = [];
+      for (var i = 0; i <= n; i++) pmfs.push(binomPMF(i, n, p));
+      var observed = pmfs[k];
+      var eps = 1e-9;
+      var total = 0;
+      for (var j = 0; j <= n; j++){ if (pmfs[j] <= observed + eps) total += pmfs[j]; }
+      return Math.min(total, 1);
+    }
+    function formatP(p){
+      if (p < 0.0001) return 'p < 0.0001';
+      return 'p = ' + p.toFixed(4);
+    }
+
     var scorepanel = document.getElementById('scorepanel');
     var scoreText = document.getElementById('scoreText');
+    var scoreStat = document.getElementById('scoreStat');
     var scoreInterp = document.getElementById('scoreInterp');
     var scoreCaveatN = document.getElementById('scoreCaveatN');
+    var resultsBody = document.getElementById('resultsBody');
 
     revealBtn.addEventListener('click', function(){
       if (answeredCount() !== N) return;
@@ -223,23 +290,42 @@
         opt.disabled = true;
         var i = parseInt(opt.getAttribute('data-i'), 10);
         var choice = opt.getAttribute('data-choice');
-        if (choice === ANSWERS[i]) opt.classList.add('correct');
+        if (choice === TRIALS[i].correct) opt.classList.add('correct');
         else if (chosen[i] === choice) opt.classList.add('incorrect');
       }
-      for (var i2 = 0; i2 < N; i2++) if (chosen[i2] === ANSWERS[i2]) score++;
+      for (var i2 = 0; i2 < N; i2++) if (chosen[i2] === TRIALS[i2].correct) score++;
+
+      var p = exactBinomTestTwoSided(score, N, 0.5);
 
       scoreText.textContent = score + ' / 16';
+      scoreStat.textContent = 'Exact two-sided binomial test vs. chance (0.5): ' + formatP(p);
+
       var dist = Math.abs(score - 8);
       var interp;
       if (dist <= 3){
-        interp = 'That is close to chance (8/16). On this test, the renders gave you no reliable identity signal to work with — which is exactly what the model’s own “genuine” score of 0.816 does not tell you.';
+        interp = 'That is close to chance (8/16), and ' + formatP(p) + ' reflects it: nothing here rules out pure guessing. On this test, the renders gave you no reliable identity signal to work with beyond the reference photo — which is exactly what the model’s own “genuine” score of 0.816 does not tell you.';
       } else if (score > 8){
-        interp = 'That is above chance. With only sixteen trials this can easily be luck, but it is also consistent with some cue in these particular renders being usable by a human — worth being sceptical of before assuming it generalises to other renders or other observers.';
+        interp = 'That is above chance, and ' + formatP(p) + '. With only sixteen trials this can still be luck, but a small p-value is also consistent with some cue in these particular renders being usable by a human — worth being sceptical of before assuming it generalises to other renders or other observers.';
       } else {
-        interp = 'That is below chance. With sixteen trials that is well within the range pure guessing produces, but it is at least as consistent with the renders offering no usable signal as a near-8 score is.';
+        interp = 'That is below chance, and ' + formatP(p) + '. With sixteen trials, a below-chance score is at least as consistent with the renders offering no usable signal as a near-8 score is; it is not evidence you were actively misled.';
       }
       scoreInterp.textContent = interp;
-      scoreCaveatN.textContent = 'Remember: these are synthetic renders from an embedding, not photographs of anyone, and your result here says less than the subject’s own non-recognition of these same images does.';
+      scoreCaveatN.textContent = 'Remember: every image on this page, reference and renders alike, is synthetic — none depicts a real person. This is one run on a small, fixed set of trials, not a calibrated measurement of human perceptual ability.';
+
+      var rows = document.createDocumentFragment();
+      for (var r = 0; r < N; r++){
+        var tr = document.createElement('tr');
+        var isCorrect = chosen[r] === TRIALS[r].correct;
+        tr.innerHTML =
+          '<td>' + (r + 1) + '</td>' +
+          '<td>' + chosen[r] + '</td>' +
+          '<td>' + TRIALS[r].correct + '</td>' +
+          '<td style="color:' + (isCorrect ? 'var(--teal-d)' : '#b5533f') + ';font-weight:500">' + (isCorrect ? 'Correct' : 'Incorrect') + '</td>';
+        rows.appendChild(tr);
+      }
+      resultsBody.innerHTML = '';
+      resultsBody.appendChild(rows);
+
       scorepanel.classList.add('show');
       revealBtn.disabled = true;
       hintText.textContent = 'Scroll up to see which you got right.';
