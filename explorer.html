@@ -3,26 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Explorer &mdash; IAS</title>
+  <title>Explorer &mdash; Identity Acceptance Surfaces</title>
   <meta name="description" content="The full experiment chain behind the measured acceptance surface: eleven experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, hardware-in-the-loop parity, and a human check on whether the renders carry the identity at all.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* --ex-* are aliases onto the site tokens, so this page inherits all
+       three theme states (OS default, explicit light, explicit dark) from
+       styles.css instead of defining a second, competing dark palette. */
     :root{
-      --ex-paper:#fbfcfb; --ex-ink:#1b1f1e; --ex-muted:#5a5f5d; --ex-line:#e8ebe6;
-      --ex-card:#ffffff; --ex-accent:#2f5d62; --ex-accent-soft:rgba(47,93,98,.14);
-      --ex-warn:#9a6a2a; --ex-warn-soft:rgba(154,106,42,.16); --ex-grid:#e2e6e2;
-      --ex-flag:#8a3b52; --ex-flag-soft:rgba(138,59,82,.14);
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --ex-paper:#0d1110; --ex-ink:#e6ebe6; --ex-muted:#9aa39c; --ex-line:#242a26;
-        --ex-card:#141a17; --ex-accent:#6fb8ae; --ex-accent-soft:rgba(111,184,174,.16);
-        --ex-warn:#e0a24a; --ex-warn-soft:rgba(224,162,74,.18); --ex-grid:#232823;
-        --ex-flag:#d98aa2; --ex-flag-soft:rgba(217,138,162,.16);
-      }
+      --ex-paper:var(--paper); --ex-ink:var(--ink); --ex-muted:var(--muted); --ex-line:var(--line);
+      --ex-card:var(--card); --ex-accent:var(--accent); --ex-accent-soft:var(--accent-soft);
+      --ex-warn:var(--warn); --ex-warn-soft:var(--warn-soft); --ex-grid:var(--line-2);
+      --ex-flag:var(--flag); --ex-flag-soft:var(--flag-soft);
     }
     body{background:var(--ex-paper)}
     .wrap{max-width:960px;margin:0 auto;padding:0 28px 56px}
@@ -83,13 +79,13 @@
 </head>
 <body>
   <header class="nav">
-    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a><a href="perceptual.html">Perceptual test</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><span class="grp"><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a></span><span class="sep"></span><span class="grp"><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
   </header>
 
   <main class="wrap">
     <section class="head" id="surface">
-      <div class="eyebrow">The experiment chain</div>
+      <div class="kicker"><span class="n">04</span> &middot; The data</div>
       <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
       <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 64 directions</div>
       <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and getting to this figure took eleven experiments, each one forced by a problem or a surprise the last one turned up. This page walks the whole chain, not just the headline.</p>
@@ -271,6 +267,15 @@
       </ul>
     </div>
 
+
+    <div class="nextstep">
+      <div>
+        <div class="lbl">Next &mdash; how it is measured</div>
+        <div class="t">Why both a SiL and a HiL apparatus</div>
+        <div class="b">What each rig can touch, and what each of the three comparisons actually isolates.</div>
+      </div>
+      <a class="go" href="why-rigs.html">05 &middot; SiL &amp; HiL &rarr;</a>
+    </div>
     <footer>unit(anchor + &epsilon; &middot; tangent) &middot; modality-free core</footer>
   </main>
 
@@ -615,5 +620,23 @@
     })();
   })();
   </script>
+  <script>(function(){
+    var root=document.documentElement, m=window.matchMedia("(prefers-color-scheme: dark)");
+    function paint(){
+      var t=root.dataset.theme||(m.matches?"dark":"light");
+      document.querySelectorAll(".theme .th").forEach(function(b){
+        b.setAttribute("aria-pressed", String(b.dataset.set===t));
+      });
+    }
+    document.querySelectorAll(".theme .th").forEach(function(b){
+      b.addEventListener("click",function(){
+        root.dataset.theme=b.dataset.set;
+        try{localStorage.setItem("ias-theme",b.dataset.set)}catch(e){}
+        paint();
+      });
+    });
+    m.addEventListener&&m.addEventListener("change",paint);
+    paint();
+  })();</script>
 </body>
 </html>

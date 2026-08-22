@@ -1,40 +1,115 @@
+/* ---- tokens -------------------------------------------------------------
+   One role-named set, two themes. Light is the default; the dark values are
+   written twice on purpose — once so the OS preference wins when nobody has
+   chosen, once so an explicit choice wins over the OS in either direction.  */
+
 :root{
-  --paper:#fbfcfb; --ink:#1b1f1e; --muted:#5a5f5d; --line:#e8ebe6;
-  --teal:#2f5d62; --teal-d:#1f4247; --card:#ffffff; --wash:#eef4f2;
+  --paper:#fbfcfb; --paper-2:#f4f8f5; --card:#ffffff;
+  --ink:#1b1f1e; --ink-2:#3d423f; --muted:#5a5f5d; --faint:#6b736f;
+  --line:#e8ebe6; --line-2:#e2e6e2;
+  --accent:#2f5d62; --accent-strong:#1f4247; --accent-soft:rgba(47,93,98,.14);
+  --on-accent:#f4f7f5;
+  --warn:#875c23; --warn-soft:rgba(135,92,35,.16);
+  --reject:#c07b3e; --flag:#8a3b52; --flag-soft:rgba(138,59,82,.14);
+  --ring:#bcc7c4; --ray:#e0ddd4;
+  --reject-soft:#f6efe0; --wrong:#b5533f; --neutral-soft:#ececeb;
+  --code-bg:#101521;
 }
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0d1110; --paper-2:#131a17; --card:#141a17;
+    --ink:#e6ebe6; --ink-2:#c0c8c1; --muted:#9aa39c; --faint:#848d86;
+    --line:#242a26; --line-2:#2e3630;
+    --accent:#6fb8ae; --accent-strong:#8fd2c7; --accent-soft:rgba(111,184,174,.16);
+    --on-accent:#0d1110;
+    --warn:#e0a24a; --warn-soft:rgba(224,162,74,.18);
+    --reject:#e0965a; --flag:#d98aa2; --flag-soft:rgba(217,138,162,.16);
+    --ring:#39423d; --ray:#2b322d;
+    --reject-soft:rgba(224,150,90,.16); --wrong:#e08a75; --neutral-soft:#1d2320;
+    --code-bg:#0a0f0d;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0d1110; --paper-2:#131a17; --card:#141a17;
+  --ink:#e6ebe6; --ink-2:#c0c8c1; --muted:#9aa39c; --faint:#848d86;
+  --line:#242a26; --line-2:#2e3630;
+  --accent:#6fb8ae; --accent-strong:#8fd2c7; --accent-soft:rgba(111,184,174,.16);
+  --on-accent:#0d1110;
+  --warn:#e0a24a; --warn-soft:rgba(224,162,74,.18);
+  --reject:#e0965a; --flag:#d98aa2; --flag-soft:rgba(217,138,162,.16);
+  --ring:#39423d; --ray:#2b322d;
+  --reject-soft:rgba(224,150,90,.16); --wrong:#e08a75; --neutral-soft:#1d2320;
+  --code-bg:#0a0f0d;
+}
+
+/* The 3D stage on explainer.html is an instrument viewport, like a
+   photograph: it keeps its own backdrop in both themes. Only the chrome
+   around it follows the tokens above. */
+:root{
+  --stage-bg:#0b0e14; --stage-ink:#dbe4ee; --stage-muted:#8896a8;
+  --stage-accent:#7fb3d3; --stage-ctl:#141a24; --stage-bar:#090c11;
+  --stage-line:#1c2530;
+}
+
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
 img,svg{max-width:100%}
 .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 .serif{font-family:'Newsreader',Georgia,serif}
-a{color:var(--teal);text-decoration:none}
-a:hover{color:var(--teal-d)}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-strong)}
 
+/* ---- nav ---------------------------------------------------------------- */
 .nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  padding:12px 28px;background:rgba(251,252,251,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+  padding:12px 28px;background:color-mix(in srgb,var(--paper) 90%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
 .nav .brand{display:flex;align-items:center;gap:9px;font-family:'IBM Plex Mono',monospace;font-weight:500;letter-spacing:.13em;color:var(--ink);font-size:14px}
 .nav .brand svg{display:block}
-.nav .links{display:flex;gap:22px;font-size:14px;align-items:center}
-.nav .links a{color:var(--muted)}
+.nav .links{display:flex;align-items:center;gap:16px;font-size:13.5px}
+.nav .grp{display:flex;gap:18px;align-items:center}
+.nav .links a{color:var(--muted);padding:5px 0}
 .nav .links a.on{color:var(--ink);font-weight:500}
-.nav .links a:hover{color:var(--teal)}
+.nav .links a:hover{color:var(--accent)}
+.nav .sep{width:1px;height:14px;background:var(--line-2);flex:none}
 
-/* dark chrome for the interactive pages */
-body.dark{background:#0b0e14;color:#dbe4ee;overflow:hidden}
-body.dark .nav{background:rgba(11,14,20,.82);border-bottom-color:#1c2530}
-body.dark .nav .brand{color:#dbe4ee}
-body.dark .nav .links a{color:#8896a8}
-body.dark .nav .links a.on{color:#dbe4ee}
-body.dark .nav .links a:hover{color:#7fb3d3}
+/* ---- theme toggle ------------------------------------------------------- */
+.theme{display:flex;align-items:center;border:1px solid var(--line-2);border-radius:4px;overflow:hidden;flex:none}
+.theme .th{display:flex;align-items:center;justify-content:center;padding:6px 9px;background:transparent;border:0;cursor:pointer;color:var(--faint);min-width:34px;min-height:28px}
+.theme .th svg{display:block;width:16px;height:16px}
+.theme .th:hover{color:var(--ink)}
+.theme .th[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
 
-.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
-.btn{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;padding:11px 18px;border-radius:4px;border:1px solid #c9d2ce;color:var(--ink);display:inline-block;text-align:center;background:transparent}
-.btn:hover{border-color:var(--teal)}
-.btn.primary{background:var(--teal-d);color:#f4f7f5;border-color:var(--teal-d)}
-.btn.primary:hover{background:var(--teal);color:#fff}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+/* numbered kicker — the arc position, on each of the six chain pages */
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.kicker .n{color:var(--faint)}
 
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.03em;padding:11px 18px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink);display:inline-block;text-align:center;background:transparent}
+.btn:hover{border-color:var(--accent);color:var(--ink)}
+.btn.primary{background:var(--accent-strong);color:var(--on-accent);border-color:var(--accent-strong)}
+.btn.primary:hover{background:var(--accent);color:var(--on-accent)}
+
+/* ---- next step ---------------------------------------------------------- */
+.nextstep{margin:30px 0 0;padding:20px 22px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.nextstep .lbl{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.nextstep .t{font-family:'Newsreader',Georgia,serif;font-size:19px;color:var(--ink)}
+.nextstep .b{font-size:13.5px;color:var(--muted);margin-top:3px;max-width:56ch}
+.nextstep .go{font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:11px 18px;border-radius:4px;border:1px solid var(--accent);color:var(--accent);white-space:nowrap}
+.nextstep .go:hover{background:var(--accent-soft)}
+
+/* explainer.html is a full-viewport app: layout only, no colour. */
+body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+@media (max-width:900px){
+  .nav .links{gap:12px;font-size:13px}
+  .nav .grp{gap:13px}
+}
 @media (max-width:640px){
   .nav{padding:10px 16px}
-  .nav .links{gap:14px;font-size:13px}
+  .nav .sep{display:none}
+  .nav .links{gap:10px;font-size:12.5px;flex-wrap:wrap}
+  .nav .grp{gap:11px}
+  .theme .th{min-height:44px;min-width:44px}
 }

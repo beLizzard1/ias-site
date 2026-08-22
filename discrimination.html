@@ -8,45 +8,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
     .wrap{max-width:820px;margin:0 auto;padding:0 28px}
     .head{padding:52px 0 6px}
     .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
-    .lead{font-size:18px;line-height:1.55;color:#33383a;max-width:60ch;margin:0}
+    .lead{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:60ch;margin:0}
     section{padding:26px 0;border-top:1px solid var(--line)}
     section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
-    section p{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 12px;max-width:66ch}
+    section p{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0 0 12px;max-width:66ch}
     section p:last-child{margin-bottom:0}
     section ul{margin:0 0 12px;padding-left:20px;max-width:66ch}
-    section li{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 8px}
+    section li{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0 0 8px}
     section li:last-child{margin-bottom:0}
-    .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
-    strong{color:#23282a;font-weight:600}
-    em{color:#23282a}
-    code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:#f0f2ef;padding:1px 5px;border-radius:4px}
+    .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+    strong{color:var(--ink);font-weight:600}
+    em{color:var(--ink)}
+    code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:var(--paper-2);padding:1px 5px;border-radius:4px}
     .tblwrap{overflow-x:auto;margin:6px 0 12px}
     table{border-collapse:collapse;width:100%;font-size:14.5px}
     th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
-    th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:500;border-bottom:1px solid var(--line)}
+    th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:500;border-bottom:1px solid var(--line)}
     tbody tr:last-child td{border-bottom:none}
-    .callout{margin:6px 0 16px;background:#f4f8f5;border:1px solid #e2ebe4;border-left:3px solid var(--teal);border-radius:6px;padding:18px 20px}
+    .callout{margin:6px 0 16px;background:var(--paper-2);border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;padding:18px 20px}
     .callout p{margin:0 0 8px}
     .callout p:last-child{margin-bottom:0}
     .callout .k{margin-bottom:6px;display:block}
-    .pull{font-family:'Newsreader',serif;font-size:19px;line-height:1.5;color:var(--teal-d);border-left:3px solid var(--teal);padding:4px 0 4px 16px;margin:10px 0 0}
-    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:#9aa09d;font-family:'IBM Plex Mono',monospace;font-size:12px}
+    .pull{font-family:'Newsreader',serif;font-size:19px;line-height:1.5;color:var(--accent-strong);border-left:3px solid var(--accent);padding:4px 0 4px 16px;margin:10px 0 0}
+    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-family:'IBM Plex Mono',monospace;font-size:12px}
   </style>
 </head>
 <body>
   <header class="nav">
-    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="discrimination.html" class="on">Discrimination</a><a href="perceptual.html">Perceptual test</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><span class="grp"><a href="why.html">Why</a><a href="discrimination.html" class="on">Discrimination</a></span><span class="sep"></span><span class="grp"><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
   </header>
 
   <main class="wrap">
     <section class="head" style="border:0">
-      <div class="k">Per-identity discriminatory power</div>
+      <div class="kicker"><span class="n">02</span> &middot; The argument</div>
       <h1>Two enrolled people, same system, same threshold &mdash; not necessarily the same protection</h1>
       <p class="lead">Companion to <a href="why.html">Why</a>. That note argues why aggregate metrics leave an institution with nothing to challenge. This one is about the specific thing they hide: that two enrolled people do not get the same protection from the same system, and that nothing in the standard evidence pack would tell you.</p>
     </section>
@@ -64,7 +65,7 @@
     <section>
       <div class="callout">
         <span class="k">Not yet measured</span>
-        <p><strong>This project has not measured cross-identity differences yet.</strong> It has measured a single identity, and found the acceptance region around it to be strongly direction-dependent &mdash; about seven times more tolerance along some directions than others. Whether that shape differs <em>between</em> identities is the next experiment, and it is the question this apparatus exists to answer.</p>
+        <p><strong>This project has not measured cross-identity differences yet.</strong> It has measured a single identity, and found the acceptance region around it to be strongly direction-dependent &mdash; an extremes ratio of <strong>7.6&times;</strong> between the most and least tolerant directions (robust P90/P10 spread 3.8&times;). Whether that shape differs <em>between</em> identities is the next experiment, and it is the question this apparatus exists to answer.</p>
       </div>
     </section>
 
@@ -103,14 +104,41 @@
       <h2>What is honest to claim today</h2>
       <ul>
         <li>The perturbation geometry is deterministic and reproducible; the <strong>rendering is not</strong>. Turning an embedding back into an image goes through a generative model that redraws presentation (hair, lighting, expression) per seed, so every boundary is a median over several renders and that noise is inside the measurement.</li>
-        <li>Scale so far is a pilot: <strong>11 shells &times; 512 directions</strong>, 20 directions refined to a boundary (18 bounded, 2 censored), 64 in progress. The million-sample configuration mentioned elsewhere on this site is the design target, not a completed run.</li>
+        <li>Scale so far is a pilot: <strong>11 coarse shells &times; 512 directions</strong>, of which <strong>64 directions</strong> have been refined to a boundary &mdash; 51 well-determined, 7 censored, 3 anchor-rejected, 3 flagged. The million-sample configuration mentioned elsewhere on this site is the design target, not a completed run.</li>
         <li><strong>One identity.</strong> Cross-identity comparison &mdash; the actual test of unequal discriminatory power &mdash; needs the synthetic identity corpus, which is prepared but not yet run.</li>
         <li><strong>SiL is not an emulator:</strong> it is the vendor&rsquo;s own runtime compiled for the host. Whether it matches the silicon is unverified, and is what the HiL runner is being built to settle.</li>
       </ul>
       <p>Stating this precisely matters more than usual here. The purpose of the tool is to let someone challenge a claim with evidence; a tool that overstates its own evidence cannot do that.</p>
     </section>
 
+
+    <div class="nextstep">
+      <div>
+        <div class="lbl">Next &mdash; see it</div>
+        <div class="t">The acceptance sphere</div>
+        <div class="b">A plain-language, interactive picture: your identity at the centre, accepted faces inside, rejected outside.</div>
+      </div>
+      <a class="go" href="explainer.html">03 &middot; Explainer &rarr;</a>
+    </div>
     <footer>Identity Acceptance Surfaces &middot; quantifying the discriminatory power of an authenticator</footer>
   </main>
+  <script>(function(){
+    var root=document.documentElement, m=window.matchMedia("(prefers-color-scheme: dark)");
+    function paint(){
+      var t=root.dataset.theme||(m.matches?"dark":"light");
+      document.querySelectorAll(".theme .th").forEach(function(b){
+        b.setAttribute("aria-pressed", String(b.dataset.set===t));
+      });
+    }
+    document.querySelectorAll(".theme .th").forEach(function(b){
+      b.addEventListener("click",function(){
+        root.dataset.theme=b.dataset.set;
+        try{localStorage.setItem("ias-theme",b.dataset.set)}catch(e){}
+        paint();
+      });
+    });
+    m.addEventListener&&m.addEventListener("change",paint);
+    paint();
+  })();</script>
 </body>
 </html>

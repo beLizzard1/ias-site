@@ -8,38 +8,38 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
     .wrap{max-width:820px;margin:0 auto;padding:0 28px}
     .head{padding:52px 0 6px}
     .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
-    .lead{font-size:18px;line-height:1.55;color:#33383a;max-width:60ch;margin:0}
+    .lead{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:60ch;margin:0}
     section{padding:26px 0;border-top:1px solid var(--line)}
     section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
-    section p{font-size:16px;line-height:1.65;color:#3d423f;margin:0 0 12px;max-width:66ch}
+    section p{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0 0 12px;max-width:66ch}
     section p:last-child{margin-bottom:0}
-    .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
-    strong{color:#23282a;font-weight:600}
+    strong{color:var(--ink);font-weight:600}
     .faults{display:grid;gap:14px;margin:6px 0 0}
-    .fault{border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:6px;padding:14px 16px;background:var(--card)}
+    .fault{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:14px 16px;background:var(--card)}
     .fault h3{margin:0 0 4px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:600}
-    .fault p{margin:0;font-size:14.5px;line-height:1.6;color:#41473f}
-    figure{margin:18px 0 4px;background:#fbfcfb;border:1px solid var(--line);border-radius:8px;padding:16px}
-    figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6b706d;text-align:center;margin-top:8px}
-    .pull{font-family:'Newsreader',serif;font-size:20px;line-height:1.4;color:var(--teal-d);border-left:3px solid var(--teal);padding:4px 0 4px 16px;margin:8px 0 0}
+    .fault p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+    figure{margin:18px 0 4px;background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:16px}
+    figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px}
+    .pull{font-family:'Newsreader',serif;font-size:20px;line-height:1.4;color:var(--accent-strong);border-left:3px solid var(--accent);padding:4px 0 4px 16px;margin:8px 0 0}
     .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:#9aa09d;font-family:'IBM Plex Mono',monospace;font-size:12px}
+    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-family:'IBM Plex Mono',monospace;font-size:12px}
   </style>
 </head>
 <body>
   <header class="nav">
-    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html" class="on">Why</a><a href="discrimination.html">Discrimination</a><a href="perceptual.html">Perceptual test</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><span class="grp"><a href="why.html" class="on">Why</a><a href="discrimination.html">Discrimination</a></span><span class="sep"></span><span class="grp"><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
   </header>
 
   <main class="wrap">
     <section class="head" style="border:0">
-      <div class="k">So what?</div>
+      <div class="kicker"><span class="n">01</span> &middot; The argument</div>
       <h1>You can measure a password. Can you measure a face?</h1>
       <p class="lead">We quantify how strong a password is with <strong>entropy</strong> &mdash; a number for its discriminatory power. Biometrics have no honest equivalent, and they carry faults a password never had. This project is an attempt to put a real number on a biometric authenticator, on the hardware it actually runs on.</p>
     </section>
@@ -51,7 +51,7 @@
       <p>It addresses the question that sits underneath it. Suppose a use is one that society is willing to consent to. Consent is hard to give meaningfully when the thing being consented to has undefined behaviour &mdash; when neither the operator, the regulator, nor the person in front of the camera can say what the system will actually do at the edges. And an institution that wants to challenge a system, or defend its own use of one, currently has very little to challenge it with.</p>
       <p>The evidence available today is aggregate: FAR and FRR at a chosen threshold, TAR at a fixed FAR on a benchmark such as IJB-C, demographic breakdowns of those same rates. All of it useful, all of it a population average. It is measured on a benchmark corpus, not on the identity or the population actually enrolled, and not on the device actually deployed. It reports <em>how often</em> the system is wrong, never <em>in which direction</em> &mdash; two systems with identical FAR can fail on completely different changes to a face. It says nothing about a specific enrolled person: &ldquo;0.1% FAR&rdquo; is no answer to &ldquo;how much would someone have to look like me before this door opens&rdquo;. And it is quoted for the model, while the thing installed is a quantised export of that model running on a specific chip &mdash; a different function, and nobody publishes the difference.</p>
       <p>So a public-sector body procuring or contesting one of these systems can ask for the vendor&rsquo;s numbers, and then has nowhere to go. The disagreement collapses to whose benchmark to believe.</p>
-      <p>What this project builds instead is a way to measure, for a specific enrolled identity on a specific deployed system, the shape of the region in embedding space the system still accepts as that person &mdash; the acceptance surface. That is evidence of a different kind: <strong>per-identity</strong> rather than per-population, <strong>directional</strong> rather than a single number (the pilot&rsquo;s first result is that acceptance extends about seven times further along some directions than others), measured <strong>on the deployed artefact</strong> rather than the paper model, and <strong>reproducible by a third party</strong>, so a claim can be disputed rather than taken on trust.</p>
+      <p>What this project builds instead is a way to measure, for a specific enrolled identity on a specific deployed system, the shape of the region in embedding space the system still accepts as that person &mdash; the acceptance surface. That is evidence of a different kind: <strong>per-identity</strong> rather than per-population, <strong>directional</strong> rather than a single number (the first measured surface extends 7.6&times; further along some directions than others), measured <strong>on the deployed artefact</strong> rather than the paper model, and <strong>reproducible by a third party</strong>, so a claim can be disputed rather than taken on trust.</p>
       <p>The intent is not to declare a system safe or unsafe. It is to make the behaviour legible enough that an informed decision is possible at all. See <a href="why-rigs.html">why the rig is built the way it is</a> for the measurement apparatus and what each comparison isolates.</p>
     </section>
 
@@ -95,22 +95,22 @@
         <svg viewBox="0 0 620 240" width="100%" style="display:block">
           <!-- ideal -->
           <g transform="translate(155,120)">
-            <circle r="82" fill="#eef4f2" stroke="#2f5d62" stroke-width="1.5"/>
-            <circle r="4" fill="#1b1f1e"/>
-            <line x1="0" y1="0" x2="82" y2="0" stroke="#2f5d62" stroke-width="1.4"/>
-            <line x1="0" y1="0" x2="-58" y2="-58" stroke="#2f5d62" stroke-width="1.4"/>
-            <text x="0" y="112" font-family="'IBM Plex Sans',sans-serif" font-size="11" fill="#5a5f5d" text-anchor="middle">ideal &mdash; equal margin everywhere</text>
+            <circle r="82" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+            <circle r="4" fill="var(--ink)"/>
+            <line x1="0" y1="0" x2="82" y2="0" stroke="var(--accent)" stroke-width="1.4"/>
+            <line x1="0" y1="0" x2="-58" y2="-58" stroke="var(--accent)" stroke-width="1.4"/>
+            <text x="0" y="112" font-family="'IBM Plex Sans',sans-serif" font-size="11" fill="var(--muted)" text-anchor="middle">ideal &mdash; equal margin everywhere</text>
           </g>
           <!-- measured / lumpy -->
           <g transform="translate(445,120)">
             <path d="M92,-6 C96,-52 44,-92 4,-96 C-40,-100 -96,-70 -96,-24 C-96,20 -66,42 -30,64 C6,86 60,96 82,58 C100,28 88,34 92,-6 Z"
-                  fill="#f6efe0" stroke="#c07b3e" stroke-width="1.5"/>
-            <circle r="4" fill="#1b1f1e"/>
-            <line x1="0" y1="0" x2="92" y2="-6" stroke="#c07b3e" stroke-width="1.6"/>
-            <line x1="0" y1="0" x2="-30" y2="-30" stroke="#c07b3e" stroke-width="1.6"/>
-            <circle cx="92" cy="-6" r="3.5" fill="#c07b3e"/>
-            <circle cx="-30" cy="-30" r="3.5" fill="#c07b3e"/>
-            <text x="0" y="112" font-family="'IBM Plex Sans',sans-serif" font-size="11" fill="#5a5f5d" text-anchor="middle">measured &mdash; margins differ by direction</text>
+                  fill="var(--reject-soft)" stroke="var(--reject)" stroke-width="1.5"/>
+            <circle r="4" fill="var(--ink)"/>
+            <line x1="0" y1="0" x2="92" y2="-6" stroke="var(--reject)" stroke-width="1.6"/>
+            <line x1="0" y1="0" x2="-30" y2="-30" stroke="var(--reject)" stroke-width="1.6"/>
+            <circle cx="92" cy="-6" r="3.5" fill="var(--reject)"/>
+            <circle cx="-30" cy="-30" r="3.5" fill="var(--reject)"/>
+            <text x="0" y="112" font-family="'IBM Plex Sans',sans-serif" font-size="11" fill="var(--muted)" text-anchor="middle">measured &mdash; margins differ by direction</text>
           </g>
         </svg>
         <figcaption>same threshold, different real security &mdash; one direction accepts far past another</figcaption>
@@ -136,7 +136,34 @@
       <p>One caveat: this is a target of convenience and representativeness, not a judgement on Espressif. The method &mdash; perturb an identity, map where a device flips from accepting to rejecting it &mdash; is meant to apply to any embedded recognition stack; see <a href="why-rigs.html">why the rig is built the way it is</a> for how that generalises.</p>
     </section>
 
+
+    <div class="nextstep">
+      <div>
+        <div class="lbl">Next in the argument</div>
+        <div class="t">Per-identity discriminatory power</div>
+        <div class="b">Why two enrolled people may not get the same protection from the same system.</div>
+      </div>
+      <a class="go" href="discrimination.html">02 &middot; Discrimination &rarr;</a>
+    </div>
     <footer>Identity Acceptance Surfaces &middot; quantifying the discriminatory power of an authenticator</footer>
   </main>
+  <script>(function(){
+    var root=document.documentElement, m=window.matchMedia("(prefers-color-scheme: dark)");
+    function paint(){
+      var t=root.dataset.theme||(m.matches?"dark":"light");
+      document.querySelectorAll(".theme .th").forEach(function(b){
+        b.setAttribute("aria-pressed", String(b.dataset.set===t));
+      });
+    }
+    document.querySelectorAll(".theme .th").forEach(function(b){
+      b.addEventListener("click",function(){
+        root.dataset.theme=b.dataset.set;
+        try{localStorage.setItem("ias-theme",b.dataset.set)}catch(e){}
+        paint();
+      });
+    });
+    m.addEventListener&&m.addEventListener("change",paint);
+    paint();
+  })();</script>
 </body>
 </html>
