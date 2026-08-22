@@ -34,7 +34,7 @@
 <body>
   <header class="nav">
     <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html" class="on">Why</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <div class="links"><a href="index.html">Home</a><a href="why.html" class="on">Why</a><a href="discrimination.html">Discrimination</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
   </header>
 
   <main class="wrap">
@@ -53,6 +53,13 @@
       <p>So a public-sector body procuring or contesting one of these systems can ask for the vendor&rsquo;s numbers, and then has nowhere to go. The disagreement collapses to whose benchmark to believe.</p>
       <p>What this project builds instead is a way to measure, for a specific enrolled identity on a specific deployed system, the shape of the region in embedding space the system still accepts as that person &mdash; the acceptance surface. That is evidence of a different kind: <strong>per-identity</strong> rather than per-population, <strong>directional</strong> rather than a single number (the pilot&rsquo;s first result is that acceptance extends about seven times further along some directions than others), measured <strong>on the deployed artefact</strong> rather than the paper model, and <strong>reproducible by a third party</strong>, so a claim can be disputed rather than taken on trust.</p>
       <p>The intent is not to declare a system safe or unsafe. It is to make the behaviour legible enough that an informed decision is possible at all. See <a href="why-rigs.html">why the rig is built the way it is</a> for the measurement apparatus and what each comparison isolates.</p>
+    </section>
+
+    <section>
+      <h2>Who this is for</h2>
+      <p>Not, principally, a penetration tester looking for a point-in-time bypass. The output of this work is not an exploit; it is a map.</p>
+      <p>The audience is the people who have to make or defend a decision about a deployment: the risk owner, the assurance function, the board-level oversight lead, the regulator, and the individual who has been enrolled. Embedding models behave as black-box continuous manifolds, and their failure modes &mdash; plateaus, cliffs, direction-dependent tolerance &mdash; are invisible in the evidence those people are normally handed. That leaves an institution unable to interrogate a system it is nonetheless accountable for: an ignorance that is structural rather than chosen, but an ignorance all the same, and one that persists precisely until somebody measures.</p>
+      <p>The intent is to replace &ldquo;the vendor says the FAR is 0.1%&rdquo; with something a non-specialist can be walked through, disagree with, and re-run. See <a href="discrimination.html">per-identity discriminatory power</a> for why two enrolled people may not get the same protection from the same system, and what this apparatus can ask about that.</p>
     </section>
 
     <section>

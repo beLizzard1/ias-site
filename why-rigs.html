@@ -35,7 +35,7 @@
 <body>
   <header class="nav">
     <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="why-rigs.html" class="on">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a><a href="why-rigs.html" class="on">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
   </header>
 
   <main class="wrap">
@@ -43,7 +43,7 @@
       <div class="k">Test rig design</div>
       <h1>Why both a SiL and a HiL apparatus</h1>
       <p class="lead">This note explains why the project builds two separate test rigs for the same system under test, rather than picking the cheaper one and living with it.</p>
-      <p style="font-size:14px;color:#6b706d;margin:10px 0 0">Background: <a href="why.html">why this project exists</a> &mdash; why per-identity, directional evidence is worth building when population metrics like FAR/FRR are all that is otherwise available.</p>
+      <p style="font-size:14px;color:#6b706d;margin:10px 0 0">Background: <a href="why.html">why this project exists</a> &mdash; why per-identity, directional evidence is worth building when population metrics like FAR/FRR are all that is otherwise available &mdash; and <a href="discrimination.html">per-identity discriminatory power</a>, on why two enrolled people may not get the same protection from the same system.</p>
     </section>
 
     <section>
@@ -81,7 +81,7 @@
       <h2>HiL: the real device</h2>
       <p>The hardware-in-the-loop apparatus is the actual ESP32-S3 with the model on it, driven by a custom application that feeds it data &mdash; the same shape as the integrator's position above. It is slower and less observable: you get back whatever the device is willing to expose, a verdict or a score, not the tensors behind it. What it gives you in return is that it is the ground truth. It is also the only way to answer the question the SiL cannot answer about itself: run the same images through both, compare the embeddings or verdicts, and the gap between them is the SiL's parity error.</p>
       <p>Where even the application layer is not available &mdash; the end-user position &mdash; the same device has to be driven through the product's own sensor path instead of a custom feed. That is the black-box case: harder to control, but still HiL in spirit, since it is the real hardware doing the inference.</p>
-      <p>On why this target: see <a href="why.html">Why</a>.</p>
+      <p>On why this target: see <a href="why.html">Why</a><a href="discrimination.html">Discrimination</a>.</p>
     </section>
 
     <section>
