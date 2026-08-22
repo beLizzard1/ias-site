@@ -86,16 +86,24 @@
     </div>
 
     <div class="row">
-      <div><h3>Shell generation &amp; SiL sweep</h3><div class="st"><span class="pill prog">In progress</span></div></div>
+      <div><h3>Refined acceptance surface</h3><div class="st"><span class="pill done">First surface measured</span></div></div>
       <div>
-        <p>Underway now that the host SiL runner is trustworthy: generating identity shells around real anchors, rendering a subset of points, and running them through the runner &mdash; the first end-to-end pass of the full pipeline built so far.</p>
+        <p>Per-direction boundary search on 20 rays around one real identity (Dr James&rsquo;), bisected against the ESP-DL SiL to &plusmn;0.03 &epsilon;, three renders per test point (median score, majority verdict). 18 of 20 rays bounded inside the dataset; 2 right-censored at the dataset's cos&nbsp;0.60 edge.</p>
+        <p>Boundary angle mean 32.7&deg; &plusmn; 12.9&deg;, range 6.8&deg;&ndash;49.5&deg;. The most tolerant bounded direction reaches <strong>7.2&times;</strong> further from the anchor than the least tolerant &mdash; an isotropic discriminator would draw a flat circle; this INT8 model draws a star. See the <a href="explorer.html">Explorer</a> for the plotted surface and the caveats (pilot scale, one identity, renderer noise inside the measurement, detector threshold relaxed to 0.3, host-vs-silicon parity still open).</p>
       </div>
     </div>
 
     <div class="row">
-      <div><h3>On-device harness</h3><div class="st"><span class="pill next">Next</span></div></div>
+      <div><h3>Higher-resolution refine pass</h3><div class="st"><span class="pill prog">In progress</span></div></div>
       <div>
-        <p>A transport-agnostic path that talks to the real ESP32 device, for measurements that are faithful to the hardware and to settle the chip-parity question above. Not yet started &mdash; the board isn't visible inside the dev container yet. Its slowness is exactly what the boundary search is built for &mdash; a handful of evaluations per direction, rendered on demand, rather than brute-forcing every point.</p>
+        <p>Refining 44 more directions (rays 20&ndash;63) against the same anchor and SiL, to fill out the surface beyond the first 20 rays. Running now &mdash; no results yet.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><h3>On-device harness</h3><div class="st"><span class="pill prog">Started</span></div></div>
+      <div>
+        <p>The ESP32-S3 board is now visible to the toolchain inside the dev container. The esp-dl <code>human_face_recognition</code> firmware was built and flashed today, and the device produced its first inference: similarity 0.797307 on the example's own faces, versus 0.787880 for the same pair on the host runner. That's a first parity datapoint, not yet a parity study &mdash; settling host-vs-device agreement across a real spread of inputs is the next step before the device can serve as the faithful SUT for surface mapping.</p>
       </div>
     </div>
 

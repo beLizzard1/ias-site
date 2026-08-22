@@ -3,41 +3,127 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Explorer (TBC) &mdash; IAS</title>
-  <meta name="description" content="The Explorer is where findings from the real ESP-DL / ESP32-S3 on-device pipeline will be presented. Not yet available.">
+  <title>Explorer &mdash; IAS</title>
+  <meta name="description" content="The first measured acceptance surface: 20 directions around one identity, bisected against the ESP-DL edge model. The boundary is a star, not a circle &mdash; the widest bounded direction tolerates 7.2&times; more drift than the narrowest.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="styles.css">
   <style>
-    body.dark{display:flex;flex-direction:column;height:100vh}
-    .app{position:relative;flex:1;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#131a25 0%,#0b0e14 62%,#080a0f 100%);
-      display:flex;align-items:center;justify-content:center;padding:28px}
-    .tbc{max-width:480px;text-align:center}
-    .tbc .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#7fb3d3;text-transform:uppercase}
-    .tbc h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:clamp(22px,4vw,28px);margin:12px 0 14px;color:#dbe4ee}
-    .tbc p{font-size:14.5px;line-height:1.65;color:#9fb0c2;margin:0 0 10px}
-    .tbc .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
-      padding:3px 9px;border-radius:20px;background:#2a2416;color:#c99a4a;margin-bottom:16px}
-    .tbc a{color:#7fb3d3}
-    .tbc a:hover{color:#a9d0e6}
+    :root{
+      --ex-paper:#fbfcfb; --ex-ink:#1b1f1e; --ex-muted:#5a5f5d; --ex-line:#e8ebe6;
+      --ex-card:#ffffff; --ex-accent:#2f5d62; --ex-accent-soft:rgba(47,93,98,.14);
+      --ex-warn:#9a6a2a; --ex-warn-soft:rgba(154,106,42,.16); --ex-grid:#e2e6e2;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --ex-paper:#0d1110; --ex-ink:#e6ebe6; --ex-muted:#9aa39c; --ex-line:#242a26;
+        --ex-card:#141a17; --ex-accent:#6fb8ae; --ex-accent-soft:rgba(111,184,174,.16);
+        --ex-warn:#e0a24a; --ex-warn-soft:rgba(224,162,74,.18); --ex-grid:#232823;
+      }
+    }
+    body{background:var(--ex-paper)}
+    .wrap{max-width:960px;margin:0 auto;padding:0 28px 56px}
+    .head{padding:48px 0 6px}
+    .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(28px,5vw,40px);font-weight:400;line-height:1.1;margin:12px 0 10px;color:var(--ex-ink)}
+    .updated{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ex-muted)}
+    .lead{font-size:16.5px;line-height:1.6;color:var(--ex-ink);opacity:.86;max-width:66ch;margin:8px 0 0}
+    .stats{display:flex;flex-wrap:wrap;gap:10px 22px;margin:22px 0 0;padding:16px 20px;background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px}
+    .stat{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ex-muted)}
+    .stat b{color:var(--ex-ink);font-weight:500}
+    .figures{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0 0}
+    .fig{background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px;padding:18px 18px 14px}
+    .fig h2{margin:0 0 4px;font-family:'Newsreader',serif;font-weight:500;font-size:16.5px;color:var(--ex-ink)}
+    .fig .sub{font-size:12.5px;color:var(--ex-muted);margin:0 0 10px;line-height:1.5}
+    .fig svg{display:block;width:100%;height:auto}
+    .legend{display:flex;flex-wrap:wrap;gap:14px;margin:14px 2px 0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ex-muted)}
+    .legend span{display:inline-flex;align-items:center;gap:6px}
+    .sw{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .sw.bounded{background:var(--ex-accent)}
+    .sw.censored{background:var(--ex-warn)}
+    .sw.ideal{width:14px;height:0;border-top:2px dashed var(--ex-accent);border-radius:0}
+    @media (max-width:760px){.figures{grid-template-columns:1fr}}
+    .prose{margin-top:40px}
+    .prose h2{font-family:'Newsreader',serif;font-weight:500;font-size:20px;margin:30px 0 8px;color:var(--ex-ink)}
+    .prose h2:first-child{margin-top:0}
+    .prose p{font-size:14.5px;line-height:1.65;color:var(--ex-ink);opacity:.88;margin:0 0 10px;max-width:70ch}
+    .prose code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--ex-accent-soft);padding:1px 5px;border-radius:4px}
+    .callout{margin:30px 0 8px;background:var(--ex-warn-soft);border:1px solid var(--ex-line);border-left:3px solid var(--ex-warn);border-radius:6px;padding:18px 20px}
+    .callout h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:17px;color:var(--ex-ink)}
+    .callout ul{margin:0;padding-left:18px}
+    .callout li{font-size:14px;line-height:1.6;color:var(--ex-ink);opacity:.88;margin:6px 0}
+    .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:var(--ex-warn-soft);color:var(--ex-warn);vertical-align:middle;margin-left:10px}
+    footer{margin:44px 0 0;padding-top:16px;border-top:1px solid var(--ex-line);color:var(--ex-muted);font-family:'IBM Plex Mono',monospace;font-size:12px}
   </style>
 </head>
-<body class="dark">
+<body>
   <header class="nav">
-    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fb3d3" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer (TBC)</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f5d62" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
+    <div class="links"><a href="index.html">Home</a><a href="why.html">Why</a><a href="why-rigs.html">SiL &amp; HiL</a><a href="explainer.html">Explainer</a><a href="explorer.html" class="on">Explorer</a><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></div>
   </header>
 
-  <div class="app">
-    <div class="tbc">
-      <span class="pill">TBC</span>
-      <div class="k">Sample Explorer</div>
-      <h1>Findings pending the on-device pipeline</h1>
-      <p>This page is where results from the real ESP-DL / ESP32-S3 edge model &mdash; the actual embedded face-recognition target, not a synthetic stand-in &mdash; will be presented once the on-device measurement is verified.</p>
-      <p>It isn't available yet. See <a href="status.html">Status</a> for where the ESP-DL work currently stands.</p>
+  <main class="wrap">
+    <section class="head">
+      <div class="eyebrow">First real findings</div>
+      <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
+      <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 20 directions</div>
+      <p class="lead">The first acceptance surface out of the pipeline: 20 fixed directions around one real identity (Dr James&rsquo;), each one bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle.</p>
+    </section>
+
+    <div class="stats">
+      <div class="stat">bounded <b>18 / 20</b></div>
+      <div class="stat">censored <b>2 / 20</b></div>
+      <div class="stat">boundary angle <b>32.7&deg; &plusmn; 12.9&deg;</b></div>
+      <div class="stat">range <b>6.8&deg; &ndash; 49.5&deg;</b></div>
+      <div class="stat">anisotropy <b>7.2&times;</b></div>
     </div>
-  </div>
+
+    <div class="figures">
+      <div class="fig">
+        <h2>Boundary by direction</h2>
+        <p class="sub">Each spoke is one of the 20 measured rays, spaced evenly for legibility &mdash; only the radius carries meaning.</p>
+        <svg id="ex-polar" viewBox="0 0 380 380" role="img" aria-label="Polar plot of the 20 measured boundary angles, showing a star-shaped surface rather than a circle"></svg>
+      </div>
+      <div class="fig">
+        <h2>Same 20 rays, sorted</h2>
+        <p class="sub">Bounded rays sorted by boundary angle; the two censored rays never flipped within the dataset and sit at the right, marked open.</p>
+        <svg id="ex-bars" viewBox="0 0 380 380" role="img" aria-label="Bar chart of the 20 boundary angles sorted ascending, with censored rays marked as open-ended"></svg>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="sw bounded"></i>bounded &mdash; boundary found by bisection</span>
+      <span><i class="sw censored"></i>censored &mdash; still accepted at the dataset edge (cos 0.60); true boundary is further out</span>
+      <span><i class="sw ideal"></i>isotropic reference &mdash; the mean boundary (32.7&deg;), i.e. what a direction-blind discriminator would draw</span>
+    </div>
+
+    <div class="prose">
+      <h2>What a ray is</h2>
+      <p>An anchor is one real identity: the centroid embedding of nine of Dr James&rsquo; photos, a single point in the recognition model&rsquo;s 512-dimensional space. A <em>ray</em> is one fixed direction out from that point. Twenty directions were drawn once, early in the pilot, and kept fixed; walking out along a ray means rendering a face at increasing angular distance from the anchor and asking the edge model whether it still recognises it as the enrolled identity.</p>
+
+      <h2>What the boundary means</h2>
+      <p>For each ray, <code>shells-refine</code> bisects to find where the discriminator&rsquo;s verdict flips from accept to reject, to a tolerance of &plusmn;0.03 in the perturbation radius &epsilon;. Each test point is the median of three renders (majority verdict), so one unlucky render &mdash; a hand across the face, odd lighting &mdash; can&rsquo;t set the boundary on its own. The result is an angle: how far, in degrees, the identity can drift along that direction before the ESP-DL model (running at its default acceptance threshold, tau&nbsp;=&nbsp;0.5) stops accepting it.</p>
+
+      <h2>Why a flat circle would be the ideal</h2>
+      <p>If a discriminator treated every direction of drift identically, its boundary would be a single radius repeated at every angle &mdash; a perfect circle. That&rsquo;s the dashed line in the polar plot: not a theoretical target, just the mean of the 18 bounded rays (32.7&deg;), drawn out as a circle so the real shape can be compared against a direction-blind one. The measured boundary is nothing like it. It&rsquo;s a star: some directions hold the identity firmly, others give way after a handful of degrees.</p>
+
+      <h2>What the 7.2&times; means for assurance</h2>
+      <p>7.2&times; is the ratio between the most forgiving bounded direction (ray 18, 49.5&deg;) and the least (rays 8 and 14, tied at 6.8&deg;). For this identity and this system, how far a face can drift before recognition stops accepting it depends on <em>which way</em> it drifts by a factor of seven. A single number &mdash; &ldquo;accepts up to X degrees of change&rdquo; &mdash; would be wrong by that factor depending on direction, and an assurance case that only probes the forgiving directions could look solid while the narrow ones are already unsafe. Which directions those are, and whether they trace something meaningful (e.g. an INT8 quantisation artefact versus a property of face recognition generally), is the open question the next pass and a float-precision comparison are for.</p>
+
+      <div class="callout">
+        <h2>Read this pilot for what it is</h2>
+        <ul>
+          <li>One identity, 20 directions. Not a population result &mdash; a first measurement that the shape holds at all.</li>
+          <li>Renders come from Arc2Face, so its presentation noise (hair, lighting, styling redrawn per seed) is inside the measurement, not filtered out.</li>
+          <li>The edge model&rsquo;s first-stage face detector was relaxed to a score threshold of 0.3 (vendor default 0.5) because raw renders sit under the default &mdash; see <a href="status.html">Status</a> for the compositing trial that trades this off against plate-identity bias.</li>
+          <li>This is the software-in-the-loop runner, not the physical ESP32-S3 board. Host-vs-silicon numerical parity is still unverified &mdash; see <a href="why-rigs.html">SiL &amp; HiL</a>.</li>
+          <li>2 of the 20 rays never flipped inside the sampled range and are right-censored at the dataset&rsquo;s edge (cos 0.60, &asymp;53&deg;); their true boundary is somewhere further out, unmeasured.</li>
+          <li>A second, higher-resolution pass over 44 more directions (rays 20&ndash;63) is running now &mdash; not shown here yet.</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>unit(anchor + &epsilon; &middot; tangent) &middot; modality-free core</footer>
+  </main>
 
   <!--
     Archived below: the earlier point-cloud / walkthrough demo, built on synthetic
@@ -201,5 +287,124 @@
   })();
   </script>
   </template>
+
+  <script>
+  (function(){
+    // Per-ray boundary data, copied from docs/figures/refined_surface_lizjames.json
+    // (identity-acceptance-surfaces repo, 2026-08-22 refine run: 20 rays, bisection
+    // to ±0.03 ε, 3 renders/eval, median score + majority verdict).
+    var RAYS = [
+      {ray:0,  angle:42.46, censored:false},
+      {ray:1,  angle:35.18, censored:false},
+      {ray:2,  angle:53.13, censored:true},
+      {ray:3,  angle:16.70, censored:false},
+      {ray:4,  angle:39.01, censored:false},
+      {ray:5,  angle:53.10, censored:true},
+      {ray:6,  angle:39.41, censored:false},
+      {ray:7,  angle:37.95, censored:false},
+      {ray:8,  angle:6.84,  censored:false},
+      {ray:9,  angle:37.34, censored:false},
+      {ray:10, angle:37.34, censored:false},
+      {ray:11, angle:41.99, censored:false},
+      {ray:12, angle:46.00, censored:false},
+      {ray:13, angle:20.56, censored:false},
+      {ray:14, angle:6.84,  censored:false},
+      {ray:15, angle:24.94, censored:false},
+      {ray:16, angle:36.87, censored:false},
+      {ray:17, angle:21.53, censored:false},
+      {ray:18, angle:49.48, censored:false},
+      {ray:19, angle:48.59, censored:false}
+    ];
+    var SUMMARY = {nBounded:18, nCensored:2, meanDeg:32.72, stdDeg:12.90, minDeg:6.84, maxDeg:49.48, anisotropy:7.23};
+
+    var accent = getComputedStyle(document.documentElement).getPropertyValue('--ex-accent').trim() || '#2f5d62';
+    var warn   = getComputedStyle(document.documentElement).getPropertyValue('--ex-warn').trim()   || '#9a6a2a';
+    var grid   = getComputedStyle(document.documentElement).getPropertyValue('--ex-grid').trim()   || '#e2e6e2';
+    var muted  = getComputedStyle(document.documentElement).getPropertyValue('--ex-muted').trim()  || '#5a5f5d';
+    var accentSoft = getComputedStyle(document.documentElement).getPropertyValue('--ex-accent-soft').trim() || 'rgba(47,93,98,.14)';
+
+    var SCALE_MAX = 56; // degrees at the outer edge of both charts
+
+    // ---------- polar chart ----------
+    (function polar(){
+      var svg = document.getElementById('ex-polar');
+      var cx = 190, cy = 190, R = 148;
+      var s = '';
+      var rings = [10,20,30,40,50];
+      rings.forEach(function(d){
+        var r = d/SCALE_MAX*R;
+        s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r.toFixed(1)+'" fill="none" stroke="'+grid+'" stroke-width="1"/>';
+        s += '<text x="'+(cx+4)+'" y="'+(cy-r-3).toFixed(1)+'" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">'+d+'&deg;</text>';
+      });
+      // isotropic reference: dashed circle at the mean bounded angle
+      var rMean = SUMMARY.meanDeg/SCALE_MAX*R;
+      s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+rMean.toFixed(1)+'" fill="none" stroke="'+accent+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+
+      var n = RAYS.length, poly = '';
+      RAYS.forEach(function(pt, i){
+        var theta = (-90 + i*360/n) * Math.PI/180;
+        var r = Math.min(pt.angle, SCALE_MAX)/SCALE_MAX*R;
+        var x = cx + r*Math.cos(theta), y = cy + r*Math.sin(theta);
+        // faint spoke
+        var xEdge = cx + R*Math.cos(theta), yEdge = cy + R*Math.sin(theta);
+        s += '<line x1="'+cx+'" y1="'+cy+'" x2="'+xEdge.toFixed(1)+'" y2="'+yEdge.toFixed(1)+'" stroke="'+grid+'" stroke-width="1"/>';
+        poly += (i===0?'M':'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+        pt._x = x; pt._y = y; pt._theta = theta;
+      });
+      s += '<path d="'+poly+'Z" fill="'+accentSoft+'" stroke="'+accent+'" stroke-width="1.3" stroke-linejoin="round"/>';
+
+      RAYS.forEach(function(pt){
+        if (pt.censored){
+          // open diamond + short outward arrow: true boundary lies further out, unmeasured
+          var ax = pt._x, ay = pt._y;
+          var dx = Math.cos(pt._theta), dy = Math.sin(pt._theta);
+          var ex = ax+dx*14, ey = ay+dy*14;
+          s += '<line x1="'+ax.toFixed(1)+'" y1="'+ay.toFixed(1)+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="'+warn+'" stroke-width="1.6" stroke-dasharray="2 3"/>';
+          s += '<path d="M '+(ex-dy*3.5-dx*4).toFixed(1)+' '+(ey+dx*3.5-dy*4).toFixed(1)+' L '+ex.toFixed(1)+' '+ey.toFixed(1)+' L '+(ex+dy*3.5-dx*4).toFixed(1)+' '+(ey-dx*3.5-dy*4).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+          s += '<rect x="'+(ax-4.2).toFixed(1)+'" y="'+(ay-4.2).toFixed(1)+'" width="8.4" height="8.4" transform="rotate(45 '+ax.toFixed(1)+' '+ay.toFixed(1)+')" fill="var(--ex-card)" stroke="'+warn+'" stroke-width="1.8"/>';
+        } else {
+          s += '<circle cx="'+pt._x.toFixed(1)+'" cy="'+pt._y.toFixed(1)+'" r="4" fill="'+accent+'" stroke="var(--ex-card)" stroke-width="1.2"/>';
+        }
+      });
+      s += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="'+muted+'"/>';
+      s += '<text x="'+cx+'" y="'+(cy+R+16)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="'+muted+'">anchor at centre &middot; radius = boundary angle</text>';
+      svg.innerHTML = s;
+    })();
+
+    // ---------- sorted bar chart ----------
+    (function bars(){
+      var svg = document.getElementById('ex-bars');
+      var sorted = RAYS.slice().sort(function(a,b){ return a.angle - b.angle; });
+      var W = 380, H = 380, padL = 28, padR = 10, padT = 14, padB = 34;
+      var plotW = W - padL - padR, plotH = H - padT - padB;
+      var n = sorted.length, gap = 4;
+      var bw = (plotW - gap*(n-1))/n;
+      var s = '';
+      [10,20,30,40,50].forEach(function(d){
+        var y = padT + plotH - d/SCALE_MAX*plotH;
+        s += '<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+y.toFixed(1)+'" stroke="'+grid+'" stroke-width="1"/>';
+        s += '<text x="'+(padL-4)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">'+d+'</text>';
+      });
+      // isotropic reference line at the mean
+      var yMean = padT + plotH - SUMMARY.meanDeg/SCALE_MAX*plotH;
+      s += '<line x1="'+padL+'" y1="'+yMean.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yMean.toFixed(1)+'" stroke="'+accent+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+
+      sorted.forEach(function(pt, i){
+        var x = padL + i*(bw+gap);
+        var val = Math.min(pt.angle, SCALE_MAX);
+        var barH = val/SCALE_MAX*plotH;
+        var y = padT + plotH - barH;
+        var col = pt.censored ? warn : accent;
+        s += '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+barH.toFixed(1)+'" fill="'+col+'" opacity="'+(pt.censored?0.55:0.85)+'"'+(pt.censored?' stroke="'+warn+'" stroke-width="1.2" stroke-dasharray="2 2"':'')+'/>';
+        if (pt.censored){
+          var mx = x+bw/2;
+          s += '<path d="M '+(mx-4).toFixed(1)+' '+(y+6).toFixed(1)+' L '+mx.toFixed(1)+' '+(y-2).toFixed(1)+' L '+(mx+4).toFixed(1)+' '+(y+6).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+        }
+        s += '<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-padB+12)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="'+muted+'" transform="rotate(90 '+(x+bw/2).toFixed(1)+' '+(H-padB+12)+')" >r'+pt.ray+'</text>';
+      });
+      svg.innerHTML = s;
+    })();
+  })();
+  </script>
 </body>
 </html>
