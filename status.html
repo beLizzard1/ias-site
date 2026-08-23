@@ -86,6 +86,9 @@
       during the day those renders were made, and a re-run under a known configuration moved every one of
       thirteen re-tested rays in the same direction. That is more consistent with a changed rendering
       pipeline than with thirteen independent corrections, and no record exists that would settle it.</p>
+      <p>It cannot recur in the same way. Since August 2026 there is only one rendering recipe, so there is
+      no wrong default left to take, and every run records the full generator configuration and the digests
+      of the weights it opened.</p>
       <p>The geometry is unaffected: perturbations are still exact, and the acceptance region is still
       direction-dependent. What cannot currently be substantiated is <em>how far</em>, in numbers.
       The ESP-DL defect findings and their upstream reports are unaffected.</p>
@@ -107,17 +110,18 @@
     </div>
 
     <div class="row">
-      <div><h3>Face compositor</h3><div class="st"><span class="pill done">Done</span></div></div>
+      <div><h3>Face compositor</h3><div class="st"><span class="pill next">Withdrawn</span></div></div>
       <div>
-        <p>Warps and blends a generated face into a real background photo, keeping the real hair and scene. A face-interior mask removes the doubled-hairline seam; a hair-aware pass re-lays strands that fall over the face.</p>
-        <p>Finding: the compositor itself is near-lossless &mdash; putting a face back into its own photo differs by at most one level per pixel.</p>
+        <p>Warped and blended a generated face into a real background photo, keeping the real hair and scene. It worked: the compositor itself was near-lossless &mdash; putting a face back into its own photo differed by at most one level per pixel.</p>
+        <p>Removed in August 2026 along with every other render-time stage that saw the original photograph. The trial result stands; what changed is where such a stage may sit. Anything conditioned on the subject&rsquo;s own image belongs <em>after</em> the measurement, as presentation, not inside the render being measured.</p>
       </div>
     </div>
 
     <div class="row">
       <div><h3>Rendering (Arc2Face)</h3><div class="st"><span class="pill prog">Works, with a caveat</span></div></div>
       <div>
-        <p>Face generation from an embedding runs end to end. The limitation is fidelity: the model reconstructs facial <em>structure</em> from the identity vector but fills in hair, colour, and presentation from its own prior, so renders can look stylised and not match the person.</p>
+        <p>Face generation from an embedding runs end to end, through exactly one recipe: the identity vector conditions the image and nothing else does. Nine other recipes were deleted in August 2026 &mdash; each of them let the subject&rsquo;s original photograph steer the render, which quietly answers an easier question than the one being asked.</p>
+        <p>The limitation is fidelity, and it is now measured rather than described. Ask for a face 20&deg; from the anchor and you get one about 46&deg; away: the renderer adds a fixed 33.6&deg; offset and compresses what you asked for to 64% of it. Both are bias and can be corrected. What cannot is the spread around that line &mdash; 6.9&deg; &mdash; and that number is the floor on how precisely any boundary here can be placed.</p>
         <p>For the measurement this matters little &mdash; the edge model crops around facial landmarks, so background and hair realism are for human-facing figures, not for what the device sees.</p>
       </div>
     </div>
