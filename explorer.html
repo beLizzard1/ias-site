@@ -68,6 +68,15 @@
     .beat b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ex-accent);font-weight:500;margin-right:2px}
     .beat code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--ex-accent-soft);padding:1px 5px;border-radius:4px}
     @media (max-width:560px){.exp{padding:20px 18px 18px 18px}.exp-num{position:static;display:block;margin-bottom:4px;font-size:15px}}
+    details.exp>summary{list-style:none;cursor:pointer;position:relative;padding-right:28px}
+    details.exp>summary::marker{content:""}
+    details.exp>summary::-webkit-details-marker{display:none}
+    details.exp>summary::after{content:"";position:absolute;right:2px;top:9px;width:8px;height:8px;border-right:1.6px solid var(--ex-muted);border-bottom:1.6px solid var(--ex-muted);transform:rotate(45deg)}
+    details.exp[open]>summary::after{transform:rotate(225deg);top:13px}
+    details.exp>summary:hover h2{color:var(--ex-accent)}
+    details.exp:not([open])>summary .exp-tag{margin-bottom:0}
+    details.exp>summary .exp-num{left:-52px;top:2px}
+    .exp-num{pointer-events:none}
 
     .callout{margin:34px 0 8px;background:var(--ex-warn-soft);border:1px solid var(--ex-line);border-left:3px solid var(--ex-warn);border-radius:6px;padding:18px 20px}
     .callout h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:17px;color:var(--ex-ink)}
@@ -123,7 +132,7 @@
       <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
     </div>
 
-    <p class="bridge">What follows is the whole chain: fifteen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. The last four turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator.</p>
+    <p class="bridge">What follows is the whole chain: fifteen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. The last four turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator. Earlier entries are folded to keep the page walkable &mdash; open any of them, or jump from the list below; the most recent, the decision that closes the chain, is already open.</p>
 
     <nav class="toc" aria-label="Experiments on this page">
       <span class="toc-label">On this page</span>
@@ -149,155 +158,185 @@
     <div class="chain">
       <p class="chain-label">The experiments, in order</p>
 
-      <article class="exp" id="exp1">
-        <div class="exp-num">01</div>
-        <span class="exp-tag">Shell sampling &middot; pilot sweep</span>
-        <h2>Shell sampling and the pilot sweep</h2>
+      <details class="exp" id="exp1">
+        <summary>
+          <span class="exp-num">01</span>
+          <span class="exp-tag">Shell sampling &middot; pilot sweep</span>
+          <h2>Shell sampling and the pilot sweep</h2>
+        </summary>
         <p class="beat"><b>Question</b> Before any boundary could be trusted, the basic sampling geometry needed checking: does a requested perturbation land where it&rsquo;s asked, does the SUT&rsquo;s score behave sensibly across it, and can raw renders even reach the device&rsquo;s detector?</p>
         <p class="beat"><b>Done</b> 11 shells at equal angle from cos 0.9995 to 0.60, 512 shared directions, 20 rays rendered per shell (220 images) through the ESP-DL SiL at the vendor&rsquo;s default detector threshold.</p>
         <p class="beat"><b>Came back</b> Achieved cosine (the render re-embedded) tracks requested cosine with slope &asymp;1 and a fixed offset &asymp;0.23 &mdash; curves have to be read against <em>achieved</em>, not requested. The SUT score curve falls smoothly, &asymp;0.70 to &asymp;0.42, crossing <code>tau</code>&nbsp;=&nbsp;0.5 around requested &asymp;0.69 / achieved &asymp;0.45. But the detector passed only 5&ndash;25% of raw renders at its default 0.5 threshold (60&ndash;80% at 0.3) &mdash; Arc2Face&rsquo;s output is too painterly to clear it.</p>
         <p class="beat"><b>Changed</b> Curves plot against achieved cosine from here on; the corpus should concentrate shells between requested 1.0 and &asymp;0.55; and raw renders can&rsquo;t be used as-is for a detector running at its default threshold &mdash; compositing became the next question.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp2">
-        <div class="exp-num">02</div>
-        <span class="exp-tag">Compositing</span>
-        <h2>Tier-0 compositing trial</h2>
+      <details class="exp" id="exp2">
+        <summary>
+          <span class="exp-num">02</span>
+          <span class="exp-tag">Compositing</span>
+          <h2>Tier-0 compositing trial</h2>
+        </summary>
         <p class="beat"><b>Question</b> Directly prompted by the detection problem above: can warping the rendered face into a real photographic plate restore normal detection without corrupting the identity being measured?</p>
         <p class="beat"><b>Done</b> Warp the rendered face interior &mdash; a landmark-derived mask that stops below the hairline &mdash; into a real background plate. Ran 8 trial composites through the default-threshold detector, plus a control: three unrelated faces composited into the same plate.</p>
         <p class="beat"><b>Came back</b> 8/8 trial composites pass the default 0.5 detector (det 0.81&ndash;0.99, MFN cosine 0.64&ndash;0.76). Control: the three unrelated faces score 0.26&ndash;0.37 against the enrolment (near 0 raw) &mdash; the plate alone is worth about +0.3 similarity.</p>
         <p class="beat"><b>Changed</b> Composites are detector-faithful but identity-biased: useful for communication and figures, not for the recognition measurement itself. Raw renders at the relaxed 0.3 threshold stayed the clean recognition curve; compositing was ruled out as a stand-in for raw renders in the boundary search.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp3">
-        <div class="exp-num">03</div>
-        <span class="exp-tag">First surface &middot; 20 directions</span>
-        <h2>Per-direction refinement, 20 directions</h2>
+      <details class="exp" id="exp3">
+        <summary>
+          <span class="exp-num">03</span>
+          <span class="exp-tag">First surface &middot; 20 directions</span>
+          <h2>Per-direction refinement, 20 directions</h2>
+        </summary>
         <p class="beat"><b>Question</b> The pilot&rsquo;s mean score curve was smooth and reassuring, but a single averaged curve can&rsquo;t show whether some directions are far more fragile than others &mdash; and per-direction behaviour, not the average, is the actual object of the study.</p>
         <p class="beat"><b>Done</b> Bisection per ray to &plusmn;0.03 &epsilon; on the 20 pilot directions, three renders per evaluation, majority verdict on the median score so one bad render (a hand across the face) can&rsquo;t set a boundary on its own &mdash; 150 evaluations, 445 renders, &asymp;70 minutes.</p>
         <p class="beat"><b>Came back</b> 18 of 20 rays bounded (2 right-censored at the cos-0.60 ceiling). Boundary angle mean 32.7&deg; &plusmn; 12.9&deg;, range 6.8&deg;&ndash;49.5&deg;; the most tolerant bounded direction (ray 18) reaches 7.2&times; further from the anchor than the least tolerant (rays 8/14).</p>
         <p class="beat"><b>Changed</b> Gave the first real surface: a star, not a circle. Turned &ldquo;how far can this identity drift&rdquo; into a direction-dependent question, and set the next targets &mdash; more directions, and a way to separate an INT8 artefact from ordinary face-recognition behaviour.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp4">
-        <div class="exp-num">04</div>
-        <span class="exp-tag">Headline surface &middot; 64 directions</span>
-        <h2>Higher angular resolution, 64 directions</h2>
+      <details class="exp" id="exp4">
+        <summary>
+          <span class="exp-num">04</span>
+          <span class="exp-tag">Headline surface &middot; 64 directions</span>
+          <h2>Higher angular resolution, 64 directions</h2>
+        </summary>
         <p class="beat"><b>Question</b> 20 rays established that the shape was real, but was too few to trust an individual boundary or a precise anisotropy ratio.</p>
         <p class="beat"><b>Done</b> Three further refinement runs extended the pilot&rsquo;s 20 rays to 64 (one run&rsquo;s summary json was never written &mdash; the machine crashed before the flush &mdash; and was recovered from its sqlite), then merged with quality filtering.</p>
         <p class="beat"><b>Came back</b> Well-determined mean boundary 37.7&deg; (95% CI 34.0&ndash;41.1&deg;), extremes ratio 7.6&times;, robust P90/P10 spread 3.8&times;, 51 of 64 rays well-determined. The merge caught two defects in the project&rsquo;s own analysis, both fixed here: three rays whose <em>unperturbed</em> render was itself rejected had been recorded as 0&deg; boundaries, which made the naive anisotropy ratio infinite; and two of the tightest rays had each been decided from only two evaluations, driving a spurious 30&times; headline (a third ray, decided from three, was caught by the same rule).</p>
         <p class="beat"><b>Changed</b> 7.6&times; replaces 7.2&times; and the spurious 30&times; as the number to cite. Anchor-rejected, flagged and censored are now first-class fields on every ray, excluded from the headline statistic and shown rather than silently dropped &mdash; the visualisation above marks all three.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp5">
-        <div class="exp-num">05</div>
-        <span class="exp-tag">Cross-judge comparison</span>
-        <h2>Four judges and FAR calibration</h2>
+      <details class="exp" id="exp5">
+        <summary>
+          <span class="exp-num">05</span>
+          <span class="exp-tag">Cross-judge comparison</span>
+          <h2>Four judges and FAR calibration</h2>
+        </summary>
         <p class="beat"><b>Question</b> Comparing the edge model against float judges needs matched operating points, not a shared numeric threshold &mdash; scores aren&rsquo;t on a common scale. Matching on genuine acceptance alone was tried first and isn&rsquo;t enough: a model that accepts every genuine pair looks maximally tolerant regardless of how promiscuous it actually is.</p>
         <p class="beat"><b>Done</b> Scored every render through four judges &mdash; HiL, SiL, float MobileFaceNet, float ArcFace R100 &mdash; off identical crops, and calibrated each judge&rsquo;s threshold against an impostor cohort drawn from SFHQ-T2I (MIT-licensed synthetic faces).</p>
         <p class="beat"><b>Came back</b> The impostor check immediately caught a real bug: ESP-DL emits landmarks as [LE,LM,N,RE,RM], insightface&rsquo;s <code>norm_crop</code> expects [LE,RE,N,LM,RM]. Feeding the raw order warped every float judge&rsquo;s crop (&asymp;25px landmark error) and impostors scored 0.95. Fixed with the permutation (0,3,2,1,4) &mdash; error now &asymp;2px &mdash; impostor medians fell to 0.014 (MFN) and 0.007 (R100). Separately: at each judge&rsquo;s own matched operating point, neither float judge rejects inside the current cos&nbsp;&ge;&nbsp;0.60 shell range &mdash; both stay fully censored across all 19 comparable rays.</p>
         <p class="beat"><b>Changed</b> Voided every float-judge number computed before the fix. Established that the corpus doesn&rsquo;t yet reach far enough out for the float judges to disagree with the edge model at all &mdash; the shell range needs extending before cross-judge comparison means anything.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp6">
-        <div class="exp-num">06</div>
-        <span class="exp-tag">SiL fidelity</span>
-        <h2>Hardware-in-the-loop parity</h2>
+      <details class="exp" id="exp6">
+        <summary>
+          <span class="exp-num">06</span>
+          <span class="exp-tag">SiL fidelity</span>
+          <h2>Hardware-in-the-loop parity</h2>
+        </summary>
         <p class="beat"><b>Question</b> The SiL is the vendor&rsquo;s own runtime, bit-exact against an independent reference &mdash; but that&rsquo;s agreement with a reference, not with the chip. Its fidelity to the real silicon was still unverified.</p>
         <p class="beat"><b>Done</b> <code>idf_apps/hil_runner2</code> mirrors the host runner&rsquo;s protocol over native USB-Serial-JTAG, so identical pixel buffers can be pushed to both host and device and the returned features compared element-wise.</p>
         <p class="beat"><b>Came back</b> With identical pixels <em>and</em> identical keypoints, host and device features agree to cosine 0.980&ndash;0.983 &mdash; not bit-exact. Letting each side run its own detector drops that to 0.905&ndash;0.938. Two separate divergences: the recognition model itself differs by &asymp;2% (max element difference &asymp;2.4&ndash;3.1e-2), and the detector disagreeing about landmarks roughly triples the total divergence.</p>
         <p class="beat"><b>Changed</b> The SiL is a good proxy, not a substitute. A surface mapped entirely on the host is indicative; boundaries need device confirmation. Set up the next two measurements directly: how far a <em>boundary</em> actually moves (not just an embedding), and how much of the divergence is the detector&rsquo;s doing.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp7">
-        <div class="exp-num">07</div>
-        <span class="exp-tag">SiL vs HiL &middot; boundaries</span>
-        <h2>Boundary displacement</h2>
+      <details class="exp" id="exp7">
+        <summary>
+          <span class="exp-num">07</span>
+          <span class="exp-tag">SiL vs HiL &middot; boundaries</span>
+          <h2>Boundary displacement</h2>
+        </summary>
         <p class="beat"><b>Question</b> Embedding divergence isn&rsquo;t the quantity that matters for this method &mdash; what matters is whether the accept/reject <em>boundary</em> itself moves between host and device.</p>
         <p class="beat"><b>Done</b> Took probes from the completed 20-ray refinement run, re-scored the identical bytes through both judges, and interpolated a boundary separately for each from up to six coarse probes per ray.</p>
         <p class="beat"><b>Came back</b> 8 of 20 rays had a crossing on both sides. Mean shift device minus host: &minus;1.1&deg; on boundaries averaging &asymp;33&deg;; scatter std 4.3&deg;, largest single shift 7.9&deg;; mean paired score difference 0.013.</p>
         <p class="beat"><b>Changed</b> The bias is small (&asymp;3%) but the per-ray disagreement isn&rsquo;t &mdash; up to 8&deg; on a 33&deg; boundary is a quarter of the radius. Recorded plainly: a host-mapped surface is sound for aggregate statistics (means, the anisotropy ratio) and marginal for per-direction claims (which exact ray is narrowest) &mdash; which is precisely the interesting part of this study. Caveat carried forward: eight rays, six coarse probes each, so interpolation error is mixed in with genuine judge disagreement.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp8">
-        <div class="exp-num">08</div>
-        <span class="exp-tag">SiL vs HiL &middot; detection</span>
-        <h2>Detector agreement</h2>
+      <details class="exp" id="exp8">
+        <summary>
+          <span class="exp-num">08</span>
+          <span class="exp-tag">SiL vs HiL &middot; detection</span>
+          <h2>Detector agreement</h2>
+        </summary>
         <p class="beat"><b>Question</b> If the two detectors agreed closely enough, detection could be lifted off the device for speed &mdash; host detects, device only embeds. Does it agree closely enough?</p>
         <p class="beat"><b>Done</b> <code>scripts/detector_parity.py</code> over 9 images, comparing bounding boxes, landmarks, detection scores, and embeddings under both a fully independent pipeline and a forced-common-landmark decomposition.</p>
         <p class="beat"><b>Came back</b> Landmarks were never identical (0 of 9), and pixel deviation was small (mean 1.4px, max 3.6px; bounding boxes to 5px) &mdash; but detection score wasn&rsquo;t: mean absolute difference 0.194, worst case 0.44, enough for the two implementations to disagree about whether a face exists at all, not just where it sits. Full-pipeline embedding agreement: 0.900. Forcing both sides onto the same landmarks raises that to 0.975 &mdash; but only by deleting the component that actually diverges.</p>
         <p class="beat"><b>Changed</b> Decision: the detector stays on the device. The deployed pipeline is the measurement target, not the recogniser in isolation, so the project&rsquo;s headline host&ndash;device figure is <b style="color:var(--ex-ink);font-family:inherit;text-transform:none;letter-spacing:normal">0.900</b>; 0.975 is kept only as a diagnostic decomposition, never cited as parity. Running the full pipeline on-device costs more compute per probe, which raised the priority of the transport work next.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp9">
-        <div class="exp-num">09</div>
-        <span class="exp-tag">Throughput</span>
-        <h2>Transport optimisation</h2>
+      <details class="exp" id="exp9">
+        <summary>
+          <span class="exp-num">09</span>
+          <span class="exp-tag">Throughput</span>
+          <h2>Transport optimisation</h2>
+        </summary>
         <p class="beat"><b>Question</b> HiL parity is only useful if HiL is fast enough to run at scale. At the rates seen so far &mdash; up to 10.8 s per probe &mdash; it wasn&rsquo;t.</p>
         <p class="beat"><b>Done</b> Identified which of the board&rsquo;s two USB ports the runner was actually using. The UART bridge (CH343, <code>1a86:55d3</code>) enumerates alongside native USB-Serial-JTAG (<code>303a:1001</code>) and is easy to pick by mistake.</p>
         <p class="beat"><b>Came back</b> The bridge tops out near 115200 baud (&asymp;11.5 kB/s) &mdash; a 57kB frame costs &asymp;5s regardless of chunking, which was most of the 6&ndash;10.8 s/probe ceiling. Native USB runs at full speed (&asymp;500 kB/s) and brought per-probe time down to &asymp;1.00 s. At those two rates, a 10,000-probe corpus is the difference between roughly 30 hours and roughly 2.8 hours.</p>
         <p class="beat"><b>Changed</b> Switched the default transport to native USB (the stable <code>/dev/serial/by-id</code> path). Made a full-resolution HiL corpus practical rather than theoretical &mdash; and made &ldquo;how many boards in parallel&rdquo; a live question, given the device now also carries detection (experiment 8).</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp10">
-        <div class="exp-num">10</div>
-        <span class="exp-tag">Anchor &amp; threshold</span>
-        <h2>How an identity is enrolled, and where the threshold goes</h2>
+      <details class="exp" id="exp10">
+        <summary>
+          <span class="exp-num">10</span>
+          <span class="exp-tag">Anchor &amp; threshold</span>
+          <h2>How an identity is enrolled, and where the threshold goes</h2>
+        </summary>
         <p class="beat"><b>Question</b> Two choices had been made by default rather than by evidence: anchoring on the mean of nine photographs rather than one image, and picking a decision threshold. Both set the origin and the scale of every surface measured here, so both needed testing before more identities were added &mdash; otherwise everything would have to be re-run.</p>
         <p class="beat"><b>Done</b> Leave-one-out comparison of centroid against single-image anchors, and a sweep of every threshold that separates the subject&rsquo;s nine photographs from 1,164 synthetic impostors.</p>
         <p class="beat"><b>Came back</b> The centroid beats a single image by +0.115 and widens the impostor margin from +0.462 to +0.623. And <em>any</em> threshold from 0.269 to 0.602 gives zero false accepts and zero false rejects &mdash; a band 0.334 wide in which every choice reports identical error rates, while the acceptance region across it goes from 95% of directions unbounded to a star averaging 28.8&deg;.</p>
         <p class="beat"><b>Changed</b> The centroid stays, and synthetic identities get several images each rather than the real subject being cut to one. The threshold band became a headline finding in its own right: an operator tuning against FAR and FRR alone sees a flat, perfect region and no indication that the shape of what they accept is changing enormously underneath.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp11">
-        <div class="exp-num">11</div>
-        <span class="exp-tag">Human vs model</span>
-        <h2>Do the renders carry the identity?</h2>
+      <details class="exp" id="exp11">
+        <summary>
+          <span class="exp-num">11</span>
+          <span class="exp-tag">Human vs model</span>
+          <h2>Do the renders carry the identity?</h2>
+        </summary>
         <p class="beat"><b>Question</b> The whole method assumes a render conditioned on an identity embedding stands in for that person. The recognition model agreed emphatically &mdash; renders at 0.816 median against the anchor, versus 0.754 for the subject&rsquo;s own photographs against each other. The subject disagreed: she did not see herself in them. A cosine cannot settle that, because the same family of model produced both the score and the render.</p>
         <p class="beat"><b>Done</b> Two-alternative forced choice with the reference photograph visible. Both options are renders, so photographic style gives nothing away; half the trials target a synthetic identity as a control; showing the reference makes it a matching task, so a stranger can attempt it too.</p>
         <p class="beat"><b>Came back</b> 16 of 16 on subject-targeted trials, at about a second each, including an observer who had never met the subject. The renders do carry matchable identity. Both statements survive: they sit above stranger-level identity signal and below felt likeness, and those are different things a single cosine does not distinguish.</p>
         <p class="beat"><b>Changed</b> The surface is a surface of the person, not of a nearby region of the generator&rsquo;s manifold &mdash; the framing the rest of this site uses is sound. But it is a floor: those distractors sat about 0.08 away, plainly different people. The <a href="perceptual.html">public version</a> is 2.6&times; harder (median 0.208, max 0.336), and because its per-trial distances are known, pooled responses measure human accuracy as a function of embedding distance &mdash; the human boundary and the model boundary in the same units. A first correction came out of this too: an early claim that the public test was the <em>easier</em> one was an assumption, never measured, and was wrong.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp12">
-        <div class="exp-num">12</div>
-        <span class="exp-tag">Instrument audit &middot; renderer</span>
-        <h2>One recipe: the renderer cleanup</h2>
+      <details class="exp" id="exp12">
+        <summary>
+          <span class="exp-num">12</span>
+          <span class="exp-tag">Instrument audit &middot; renderer</span>
+          <h2>One recipe: the renderer cleanup</h2>
+        </summary>
         <p class="beat"><b>Question</b> The withdrawal of the measured figures (a run that silently took a different rendering preset, with no record of which) forced the question underneath it: of the renderer&rsquo;s ten generation presets, how many actually measure the thing this project asks about?</p>
         <p class="beat"><b>Done</b> Audited all ten presets and the second backend against the rule the measurement implies: <em>nothing but the embedding may condition the render.</em></p>
         <p class="beat"><b>Came back</b> One preset survives. Every other preset conditioned the render on the subject&rsquo;s own photograph &mdash; ControlNet on its structure, IP-Adapter on its identity, SMIRK on its expression &mdash; which answers &ldquo;how far can the embedding move before a render <em>that is still structurally the anchor&rsquo;s photograph</em> is rejected&rdquo;, not the question being asked. Two presets turned out to be byte-identical configurations under different names.</p>
         <p class="beat"><b>Changed</b> <code>pure_math</code> is the renderer&rsquo;s one setting, and the machinery was deleted, not just the preset entries, so the silent-default contamination behind the withdrawal cannot recur. One leak survives the cleanup, recorded rather than fixed: the anchor&rsquo;s <em>reference</em> image is picked best-of-8 with 35% of the selection weight on resemblance to the subject&rsquo;s photograph, in embedding and in pixels &mdash; the deleted presets&rsquo; leak moved into the selection stage. It is confined to that reference image; the measurement path renders exactly one image per (embedding, seed), and which renders are kept is decided by detection, never by similarity. The condition for fixing it is named: before the reference path is used for anything load-bearing.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp13">
-        <div class="exp-num">13</div>
-        <span class="exp-tag">Instrument characterisation</span>
-        <h2>The transfer map</h2>
+      <details class="exp" id="exp13">
+        <summary>
+          <span class="exp-num">13</span>
+          <span class="exp-tag">Instrument characterisation</span>
+          <h2>The transfer map</h2>
+        </summary>
         <p class="beat"><b>Question</b> The pilot showed a fixed offset between requested and achieved position; the cleanup left one recipe. Before trusting any boundary measured through it, the instrument&rsquo;s error had to become a measured map rather than an impression.</p>
         <p class="beat"><b>Done</b> 1,330 renders through the measurement path &mdash; one image per (embedding, seed), full configuration recorded, so these renders post-date and are not subject to the withdrawal &mdash; each re-embedded and its achieved angle compared to the one requested.</p>
         <p class="beat"><b>Came back</b> <code>achieved &theta; = 0.644 &times; target &theta; + 33.6&deg;</code>, r&nbsp;=&nbsp;0.867, residual sd 6.9&deg;. Ask for a face 20&deg; from the anchor and you get one about 46&deg; away: a fixed offset and a 36% compression of the request.</p>
         <p class="beat"><b>Changed</b> The offset and the slope are bias and can be pre-corrected. The 6.9&deg; residual cannot be &mdash; it is the instrument&rsquo;s noise floor, and it sets how finely a boundary can be located: &asymp;4.0&deg; with 3 renders per point, &asymp;3.1&deg; with 5. No preset change moves it; only a different generative model would, which is where experiment 15 ends up.</p>
-      </article>
+      </details>
 
-      <article class="exp" id="exp14">
-        <div class="exp-num">14</div>
-        <span class="exp-tag">SiL vs HiL &middot; one buffer</span>
-        <h2>One pixel buffer</h2>
+      <details class="exp" id="exp14">
+        <summary>
+          <span class="exp-num">14</span>
+          <span class="exp-tag">SiL vs HiL &middot; one buffer</span>
+          <h2>One pixel buffer</h2>
+        </summary>
         <p class="beat"><b>Question</b> Experiment 8 compared two detectors. A prior question had never been checked: were the rigs even being shown the same pixels?</p>
         <p class="beat"><b>Done</b> Traced what each ESP-DL path feeds the model. Three code paths prepared three different images from the same render &mdash; one resized to a maximum side, one letterboxed to VGA, and the device received whatever the caller sent.</p>
         <p class="beat"><b>Came back</b> On eight renders the first path found 8 faces at 0.79&ndash;1.00; the second found 2. The faces were present and recognisable; the disagreement was entirely preprocessing. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution &mdash; a divergence could have been the silicon or the resize, with nothing to say which.</p>
-        <p class="beat"><b>Changed</b> The buffer is now prepared in one module and every ESP-DL path uses it. After unification, SiL and HiL agreed on 8/8 detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. That made a full device pass worth trusting: the whole 1,330-render set of experiment 13 has since been judged on the board itself &mdash; a pass run, with its analysis still pending, not yet a result.</p>
-      </article>
+        <p class="beat"><b>Changed</b> The buffer is now prepared in one module and every ESP-DL path uses it. After unification, SiL and HiL agreed on 8/8 detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. That made a full device pass worth trusting: the whole 1,330-render set of experiment 13 has since been judged on the board itself &mdash; 1,330 of 1,330 rows; no parity figure from that pass is claimed here.</p>
+      </details>
 
-      <article class="exp" id="exp15">
-        <div class="exp-num">15</div>
-        <span class="exp-tag">Detection &middot; framing</span>
-        <h2>Framing, and the StyleGAN3 decision</h2>
+      <details class="exp" id="exp15" open>
+        <summary>
+          <span class="exp-num">15</span>
+          <span class="exp-tag">Detection &middot; framing</span>
+          <h2>Framing, and the StyleGAN3 decision</h2>
+        </summary>
         <p class="beat"><b>Question</b> StyleGAN was retired from this project months ago on a recorded 100% ESP-DL detection failure, and that retirement is part of why Arc2Face became the only render path. The measurement spec listed one prerequisite before any generator change: re-test that record. Was it ever evidence?</p>
         <p class="beat"><b>Done</b> The record refuted itself on re-reading &mdash; the StyleGAN reconstruction and the real photograph it was compared against both scored exactly 0.531209: the identical-embeddings SiL defect (since fixed), measured through a multi-scale pyramid and a dlib fallback (since deleted). No StyleGAN image survives in the tree, so the <em>framing</em> was reconstructed instead of the image: 40 renders the current detector is known to handle, recomposed into FFHQ-tight alignment &mdash; the framing every StyleGAN output has by construction &mdash; with resolution and padding controls, through the current measurement path.</p>
         <p class="beat"><b>Came back</b> The detector finds tightly-framed faces &mdash; 37/40 at threshold 0.1, refinement scores around 0.999 &mdash; yet at the vendor 0.5 they do not exist: 0/40. The proposal stage gates on framing; the scoring stage doesn&rsquo;t see it. Resolution is irrelevant (512 versus 1024 changes nothing), and a 50% pad partially restores vendor-threshold detection. And Arc2Face&rsquo;s own native renders survive the vendor threshold only 14/40 &mdash; partly framing, previously attributed wholly to render quality.</p>
         <p class="beat"><b>Changed</b> The retirement was invalid, and any FFHQ-aligned generator is usable with a recorded padding stage. Decision (2026-08-23): Arc2Face is not capable of what the measurement needs &mdash; too few renders survive the pipeline even under honest conditioning, on top of experiment 13&rsquo;s 33.6&deg; offset and 6.9&deg; floor. The next stimulus generator is StyleGAN3: invert the identity anchor to W once (the only place a photograph enters the pipeline), perturb W directly, render <code>G(w)</code> per sample &mdash; &asymp;50&nbsp;ms against &asymp;11&nbsp;s, every W point a face, deterministic, no per-probe optimisation and so no judge circularity. Adopted, not yet run &mdash; with its costs stated as requirements: boundaries reported only in achieved ArcFace coordinates, the padding stage mandatory and recorded, and cross-identity anisotropy treated as generator-confounded until a two-generator control runs.</p>
-      </article>
+      </details>
     </div>
 
     <div class="callout">
@@ -756,6 +795,21 @@
       .catch(function(){ /* keep the inline fallback */ });
   })();
   </script>
+  <script>(function(){
+    // progressive enhancement: opening a TOC / hash link expands the target
+    // <details> before the browser scrolls to it. With JS off the anchor still
+    // lands on the entry's summary, which can be opened by hand.
+    function openTarget(id){
+      if(!id) return;
+      var el = document.getElementById(id);
+      if(el && el.tagName === "DETAILS") el.open = true;
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener("click", function(){ openTarget(a.getAttribute("href").slice(1)); });
+    });
+    window.addEventListener("hashchange", function(){ openTarget(location.hash.slice(1)); });
+    openTarget(location.hash.slice(1));
+  })();</script>
   <script>(function(){
     var root=document.documentElement, m=window.matchMedia("(prefers-color-scheme: dark)");
     function paint(){

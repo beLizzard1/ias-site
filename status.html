@@ -21,10 +21,17 @@
     .prog{background:var(--warn-soft);color:var(--warn)}
     .next{background:var(--neutral-soft);color:var(--muted)}
     .phase{margin:46px 0 0}
-    .phase .ph-k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+    .phase .ph-k{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
     .phase h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:24px}
     .phase h2 .pill{margin-left:10px}
-    .phase .ph-sum{font-size:14.5px;line-height:1.6;color:var(--ink-2);max-width:70ch;margin:0 0 14px}
+    .phase .ph-sum{display:block;font-size:14.5px;line-height:1.6;color:var(--ink-2);max-width:70ch;margin:0 0 14px}
+    details.phase>summary{list-style:none;cursor:pointer;position:relative;padding-right:36px}
+    details.phase>summary::marker{content:""}
+    details.phase>summary::-webkit-details-marker{display:none}
+    details.phase>summary::after{content:"";position:absolute;right:8px;top:32px;width:9px;height:9px;border-right:1.6px solid var(--muted);border-bottom:1.6px solid var(--muted);transform:rotate(45deg)}
+    details.phase[open]>summary::after{transform:rotate(225deg);top:37px}
+    details.phase>summary:hover h2{color:var(--accent)}
+    details.phase:not([open])>summary .ph-sum{margin-bottom:2px}
     .row{border-top:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;align-items:start}
     .row h3{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:18px}
     .row .st{margin-top:8px}
@@ -99,10 +106,12 @@
       The ESP-DL defect findings and their upstream reports are unaffected.</p>
     </div>
 
-    <section class="phase">
-      <div class="ph-k">Phase 1 &middot; to 2026-08-22</div>
-      <h2>Building the apparatus<span class="pill done">Complete</span></h2>
-      <p class="ph-sum">Everything needed to ask the question at all: exact perturbation geometry, real anchors from photographs, a renderer, and the same INT8 pipeline running both as host software (SiL) and on the silicon it ships on (HiL).</p>
+    <details class="phase">
+      <summary>
+        <span class="ph-k">Phase 1 &middot; to 2026-08-22</span>
+        <h2>Building the apparatus<span class="pill done">Complete</span></h2>
+        <span class="ph-sum">Everything needed to ask the question at all: exact perturbation geometry, real anchors from photographs, a renderer, and the same INT8 pipeline running both as host software (SiL) and on the silicon it ships on (HiL).</span>
+      </summary>
 
       <div class="row">
         <div><h3>Perturbation core &amp; real anchors</h3><div class="st"><span class="pill done">Done</span></div></div>
@@ -132,12 +141,14 @@
           <p>Removed in August 2026 along with every other render-time stage that saw the original photograph. The trial result stands; what changed is where such a stage may sit. Anything conditioned on the subject&rsquo;s own image belongs <em>after</em> the measurement, as presentation, not inside the render being measured.</p>
         </div>
       </div>
-    </section>
+    </details>
 
-    <section class="phase">
-      <div class="ph-k">Phase 2 &middot; 2026-08-22 &rarr; 2026-08-23</div>
-      <h2>Measuring with Arc2Face<span class="pill prog">Closed &mdash; generator retired</span></h2>
-      <p class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures are withdrawn (notice above), and the phase ends with a verdict on the renderer itself.</p>
+    <details class="phase">
+      <summary>
+        <span class="ph-k">Phase 2 &middot; 2026-08-22 &rarr; 2026-08-23</span>
+        <h2>Measuring with Arc2Face<span class="pill prog">Closed &mdash; generator retired</span></h2>
+        <span class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures are withdrawn (notice above), and the phase ends with a verdict on the renderer itself.</span>
+      </summary>
 
       <div class="row">
         <div><h3>The measured surfaces</h3><div class="st"><span class="pill prog">Figures withdrawn</span></div></div>
@@ -179,7 +190,7 @@
       <div class="row">
         <div><h3>One pixel buffer</h3><div class="st"><span class="pill done">Measured</span></div></div>
         <div>
-          <p>Three code paths fed the same model three differently prepared images; on eight renders one path found 8 faces at 0.79&ndash;1.00 and another found 2. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution. The buffer is now prepared in one module used by every ESP-DL path, and after unification SiL and HiL agree on <strong>8/8</strong> detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. A full device pass over the same 1,330-render set has since run on the board; its analysis is pending, so that is a pass completed, not yet a result.</p>
+          <p>Three code paths fed the same model three differently prepared images; on eight renders one path found 8 faces at 0.79&ndash;1.00 and another found 2. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution. The buffer is now prepared in one module used by every ESP-DL path, and after unification SiL and HiL agree on <strong>8/8</strong> detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. The full device pass over the same 1,330-render set has since completed on the board &mdash; 1,330 of 1,330 rows judged. No parity figure from that pass is claimed here yet.</p>
         </div>
       </div>
 
@@ -190,12 +201,14 @@
           <p>Two consequences. The record that retired StyleGAN from this project months ago &mdash; a 100% detection failure &mdash; was never evidence: it scored the reconstruction and the real photograph it was compared against at the same constant 0.531209, the identical-embeddings SiL defect since fixed, measured through a pipeline since deleted. And Arc2Face&rsquo;s own vendor-threshold losses (14/40 native) are partly framing, previously attributed wholly to render quality.</p>
         </div>
       </div>
-    </section>
+    </details>
 
-    <section class="phase">
-      <div class="ph-k">Phase 3 &middot; current</div>
-      <h2>StyleGAN3, the W-walk<span class="pill prog">Adopted, not yet run</span></h2>
-      <p class="ph-sum">The adopted stimulus generator, with its requirements stated up front. Nothing has been measured through it yet, and nothing below is a result.</p>
+    <details class="phase" open>
+      <summary>
+        <span class="ph-k">Phase 3 &middot; current</span>
+        <h2>StyleGAN3, the W-walk<span class="pill prog">Adopted, not yet run</span></h2>
+        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. Nothing has been measured through it yet, and nothing below is a result.</span>
+      </summary>
 
       <div class="row">
         <div><h3>The design</h3><div class="st"><span class="pill done">Adopted 2026-08-23</span></div></div>
@@ -215,10 +228,10 @@
       <div class="row">
         <div><h3>In flight</h3><div class="st"><span class="pill next">In progress</span></div></div>
         <div>
-          <p>The anchor inversion and the walk itself are build work, not results: no StyleGAN3 boundary exists yet, and none is claimed. In parallel, the analysis of the full HiL device pass from Phase 2 is pending. Arc2Face stays available as the characterised baseline the two-generator control needs.</p>
+          <p>The anchor inversion and the walk itself are build work, not results: no StyleGAN3 boundary exists yet, and none is claimed. In parallel, the full HiL device pass from Phase 2 is complete. Arc2Face stays available as the characterised baseline the two-generator control needs.</p>
         </div>
       </div>
-    </section>
+    </details>
 
     <div class="callout">
       <h2>The through-line</h2>
