@@ -1,0 +1,1510 @@
+{
+ "source": "outputs/renders/m2_shakeout (preset pure_math, full provenance)",
+ "generated_by": "scripts/build_m2_figures.py",
+ "achieved_axis": true,
+ "grid_edge_deg": 60.0,
+ "taus": [
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7
+ ],
+ "rays": [
+  {
+   "ray": 0,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 37.63,
+     "score": 0.7135,
+     "n": 3
+    },
+    {
+     "theta": 37.87,
+     "score": 0.7161,
+     "n": 3
+    },
+    {
+     "theta": 38.85,
+     "score": 0.7064,
+     "n": 3
+    },
+    {
+     "theta": 39.01,
+     "score": 0.6458,
+     "n": 3
+    },
+    {
+     "theta": 39.03,
+     "score": 0.6882,
+     "n": 3
+    },
+    {
+     "theta": 40.28,
+     "score": 0.6748,
+     "n": 3
+    },
+    {
+     "theta": 43.42,
+     "score": 0.6478,
+     "n": 3
+    },
+    {
+     "theta": 46.14,
+     "score": 0.6236,
+     "n": 3
+    },
+    {
+     "theta": 48.04,
+     "score": 0.6349,
+     "n": 3
+    },
+    {
+     "theta": 50.15,
+     "score": 0.6144,
+     "n": 2
+    },
+    {
+     "theta": 53.29,
+     "score": 0.5786,
+     "n": 3
+    },
+    {
+     "theta": 54.71,
+     "score": 0.5799,
+     "n": 3
+    },
+    {
+     "theta": 59.64,
+     "score": 0.5219,
+     "n": 3
+    },
+    {
+     "theta": 65.48,
+     "score": 0.5371,
+     "n": 2
+    },
+    {
+     "theta": 72.49,
+     "score": 0.4899,
+     "n": 1
+    },
+    {
+     "theta": 74.16,
+     "score": 0.4103,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.4": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 56.24254664428025
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 51.5113248099028
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 39.09350165111523
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 29.608245691986898
+    },
+    "0.65": {
+     "status": "multimodal",
+     "theta_star": 7.879607521354732
+    },
+    "0.7": {
+     "status": "bounded",
+     "theta_star": 6.457269359290141
+    }
+   }
+  },
+  {
+   "ray": 1,
+   "points": [
+    {
+     "theta": 34.95,
+     "score": 0.677,
+     "n": 3
+    },
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 35.85,
+     "score": 0.7063,
+     "n": 3
+    },
+    {
+     "theta": 35.97,
+     "score": 0.6834,
+     "n": 3
+    },
+    {
+     "theta": 36.37,
+     "score": 0.7304,
+     "n": 3
+    },
+    {
+     "theta": 36.6,
+     "score": 0.6684,
+     "n": 3
+    },
+    {
+     "theta": 37.27,
+     "score": 0.6912,
+     "n": 3
+    },
+    {
+     "theta": 37.73,
+     "score": 0.6769,
+     "n": 3
+    },
+    {
+     "theta": 39.94,
+     "score": 0.6598,
+     "n": 3
+    },
+    {
+     "theta": 42.74,
+     "score": 0.5908,
+     "n": 3
+    },
+    {
+     "theta": 43.04,
+     "score": 0.6435,
+     "n": 3
+    },
+    {
+     "theta": 46.82,
+     "score": 0.5827,
+     "n": 3
+    },
+    {
+     "theta": 50.59,
+     "score": 0.5594,
+     "n": 3
+    },
+    {
+     "theta": 56.47,
+     "score": 0.4971,
+     "n": 3
+    },
+    {
+     "theta": 70.72,
+     "score": 0.3668,
+     "n": 2
+    },
+    {
+     "theta": 77.3,
+     "score": 0.3129,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "bounded",
+     "theta_star": 55.87305391767134
+    },
+    "0.4": {
+     "status": "bounded",
+     "theta_star": 50.94553974292023
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 46.34023669806864
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 41.722865802982554
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 36.907882270414746
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 27.30204203204182
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 22.401154650965395
+    },
+    "0.7": {
+     "status": "bounded",
+     "theta_star": 4.8368603530731225
+    }
+   }
+  },
+  {
+   "ray": 2,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 36.1,
+     "score": 0.7116,
+     "n": 3
+    },
+    {
+     "theta": 36.87,
+     "score": 0.7133,
+     "n": 3
+    },
+    {
+     "theta": 37.25,
+     "score": 0.6925,
+     "n": 3
+    },
+    {
+     "theta": 37.7,
+     "score": 0.705,
+     "n": 3
+    },
+    {
+     "theta": 38.77,
+     "score": 0.6735,
+     "n": 3
+    },
+    {
+     "theta": 39.83,
+     "score": 0.7019,
+     "n": 3
+    },
+    {
+     "theta": 41.2,
+     "score": 0.6444,
+     "n": 3
+    },
+    {
+     "theta": 41.63,
+     "score": 0.6295,
+     "n": 3
+    },
+    {
+     "theta": 43.3,
+     "score": 0.6225,
+     "n": 3
+    },
+    {
+     "theta": 46.74,
+     "score": 0.5838,
+     "n": 3
+    },
+    {
+     "theta": 49.16,
+     "score": 0.5492,
+     "n": 3
+    },
+    {
+     "theta": 52.71,
+     "score": 0.5306,
+     "n": 3
+    },
+    {
+     "theta": 57.1,
+     "score": 0.4493,
+     "n": 3
+    },
+    {
+     "theta": 62.53,
+     "score": 0.3322,
+     "n": 3
+    },
+    {
+     "theta": 66.35,
+     "score": 0.2742,
+     "n": 3
+    },
+    {
+     "theta": 74.51,
+     "score": 0.1823,
+     "n": 2
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "bounded",
+     "theta_star": 51.3303743903315
+    },
+    "0.35": {
+     "status": "bounded",
+     "theta_star": 47.08686917854367
+    },
+    "0.4": {
+     "status": "bounded",
+     "theta_star": 44.5246477230455
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 41.94590550006728
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 38.2566544860603
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 31.906178128183413
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 26.323337617455493
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 15.610501493829071
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 6.798207850051177
+    }
+   }
+  },
+  {
+   "ray": 3,
+   "points": [
+    {
+     "theta": 34.63,
+     "score": 0.7184,
+     "n": 3
+    },
+    {
+     "theta": 35.34,
+     "score": 0.7348,
+     "n": 3
+    },
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 35.76,
+     "score": 0.7231,
+     "n": 3
+    },
+    {
+     "theta": 36.06,
+     "score": 0.7284,
+     "n": 3
+    },
+    {
+     "theta": 36.77,
+     "score": 0.7085,
+     "n": 3
+    },
+    {
+     "theta": 37.16,
+     "score": 0.7154,
+     "n": 3
+    },
+    {
+     "theta": 37.4,
+     "score": 0.72,
+     "n": 3
+    },
+    {
+     "theta": 39.81,
+     "score": 0.7057,
+     "n": 3
+    },
+    {
+     "theta": 40.64,
+     "score": 0.6991,
+     "n": 3
+    },
+    {
+     "theta": 42.53,
+     "score": 0.6956,
+     "n": 2
+    },
+    {
+     "theta": 44.7,
+     "score": 0.7013,
+     "n": 2
+    },
+    {
+     "theta": 47.5,
+     "score": 0.6805,
+     "n": 2
+    },
+    {
+     "theta": 53.66,
+     "score": 0.6406,
+     "n": 1
+    },
+    {
+     "theta": 54.91,
+     "score": 0.6162,
+     "n": 3
+    },
+    {
+     "theta": 58.64,
+     "score": 0.6072,
+     "n": 3
+    },
+    {
+     "theta": 62.43,
+     "score": 0.552,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.4": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.45": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.5": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.55": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 54.784948131927344
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 41.691133214104255
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 23.478019928141855
+    }
+   }
+  },
+  {
+   "ray": 4,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 37.74,
+     "score": 0.7131,
+     "n": 3
+    },
+    {
+     "theta": 37.74,
+     "score": 0.7236,
+     "n": 3
+    },
+    {
+     "theta": 38.05,
+     "score": 0.7098,
+     "n": 3
+    },
+    {
+     "theta": 40.15,
+     "score": 0.6655,
+     "n": 3
+    },
+    {
+     "theta": 41.5,
+     "score": 0.683,
+     "n": 3
+    },
+    {
+     "theta": 41.6,
+     "score": 0.6633,
+     "n": 3
+    },
+    {
+     "theta": 46.51,
+     "score": 0.607,
+     "n": 2
+    },
+    {
+     "theta": 49.36,
+     "score": 0.5894,
+     "n": 1
+    },
+    {
+     "theta": 51.57,
+     "score": 0.5502,
+     "n": 1
+    },
+    {
+     "theta": 51.87,
+     "score": 0.6022,
+     "n": 2
+    },
+    {
+     "theta": 53.49,
+     "score": 0.6086,
+     "n": 1
+    },
+    {
+     "theta": 57.71,
+     "score": 0.5575,
+     "n": 1
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.4": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.45": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.5": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.55": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.6": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 12.947316426652062
+    },
+    "0.7": {
+     "status": "bounded",
+     "theta_star": 6.731352047317323
+    }
+   }
+  },
+  {
+   "ray": 5,
+   "points": [
+    {
+     "theta": 34.78,
+     "score": 0.7328,
+     "n": 3
+    },
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 36.13,
+     "score": 0.7247,
+     "n": 3
+    },
+    {
+     "theta": 36.14,
+     "score": 0.7282,
+     "n": 3
+    },
+    {
+     "theta": 36.71,
+     "score": 0.698,
+     "n": 3
+    },
+    {
+     "theta": 36.81,
+     "score": 0.7269,
+     "n": 3
+    },
+    {
+     "theta": 37.61,
+     "score": 0.7091,
+     "n": 3
+    },
+    {
+     "theta": 39.47,
+     "score": 0.6958,
+     "n": 3
+    },
+    {
+     "theta": 39.73,
+     "score": 0.6711,
+     "n": 3
+    },
+    {
+     "theta": 44.03,
+     "score": 0.6718,
+     "n": 3
+    },
+    {
+     "theta": 44.24,
+     "score": 0.6789,
+     "n": 3
+    },
+    {
+     "theta": 46.82,
+     "score": 0.6823,
+     "n": 3
+    },
+    {
+     "theta": 49.72,
+     "score": 0.6453,
+     "n": 3
+    },
+    {
+     "theta": 51.98,
+     "score": 0.6,
+     "n": 3
+    },
+    {
+     "theta": 59.12,
+     "score": 0.5932,
+     "n": 3
+    },
+    {
+     "theta": 64.23,
+     "score": 0.506,
+     "n": 3
+    },
+    {
+     "theta": 72.07,
+     "score": 0.4263,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.4": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 58.2154158817927
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 54.45292935505542
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 50.97177978892935
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 41.99718310827547
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 35.492117743342654
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 3.771915203164413
+    }
+   }
+  },
+  {
+   "ray": 6,
+   "points": [
+    {
+     "theta": 34.72,
+     "score": 0.721,
+     "n": 3
+    },
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 36.09,
+     "score": 0.7396,
+     "n": 3
+    },
+    {
+     "theta": 36.4,
+     "score": 0.7211,
+     "n": 3
+    },
+    {
+     "theta": 36.42,
+     "score": 0.7069,
+     "n": 3
+    },
+    {
+     "theta": 36.73,
+     "score": 0.7216,
+     "n": 3
+    },
+    {
+     "theta": 38.5,
+     "score": 0.7048,
+     "n": 3
+    },
+    {
+     "theta": 39.15,
+     "score": 0.6973,
+     "n": 3
+    },
+    {
+     "theta": 39.82,
+     "score": 0.7057,
+     "n": 3
+    },
+    {
+     "theta": 46.09,
+     "score": 0.6826,
+     "n": 3
+    },
+    {
+     "theta": 49.53,
+     "score": 0.6317,
+     "n": 3
+    },
+    {
+     "theta": 52.11,
+     "score": 0.5907,
+     "n": 3
+    },
+    {
+     "theta": 55.47,
+     "score": 0.5505,
+     "n": 2
+    },
+    {
+     "theta": 59.16,
+     "score": 0.4447,
+     "n": 2
+    },
+    {
+     "theta": 64.35,
+     "score": 0.3063,
+     "n": 1
+    },
+    {
+     "theta": 68.62,
+     "score": 0.338,
+     "n": 2
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "bounded",
+     "theta_star": 52.646428490935854
+    },
+    "0.4": {
+     "status": "bounded",
+     "theta_star": 47.022596888811094
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 41.69710001766267
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 38.86390234573582
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 36.030704673808984
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 31.092646495695796
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 26.560885499391894
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 14.872557751207122
+    }
+   }
+  },
+  {
+   "ray": 7,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 35.67,
+     "score": 0.6844,
+     "n": 3
+    },
+    {
+     "theta": 36.06,
+     "score": 0.6788,
+     "n": 3
+    },
+    {
+     "theta": 36.25,
+     "score": 0.7009,
+     "n": 3
+    },
+    {
+     "theta": 36.71,
+     "score": 0.6879,
+     "n": 3
+    },
+    {
+     "theta": 37.63,
+     "score": 0.7018,
+     "n": 3
+    },
+    {
+     "theta": 38.37,
+     "score": 0.7104,
+     "n": 3
+    },
+    {
+     "theta": 39.21,
+     "score": 0.6894,
+     "n": 3
+    },
+    {
+     "theta": 40.38,
+     "score": 0.675,
+     "n": 3
+    },
+    {
+     "theta": 44.05,
+     "score": 0.6802,
+     "n": 3
+    },
+    {
+     "theta": 46.61,
+     "score": 0.6565,
+     "n": 3
+    },
+    {
+     "theta": 49.69,
+     "score": 0.6301,
+     "n": 3
+    },
+    {
+     "theta": 52.23,
+     "score": 0.5654,
+     "n": 3
+    },
+    {
+     "theta": 60.5,
+     "score": 0.5236,
+     "n": 3
+    },
+    {
+     "theta": 65.31,
+     "score": 0.4619,
+     "n": 3
+    },
+    {
+     "theta": 69.9,
+     "score": 0.4056,
+     "n": 3
+    },
+    {
+     "theta": 74.97,
+     "score": 0.3302,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "bounded",
+     "theta_star": 58.42662228664229
+    },
+    "0.4": {
+     "status": "bounded",
+     "theta_star": 54.44576392074518
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 49.26836876394153
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 44.29413061692677
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 38.212529723600696
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 33.86224640932816
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 28.985818331603017
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 2.6587194046810634
+    }
+   }
+  },
+  {
+   "ray": 8,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 35.78,
+     "score": 0.7362,
+     "n": 3
+    },
+    {
+     "theta": 35.79,
+     "score": 0.7189,
+     "n": 3
+    },
+    {
+     "theta": 36.12,
+     "score": 0.7021,
+     "n": 3
+    },
+    {
+     "theta": 36.17,
+     "score": 0.7186,
+     "n": 3
+    },
+    {
+     "theta": 36.28,
+     "score": 0.7167,
+     "n": 3
+    },
+    {
+     "theta": 36.48,
+     "score": 0.7263,
+     "n": 3
+    },
+    {
+     "theta": 36.5,
+     "score": 0.7124,
+     "n": 3
+    },
+    {
+     "theta": 37.7,
+     "score": 0.6902,
+     "n": 3
+    },
+    {
+     "theta": 38.45,
+     "score": 0.6763,
+     "n": 2
+    },
+    {
+     "theta": 41.29,
+     "score": 0.6634,
+     "n": 1
+    },
+    {
+     "theta": 43.79,
+     "score": 0.6487,
+     "n": 3
+    },
+    {
+     "theta": 46.69,
+     "score": 0.6288,
+     "n": 3
+    },
+    {
+     "theta": 51.8,
+     "score": 0.59,
+     "n": 3
+    },
+    {
+     "theta": 56.53,
+     "score": 0.5242,
+     "n": 3
+    },
+    {
+     "theta": 72.35,
+     "score": 0.351,
+     "n": 3
+    },
+    {
+     "theta": 78.11,
+     "score": 0.2501,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "bounded",
+     "theta_star": 57.03421078897642
+    },
+    "0.35": {
+     "status": "bounded",
+     "theta_star": 54.06205774008735
+    },
+    "0.4": {
+     "status": "bounded",
+     "theta_star": 52.30344934021291
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 50.57071215240663
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 48.83797496460035
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 45.647257165554024
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 40.45595983511553
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 31.622536307755343
+    },
+    "0.7": {
+     "status": "bounded",
+     "theta_star": 16.695534388117444
+    }
+   }
+  },
+  {
+   "ray": 9,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 36.41,
+     "score": 0.6961,
+     "n": 3
+    },
+    {
+     "theta": 38.21,
+     "score": 0.73,
+     "n": 3
+    },
+    {
+     "theta": 38.36,
+     "score": 0.6831,
+     "n": 2
+    },
+    {
+     "theta": 38.47,
+     "score": 0.6726,
+     "n": 3
+    },
+    {
+     "theta": 38.91,
+     "score": 0.6743,
+     "n": 3
+    },
+    {
+     "theta": 39.89,
+     "score": 0.6668,
+     "n": 3
+    },
+    {
+     "theta": 40.7,
+     "score": 0.6742,
+     "n": 2
+    },
+    {
+     "theta": 42.42,
+     "score": 0.652,
+     "n": 2
+    },
+    {
+     "theta": 44.46,
+     "score": 0.6452,
+     "n": 2
+    },
+    {
+     "theta": 47.75,
+     "score": 0.6127,
+     "n": 2
+    },
+    {
+     "theta": 49.0,
+     "score": 0.6002,
+     "n": 1
+    },
+    {
+     "theta": 58.76,
+     "score": 0.569,
+     "n": 1
+    },
+    {
+     "theta": 68.11,
+     "score": 0.4216,
+     "n": 1
+    },
+    {
+     "theta": 71.5,
+     "score": 0.3754,
+     "n": 1
+    },
+    {
+     "theta": 76.25,
+     "score": 0.2912,
+     "n": 1
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.4": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.45": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.5": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.55": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.6": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 21.190047130619373
+    },
+    "0.7": {
+     "status": "bounded",
+     "theta_star": 3.044756399139207
+    }
+   }
+  },
+  {
+   "ray": 10,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 36.74,
+     "score": 0.702,
+     "n": 3
+    },
+    {
+     "theta": 38.51,
+     "score": 0.7036,
+     "n": 3
+    },
+    {
+     "theta": 38.66,
+     "score": 0.6831,
+     "n": 3
+    },
+    {
+     "theta": 38.74,
+     "score": 0.7247,
+     "n": 3
+    },
+    {
+     "theta": 39.46,
+     "score": 0.7049,
+     "n": 3
+    },
+    {
+     "theta": 40.97,
+     "score": 0.7054,
+     "n": 3
+    },
+    {
+     "theta": 41.66,
+     "score": 0.6868,
+     "n": 3
+    },
+    {
+     "theta": 44.43,
+     "score": 0.6428,
+     "n": 3
+    },
+    {
+     "theta": 47.36,
+     "score": 0.6048,
+     "n": 3
+    },
+    {
+     "theta": 47.85,
+     "score": 0.5962,
+     "n": 3
+    },
+    {
+     "theta": 53.53,
+     "score": 0.5038,
+     "n": 2
+    },
+    {
+     "theta": 55.95,
+     "score": 0.5228,
+     "n": 3
+    },
+    {
+     "theta": 64.94,
+     "score": 0.4425,
+     "n": 3
+    },
+    {
+     "theta": 72.96,
+     "score": 0.3493,
+     "n": 3
+    },
+    {
+     "theta": 78.89,
+     "score": 0.1881,
+     "n": 3
+    },
+    {
+     "theta": 80.81,
+     "score": 0.1487,
+     "n": 3
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "bounded",
+     "theta_star": 49.834856479287275
+    },
+    "0.35": {
+     "status": "bounded",
+     "theta_star": 47.9538722574162
+    },
+    "0.4": {
+     "status": "bounded",
+     "theta_star": 44.735110270692495
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 41.43879643642228
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 37.703901365411696
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 30.000402781234932
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 27.672584267077166
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 18.202420472057597
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 2.2143409656212967
+    }
+   }
+  },
+  {
+   "ray": 11,
+   "points": [
+    {
+     "theta": 35.66,
+     "score": 0.7298,
+     "n": 3
+    },
+    {
+     "theta": 36.93,
+     "score": 0.7238,
+     "n": 3
+    },
+    {
+     "theta": 37.68,
+     "score": 0.7024,
+     "n": 3
+    },
+    {
+     "theta": 38.06,
+     "score": 0.7027,
+     "n": 3
+    },
+    {
+     "theta": 38.71,
+     "score": 0.7062,
+     "n": 3
+    },
+    {
+     "theta": 38.82,
+     "score": 0.6872,
+     "n": 3
+    },
+    {
+     "theta": 38.87,
+     "score": 0.706,
+     "n": 3
+    },
+    {
+     "theta": 40.7,
+     "score": 0.6874,
+     "n": 3
+    },
+    {
+     "theta": 41.49,
+     "score": 0.6757,
+     "n": 3
+    },
+    {
+     "theta": 43.38,
+     "score": 0.6606,
+     "n": 2
+    },
+    {
+     "theta": 46.53,
+     "score": 0.6292,
+     "n": 3
+    },
+    {
+     "theta": 47.41,
+     "score": 0.6049,
+     "n": 3
+    },
+    {
+     "theta": 51.65,
+     "score": 0.6031,
+     "n": 2
+    },
+    {
+     "theta": 55.83,
+     "score": 0.543,
+     "n": 1
+    },
+    {
+     "theta": 64.41,
+     "score": 0.4354,
+     "n": 2
+    }
+   ],
+   "by_tau": {
+    "0.3": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.35": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.4": {
+     "status": "censored_right",
+     "theta_star": null
+    },
+    "0.45": {
+     "status": "bounded",
+     "theta_star": 46.956024055363756
+    },
+    "0.5": {
+     "status": "bounded",
+     "theta_star": 43.37805584475021
+    },
+    "0.55": {
+     "status": "bounded",
+     "theta_star": 39.80008763413666
+    },
+    "0.6": {
+     "status": "bounded",
+     "theta_star": 36.22211942352312
+    },
+    "0.65": {
+     "status": "bounded",
+     "theta_star": 25.352750195857418
+    },
+    "0.7": {
+     "status": "multimodal",
+     "theta_star": 8.31235512329795
+    }
+   }
+  }
+ ]
+}
