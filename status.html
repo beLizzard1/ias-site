@@ -50,9 +50,33 @@
     <section class="head">
       <div class="eyebrow">Where we are</div>
       <h1>Project status</h1>
-      <div class="updated">Last updated 2026-08-22</div>
+      <div class="updated">Last updated 2026-08-23</div>
       <p class="lead">A running snapshot of what's built, the findings that are steering the work, and what's in flight. Honest about the rough edges.</p>
     </section>
+
+    <div class="withdrawn" style="border-color:var(--accent);background:var(--accent-soft)">
+      <div class="k" style="color:var(--accent)">Geometry &mdash; 2026-08-23</div>
+      <p><strong>The coordinate chart covers a hemisphere, and is being extended.</strong>
+      Perturbations are built as <span class="mono">unit(anchor + &epsilon; &middot; tangent)</span>,
+      which is a gnomonic projection &mdash; the tangent plane pushed onto the sphere. It reaches
+      only cos&nbsp;&gt;&nbsp;0: ninety degrees sits at &epsilon;&nbsp;=&nbsp;&infin;, and nothing
+      past it has a coordinate at any budget.</p>
+      <p><strong>No measurement is affected.</strong> For cos&nbsp;&gt;&nbsp;0 the chart is
+      point-for-point identical to the great-circle form &mdash; worst difference 2.8&times;10<sup>&minus;17</sup>,
+      float rounding &mdash; so every shell ever generated already sits where the angle it records
+      says it does. This is a change of domain, not a correction. It is also
+      <em>separate</em> from the withdrawal below, which is about runs that recorded no
+      render configuration.</p>
+      <p>The reason to extend is that the boundary search bisects in &epsilon;, which saturates
+      exactly in the band where other identities sit, and that placing those identities on the
+      same map as the acceptance region requires coordinates for all of them. A scan of 2,115
+      synthetic identities puts 55% of them beyond ninety degrees &mdash; though that figure is
+      concentration of measure rather than a finding, since a random cloud in 512 dimensions
+      gives 49%.</p>
+      <p>Two earlier statements on this site&rsquo;s pages were artefacts of the chart rather than
+      results: that impostors are unreachable, and that &ldquo;how far toward a given person&rdquo;
+      has no denominator. With the extended chart both are well defined.</p>
+    </div>
 
     <div class="withdrawn">
       <div class="k">Withdrawn 2026-08-23</div>
