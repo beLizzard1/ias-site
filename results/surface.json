@@ -1,0 +1,693 @@
+{
+ "schema_version": 3,
+ "artifact_type": "refined_acceptance_surface",
+ "directions": 64,
+ "discriminator": "esp-dl-sil",
+ "tau": 0.5,
+ "detect_score_thr": 0.3,
+ "seeds_per_eval": 3,
+ "radius_tolerance": 0.03,
+ "note": "angle = degrees(arctan(epsilon)); censored = at/beyond the outermost shell (cos 0.60); anchor_rejected rays are excluded from statistics",
+ "rays": {
+  "0": {
+   "angle": 42.45851346021522,
+   "eps": 0.9149999999999999,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 3.459150987023171,
+   "plateau": false,
+   "evals": 12
+  },
+  "1": {
+   "angle": 35.18383662124626,
+   "eps": 0.705,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 3.677761227168216,
+   "plateau": false,
+   "evals": 12
+  },
+  "2": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": null,
+   "plateau": false,
+   "evals": 4
+  },
+  "3": {
+   "angle": 16.69924423399362,
+   "eps": 0.3,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 20.46185337397168,
+   "plateau": false,
+   "evals": 9
+  },
+  "4": {
+   "angle": 39.007472552121044,
+   "eps": 0.81,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.3210995939246746,
+   "plateau": false,
+   "evals": 12
+  },
+  "5": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "capped",
+   "fragility": null,
+   "plateau": false,
+   "evals": 8
+  },
+  "6": {
+   "angle": 39.40510163593098,
+   "eps": 0.8215583884866231,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 5.2640923269593305,
+   "plateau": false,
+   "evals": 4
+  },
+  "7": {
+   "angle": 37.95423087513252,
+   "eps": 0.78,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.384498555124257,
+   "plateau": false,
+   "evals": 12
+  },
+  "8": {
+   "angle": 6.84277341263094,
+   "eps": 0.12,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 4.27967854023017,
+   "plateau": false,
+   "evals": 5
+  },
+  "9": {
+   "angle": 37.33529808305043,
+   "eps": 0.762769904174313,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": null,
+   "plateau": false,
+   "evals": 4
+  },
+  "10": {
+   "angle": 37.33529808305043,
+   "eps": 0.762769904174313,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": null,
+   "plateau": false,
+   "evals": 4
+  },
+  "11": {
+   "angle": 41.98540918626646,
+   "eps": 0.8999430342363701,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 2.579250411562617,
+   "plateau": false,
+   "evals": 4
+  },
+  "12": {
+   "angle": 46.00307726363036,
+   "eps": 1.0356416210988066,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.3063779297195943,
+   "plateau": false,
+   "evals": 4
+  },
+  "13": {
+   "angle": 20.556045219583467,
+   "eps": 0.375,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 41.66867099594508,
+   "plateau": false,
+   "evals": 10
+  },
+  "14": {
+   "angle": 6.84277341263094,
+   "eps": 0.12,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 22.158095528523408,
+   "plateau": false,
+   "evals": 5
+  },
+  "15": {
+   "angle": 24.93842765545722,
+   "eps": 0.46499999999999997,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 26.328718238875503,
+   "plateau": false,
+   "evals": 10
+  },
+  "16": {
+   "angle": 36.86989764584402,
+   "eps": 0.75,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.5202021070585978,
+   "plateau": false,
+   "evals": 12
+  },
+  "17": {
+   "angle": 21.533987195574404,
+   "eps": 0.3945958666751592,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": null,
+   "plateau": false,
+   "evals": 3
+  },
+  "18": {
+   "angle": 49.479460452350274,
+   "eps": 1.17,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 2.4559699118222835,
+   "plateau": false,
+   "evals": 12
+  },
+  "19": {
+   "angle": 48.58820799256008,
+   "eps": 1.1338068584762477,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 11.119609340670515,
+   "plateau": false,
+   "evals": 4
+  },
+  "20": {
+   "angle": 51.11550356628541,
+   "eps": 1.2400000000000002,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.5419048381770322,
+   "plateau": false,
+   "evals": 12
+  },
+  "21": {
+   "angle": 52.1455745753296,
+   "eps": 1.2866666666666668,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.9829997702424184,
+   "plateau": false,
+   "evals": 12
+  },
+  "22": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "capped",
+   "fragility": null,
+   "plateau": false,
+   "evals": 8
+  },
+  "23": {
+   "angle": 14.305551846621954,
+   "eps": 0.255,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 6.65844280811214,
+   "plateau": false,
+   "evals": 10
+  },
+  "24": {
+   "angle": 44.518534194161646,
+   "eps": 0.9833333333333333,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 22.647885865298097,
+   "plateau": false,
+   "evals": 12
+  },
+  "25": {
+   "angle": 46.48786752882778,
+   "eps": 1.0533333333333332,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 25.871825952185723,
+   "plateau": false,
+   "evals": 12
+  },
+  "26": {
+   "angle": 46.48786752882778,
+   "eps": 1.0533333333333332,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 3.438385464090688,
+   "plateau": false,
+   "evals": 12
+  },
+  "27": {
+   "angle": 40.0302592718897,
+   "eps": 0.84,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.1460422710887851,
+   "plateau": false,
+   "evals": 11
+  },
+  "28": {
+   "angle": 35.75388725443675,
+   "eps": 0.72,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.0664769793137712,
+   "plateau": false,
+   "evals": 12
+  },
+  "29": {
+   "angle": 13.495733280795811,
+   "eps": 0.24,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 18.42742627518336,
+   "plateau": false,
+   "evals": 7
+  },
+  "30": {
+   "angle": 13.495733280795811,
+   "eps": 0.24,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 13.451202182203676,
+   "plateau": false,
+   "evals": 7
+  },
+  "31": {
+   "angle": 32.21092772367375,
+   "eps": 0.6299999999999999,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 17.7176286484466,
+   "plateau": false,
+   "evals": 11
+  },
+  "32": {
+   "angle": 47.114293288225944,
+   "eps": 1.0766666666666667,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.5130158821258806,
+   "plateau": false,
+   "evals": 12
+  },
+  "33": {
+   "angle": 45.19035072662975,
+   "eps": 1.0066666666666666,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 22.150893991545075,
+   "plateau": false,
+   "evals": 12
+  },
+  "34": {
+   "angle": 30.96375653207352,
+   "eps": 0.6,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.359085394291217,
+   "plateau": false,
+   "evals": 11
+  },
+  "35": {
+   "angle": 13.495733280795811,
+   "eps": 0.24,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 3.382680072436556,
+   "plateau": false,
+   "evals": 7
+  },
+  "36": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "capped",
+   "fragility": null,
+   "plateau": false,
+   "evals": 8
+  },
+  "37": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "capped",
+   "fragility": null,
+   "plateau": false,
+   "evals": 8
+  },
+  "38": {
+   "angle": 42.45851346021522,
+   "eps": 0.9149999999999999,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.455329373409063,
+   "plateau": false,
+   "evals": 12
+  },
+  "39": {
+   "angle": null,
+   "censored": false,
+   "anchor_rejected": true,
+   "status": "rejected_anchor",
+   "evals": 1
+  },
+  "40": {
+   "angle": 52.1455745753296,
+   "eps": 1.2866666666666668,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.2084828111516306,
+   "plateau": false,
+   "evals": 12
+  },
+  "41": {
+   "angle": 24.227745317954167,
+   "eps": 0.44999999999999996,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 21.718176814508645,
+   "plateau": false,
+   "evals": 9
+  },
+  "42": {
+   "angle": 1.7183580016554572,
+   "eps": 0.03,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 23.392157986523618,
+   "plateau": false,
+   "evals": 2
+  },
+  "43": {
+   "angle": 46.48786752882778,
+   "eps": 1.0533333333333332,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.5497653440786694,
+   "plateau": false,
+   "evals": 12
+  },
+  "44": {
+   "angle": 50.58260575653108,
+   "eps": 1.2166666666666668,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.037686050378504,
+   "plateau": false,
+   "evals": 12
+  },
+  "45": {
+   "angle": 45.8466740238615,
+   "eps": 1.0299999999999998,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.3635962117059446,
+   "plateau": false,
+   "evals": 12
+  },
+  "46": {
+   "angle": 41.023269024922435,
+   "eps": 0.8699999999999999,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.1260824487487677,
+   "plateau": false,
+   "evals": 11
+  },
+  "47": {
+   "angle": 40.0302592718897,
+   "eps": 0.84,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.028924845172995,
+   "plateau": false,
+   "evals": 11
+  },
+  "48": {
+   "angle": 32.21092772367375,
+   "eps": 0.6299999999999999,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 2.2989883353474063,
+   "plateau": false,
+   "evals": 11
+  },
+  "49": {
+   "angle": 13.495733280795811,
+   "eps": 0.24,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 21.00817141121716,
+   "plateau": false,
+   "evals": 7
+  },
+  "50": {
+   "angle": 47.72631099390627,
+   "eps": 1.1,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.6045145801220444,
+   "plateau": false,
+   "evals": 12
+  },
+  "51": {
+   "angle": 50.037368502031484,
+   "eps": 1.1933333333333334,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.1776975210160396,
+   "plateau": false,
+   "evals": 12
+  },
+  "52": {
+   "angle": 51.63638699817618,
+   "eps": 1.2633333333333336,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.68512163975657,
+   "plateau": false,
+   "evals": 12
+  },
+  "53": {
+   "angle": 40.0302592718897,
+   "eps": 0.84,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.6709179576346536,
+   "plateau": false,
+   "evals": 11
+  },
+  "54": {
+   "angle": 52.1455745753296,
+   "eps": 1.2866666666666668,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.6667930301686249,
+   "plateau": false,
+   "evals": 12
+  },
+  "55": {
+   "angle": 47.72631099390627,
+   "eps": 1.1,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 0.35446306527011734,
+   "plateau": false,
+   "evals": 12
+  },
+  "56": {
+   "angle": 51.11550356628541,
+   "eps": 1.2400000000000002,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 1.5592565559498164,
+   "plateau": false,
+   "evals": 12
+  },
+  "57": {
+   "angle": 1.7183580016554572,
+   "eps": 0.03,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 4.3772601855417905,
+   "plateau": false,
+   "evals": 2
+  },
+  "58": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "capped",
+   "fragility": null,
+   "plateau": false,
+   "evals": 8
+  },
+  "59": {
+   "angle": 52.1455745753296,
+   "eps": 1.2866666666666668,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 11.721548302971014,
+   "plateau": false,
+   "evals": 12
+  },
+  "60": {
+   "angle": 53.13010235415599,
+   "eps": 1.3333333333333335,
+   "censored": true,
+   "anchor_rejected": false,
+   "status": "capped",
+   "fragility": null,
+   "plateau": false,
+   "evals": 8
+  },
+  "61": {
+   "angle": 46.48786752882778,
+   "eps": 1.0533333333333332,
+   "censored": false,
+   "anchor_rejected": false,
+   "status": "boundary",
+   "fragility": 2.593874955146197,
+   "plateau": false,
+   "evals": 12
+  },
+  "62": {
+   "angle": null,
+   "censored": false,
+   "anchor_rejected": true,
+   "status": "error",
+   "evals": 0
+  },
+  "63": {
+   "angle": null,
+   "censored": false,
+   "anchor_rejected": true,
+   "status": "error",
+   "evals": 0
+  }
+ },
+ "summary": {
+  "n_bounded": 54,
+  "n_censored": 7,
+  "n_anchor_rejected": 3,
+  "mean_deg": 36.05236429321545,
+  "std_deg": 14.651292852733897,
+  "min_deg": 1.7183580016554572,
+  "max_deg": 52.1455745753296,
+  "anisotropy_ratio": 30.346164492552088,
+  "mean_ci95_deg": [
+   32.109558544586335,
+   39.743160861436934
+  ],
+  "anisotropy_ci95": [
+   7.620532119195283,
+   30.346164492552088
+  ],
+  "well_determined_n": 51,
+  "well_determined_mean_deg": 37.683469973230366,
+  "well_determined_mean_ci95_deg": [
+   33.98198765895726,
+   41.072440257271495
+  ],
+  "well_determined_median_deg": 41.023269024922435,
+  "well_determined_min_deg": 6.84277341263094,
+  "well_determined_max_deg": 52.1455745753296,
+  "well_determined_extremes_ratio": 7.620532119195283,
+  "robust_spread_p90_over_p10": 3.7875306589692217
+ },
+ "quality_filter": {
+  "min_evaluations": 4,
+  "thinly_sampled_excluded": [
+   "17",
+   "42",
+   "57"
+  ]
+ },
+ "provenance_status": {
+  "state": "withdrawn",
+  "withdrawn": "2026-08-23",
+  "headline": "These figures are withdrawn pending re-measurement.",
+  "reason": "The run that produced them recorded no render configuration \u2014 surface_runs stores the backend name and nothing else, with no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine during the day these renders were made, and a re-run under a known configuration moved every one of thirteen re-tested rays in the same direction. That is more consistent with a changed rendering pipeline than with thirteen independent corrections, and there is no record that would settle it.",
+  "what_is_unaffected": [
+   "The perturbation geometry: unit(anchor + eps*tangent), cos = 1/sqrt(1+eps^2).",
+   "The ESP-DL SiL defect findings and their upstream reports.",
+   "That the acceptance region is direction-dependent \u2014 the shape is not in question, the numbers are."
+  ],
+  "next": "Record preset, adapter scales, steps and weight digests per run, then re-measure."
+ }
+}

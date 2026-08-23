@@ -92,14 +92,16 @@
     </section>
 
     <div class="stats">
-      <div class="stat">well-determined <b>51 / 64</b></div>
-      <div class="stat">censored <b>7 / 64</b></div>
-      <div class="stat">anchor-rejected <b>3 / 64</b></div>
-      <div class="stat">flagged (&lt;4 evals) <b>3 / 64</b></div>
-      <div class="stat">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
-      <div class="stat">extremes ratio <b>7.6&times;</b></div>
-      <div class="stat">robust P90/P10 <b>3.8&times;</b></div>
+      <div class="stat" data-stat="wd">well-determined <b>51 / 64</b></div>
+      <div class="stat" data-stat="censored">censored <b>7 / 64</b></div>
+      <div class="stat" data-stat="rejected">anchor-rejected <b>3 / 64</b></div>
+      <div class="stat" data-stat="flagged">flagged (&lt;4 evals) <b>3 / 64</b></div>
+      <div class="stat" data-stat="angle">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
+      <div class="stat" data-stat="extremes">extremes ratio <b>7.6&times;</b></div>
+      <div class="stat" data-stat="p90p10">robust P90/P10 <b>3.8&times;</b></div>
     </div>
+
+    <div id="provenance-notice"></div>
 
     <div class="figures">
       <div class="fig">
@@ -531,7 +533,7 @@
     function colorFor(pt){ return pt.x ? muted : (pt.c ? warn : (pt.w ? flag : accent)); }
 
     // ---------- polar chart ----------
-    (function polar(){
+    function polar(){
       var svg = document.getElementById('ex-polar');
       var cx = 190, cy = 190, R = 148;
       var s = '';
@@ -576,10 +578,10 @@
       s += '<circle cx="'+cx+'" cy="'+cy+'" r="3.5" fill="'+muted+'"/>';
       s += '<text x="'+cx+'" y="'+(cy+R+16)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="'+muted+'">anchor at centre &middot; radius = boundary angle</text>';
       svg.innerHTML = s;
-    })();
+    }
 
     // ---------- sorted bar chart ----------
-    (function bars(){
+    function bars(){
       var svg = document.getElementById('ex-bars');
       var sorted = RAYS.slice().sort(function(a,b){ var av=a.a===null?-1:a.a, bv=b.a===null?-1:b.a; return av - bv; });
       var W = 380, H = 380, padL = 28, padR = 6, padT = 14, padB = 20;
@@ -617,7 +619,95 @@
       });
       s += '<text x="'+(padL+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">64 rays, sorted by boundary angle (degrees, left axis)</text>';
       svg.innerHTML = s;
-    })();
+
+    }
+    // first paint from the inline fallback, then upgrade to the published data
+    polar();
+    bars();
+
+    // ---- live data -------------------------------------------------------
+    // RAYS/SUMMARY above are the fallback. If data/surface.json is served, the
+    // page rebuilds itself from it, so re-running the measurement and copying
+    // the figure JSON updates this page without touching its markup.
+    function applySurface(doc){
+      var thin = {};
+      ((doc.quality_filter||{}).thinly_sampled_excluded||[]).forEach(function(k){ thin[String(k)]=true; });
+      var next = Object.keys(doc.rays||{})
+        .sort(function(a,b){ return (+a)-(+b); })
+        .map(function(k){
+          var v = doc.rays[k];
+          return { r:+k,
+                   a: (typeof v.angle === "number") ? Math.round(v.angle*100)/100 : null,
+                   c: !!v.censored,
+                   w: !!thin[String(k)],
+                   x: !!v.anchor_rejected };
+        });
+      if(!next.length) return false;
+      RAYS = next;
+      var sm = doc.summary || {};
+      SUMMARY = {
+        meanDeg:  sm.well_determined_mean_deg        != null ? sm.well_determined_mean_deg        : SUMMARY.meanDeg,
+        ciLo:    (sm.well_determined_mean_ci95_deg||[])[0] != null ? sm.well_determined_mean_ci95_deg[0] : SUMMARY.ciLo,
+        ciHi:    (sm.well_determined_mean_ci95_deg||[])[1] != null ? sm.well_determined_mean_ci95_deg[1] : SUMMARY.ciHi,
+        extremes: sm.well_determined_extremes_ratio  != null ? sm.well_determined_extremes_ratio  : SUMMARY.extremes,
+        p90p10:   sm.robust_spread_p90_over_p10      != null ? sm.robust_spread_p90_over_p10      : SUMMARY.p90p10,
+        nWD:      sm.well_determined_n               != null ? sm.well_determined_n               : SUMMARY.nWD,
+        nCensored:sm.n_censored                      != null ? sm.n_censored                      : SUMMARY.nCensored,
+        nRejected:sm.n_anchor_rejected               != null ? sm.n_anchor_rejected               : SUMMARY.nRejected,
+        nFlagged: ((doc.quality_filter||{}).thinly_sampled_excluded||[]).length
+      };
+      return true;
+    }
+
+    function paintNotice(doc){
+      var ps = doc.provenance_status;
+      if(!ps) return;
+      var host = document.getElementById("provenance-notice");
+      if(!host) return;
+      var ul = (ps.what_is_unaffected||[]).map(function(x){
+        return '<li style="margin:0 0 4px">'+x+'</li>'; }).join("");
+      host.innerHTML =
+        '<div style="border:1px solid var(--ex-warn);border-left:3px solid var(--ex-warn);'
+        + 'border-radius:8px;background:var(--ex-warn-soft);padding:18px 20px;margin:22px 0 0">'
+        + '<div style="font-family:monospace;font-size:10.5px;letter-spacing:.12em;'
+        + 'text-transform:uppercase;color:var(--ex-warn);margin-bottom:8px">Withdrawn '
+        + (ps.withdrawn||"") + '</div>'
+        + '<p style="margin:0 0 10px;font-size:16px;line-height:1.5;color:var(--ex-ink)">'
+        + (ps.headline||"") + '</p>'
+        + '<p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:var(--ex-ink);opacity:.85">'
+        + (ps.reason||"") + '</p>'
+        + (ul ? '<div style="font-size:13.5px;color:var(--ex-muted);margin-bottom:6px">Not affected:</div>'
+              + '<ul style="margin:0 0 10px;padding-left:20px;font-size:13.5px;line-height:1.55;'
+              + 'color:var(--ex-muted)">'+ul+'</ul>' : "")
+        + '<div style="font-family:monospace;font-size:12px;color:var(--ex-muted)">'
+        + (ps.next||"") + '</div></div>';
+      document.querySelectorAll(".fig").forEach(function(f){ f.style.opacity = ".55"; });
+    }
+
+    function paintStats(doc){
+      var n = doc.directions || RAYS.length;
+      var d1 = function(x){ return (Math.round(x*10)/10).toFixed(1); };
+      var set = function(sel, html){ var el=document.querySelector(sel); if(el) el.innerHTML = html; };
+      set("[data-stat=wd]",       "well-determined <b>"+SUMMARY.nWD+" / "+n+"</b>");
+      set("[data-stat=censored]", "censored <b>"+SUMMARY.nCensored+" / "+n+"</b>");
+      set("[data-stat=rejected]", "anchor-rejected <b>"+SUMMARY.nRejected+" / "+n+"</b>");
+      set("[data-stat=flagged]",  "flagged (&lt;4 evals) <b>"+SUMMARY.nFlagged+" / "+n+"</b>");
+      set("[data-stat=angle]",    "boundary angle <b>"+d1(SUMMARY.meanDeg)+"&deg;</b> "+
+                                  "<span style=\"opacity:.7\">(95% CI "+d1(SUMMARY.ciLo)+"&ndash;"+d1(SUMMARY.ciHi)+"&deg;)</span>");
+      set("[data-stat=extremes]", "extremes ratio <b>"+d1(SUMMARY.extremes)+"&times;</b>");
+      set("[data-stat=p90p10]",   "robust P90/P10 <b>"+d1(SUMMARY.p90p10)+"&times;</b>");
+    }
+
+    fetch("results/surface.json", {cache:"no-cache"})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(doc){
+        if(!applySurface(doc)) return;
+        paintStats(doc);
+        paintNotice(doc);
+        polar();
+        bars();
+      })
+      .catch(function(){ /* keep the inline fallback */ });
   })();
   </script>
   <script>(function(){

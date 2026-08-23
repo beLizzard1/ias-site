@@ -32,6 +32,12 @@
     .callout li{font-size:14.5px;line-height:1.6;color:var(--ink-2);margin:5px 0}
     footer{margin:44px 0 40px;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-family:'IBM Plex Mono',monospace;font-size:12px}
     @media (max-width:640px){.row{grid-template-columns:1fr;gap:8px}}
+    .withdrawn{margin:22px 0;border:1px solid var(--warn);border-left:3px solid var(--warn);
+      border-radius:8px;background:var(--warn-soft);padding:18px 20px}
+    .withdrawn p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:0 0 10px;max-width:70ch}
+    .withdrawn p:last-child{margin-bottom:0}
+    .withdrawn .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--warn);margin-bottom:8px}
   </style>
 </head>
 <body>
@@ -47,6 +53,20 @@
       <div class="updated">Last updated 2026-08-22</div>
       <p class="lead">A running snapshot of what's built, the findings that are steering the work, and what's in flight. Honest about the rough edges.</p>
     </section>
+
+    <div class="withdrawn">
+      <div class="k">Withdrawn 2026-08-23</div>
+      <p><strong>The measured figures are withdrawn pending re-measurement.</strong> The run behind them
+      recorded no render configuration &mdash; the run table stores the backend name and nothing else, with
+      no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine
+      during the day those renders were made, and a re-run under a known configuration moved every one of
+      thirteen re-tested rays in the same direction. That is more consistent with a changed rendering
+      pipeline than with thirteen independent corrections, and no record exists that would settle it.</p>
+      <p>The geometry is unaffected: perturbations are still exact, and the acceptance region is still
+      direction-dependent. What cannot currently be substantiated is <em>how far</em>, in numbers.
+      The ESP-DL defect findings and their upstream reports are unaffected.</p>
+    </div>
+
 
     <div class="row">
       <div><h3>Perturbation core</h3><div class="st"><span class="pill done">Done</span></div></div>

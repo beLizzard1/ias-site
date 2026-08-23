@@ -54,6 +54,12 @@
     .xcard .dk .n{color:var(--muted)}
     .xcard.accent{background:var(--accent-soft)}
     @media (max-width:820px){.result{grid-template-columns:1fr}.tilesplit{grid-template-columns:1fr}.figgrid{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,1fr)}.explore{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .withdrawn{margin:22px 0;border:1px solid var(--warn);border-left:3px solid var(--warn);
+      border-radius:8px;background:var(--warn-soft);padding:18px 20px}
+    .withdrawn p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:0 0 10px;max-width:70ch}
+    .withdrawn p:last-child{margin-bottom:0}
+    .withdrawn .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--warn);margin-bottom:8px}
   </style>
 </head>
 <body>
@@ -108,26 +114,23 @@
         </div>
       </div>
 
-      <div class="result">
-        <div>
-          <div class="codelbl" style="color:var(--accent)">Headline surface &middot; 64 directions &middot; one identity</div>
-          <p class="rq">An isotropic discriminator would draw a flat circle. This INT8 model draws a star.</p>
-          <p class="rb">Well-determined mean boundary 37.7&deg; (95% CI 34.0&ndash;41.1&deg;), extremes ratio <strong>7.6&times;</strong>, robust P90/P10 spread 3.8&times;. 51 of 64 rays well-determined; 7 censored, 3 anchor-rejected and 3 flagged are shown rather than silently dropped.</p>
-        </div>
-        <svg viewBox="0 0 220 190" width="220" style="display:block">
-          <g transform="translate(110,95)">
-            <circle r="62" fill="none" stroke-width="1.2" stroke-dasharray="3 4" opacity=".55" style="stroke:var(--accent, #2f5d62)"/>
-            <path d="M78,0 L44,-30 L58,-52 L26,-46 L14,-78 L-2,-40 L-34,-56 L-24,-24 L-70,-16 L-30,4 L-46,44 L-14,22 L-6,66 L16,26 L48,50 L38,20 Z" stroke-width="1.5" stroke-linejoin="round" style="fill:var(--accent-soft, rgba(47,93,98,.14)); stroke:var(--accent, #2f5d62)"/>
-            <circle r="4" style="fill:var(--ink, #1b1f1e)"/>
-          </g>
-          <text font-family="'IBM Plex Mono',monospace" x="110" y="182" font-size="10" text-anchor="middle" style="fill:var(--muted, #5a5f5d)">dashed = isotropic ideal</text>
-        </svg>
-      </div>
+    <div class="withdrawn">
+      <div class="k">Withdrawn 2026-08-23</div>
+      <p><strong>The measured figures are withdrawn pending re-measurement.</strong> The run behind them
+      recorded no render configuration &mdash; the run table stores the backend name and nothing else, with
+      no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine
+      during the day those renders were made, and a re-run under a known configuration moved every one of
+      thirteen re-tested rays in the same direction. That is more consistent with a changed rendering
+      pipeline than with thirteen independent corrections, and no record exists that would settle it.</p>
+      <p>The geometry is unaffected: perturbations are still exact, and the acceptance region is still
+      direction-dependent. What cannot currently be substantiated is <em>how far</em>, in numbers.
+      The ESP-DL defect findings and their upstream reports are unaffected.</p>
+    </div>
 
       <div class="tilesplit">
         <div>
-          <div class="tlbl">Measured so far</div>
-          <div class="tiles t3">
+          <div class="tlbl" style="color:var(--warn)">Measured so far &mdash; withdrawn, see above</div>
+          <div class="tiles t3" style="opacity:.5">
             <div class="tile"><div class="n">64 &rarr; 51</div><div class="c">rays refined &rarr; well-determined</div></div>
             <div class="tile"><div class="n">37.7&deg;</div><div class="c">mean boundary, CI 34.0&ndash;41.1</div></div>
             <div class="tile"><div class="n" style="color:var(--accent)">7.6&times;</div><div class="c">extremes ratio</div></div>
