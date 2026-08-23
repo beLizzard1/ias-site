@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Explorer &mdash; Identity Acceptance Surfaces</title>
-  <meta name="description" content="The full experiment chain behind the measured acceptance surface: eleven experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, hardware-in-the-loop parity, and a human check on whether the renders carry the identity at all.">
+  <meta name="description" content="The full experiment chain behind the measured acceptance surface: fifteen experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, hardware-in-the-loop parity, a human check on whether the renders carry the identity, and the instrument audit that retired the renderer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -88,7 +88,7 @@
       <div class="kicker"><span class="n">04</span> &middot; The data</div>
       <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
       <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 64 directions</div>
-      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and getting to this figure took eleven experiments, each one forced by a problem or a surprise the last one turned up. This page walks the whole chain, not just the headline.</p>
+      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and the chain below is fifteen experiments long: the eleven that produced this figure, each one forced by a problem or a surprise the last one turned up, and four more that put the instrument itself under the same scrutiny and ended by retiring it. This page walks the whole chain, not just the headline.</p>
     </section>
 
     <div class="stats">
@@ -123,7 +123,7 @@
       <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
     </div>
 
-    <p class="bridge">What follows is the chain that produced that figure: eleven experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer.</p>
+    <p class="bridge">What follows is the whole chain: fifteen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. The last four turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator.</p>
 
     <nav class="toc" aria-label="Experiments on this page">
       <span class="toc-label">On this page</span>
@@ -137,6 +137,12 @@
         <li><span class="n">07</span><a href="#exp7">Boundary displacement</a></li>
         <li><span class="n">08</span><a href="#exp8">Detector agreement</a></li>
         <li><span class="n">09</span><a href="#exp9">Transport optimisation</a></li>
+        <li><span class="n">10</span><a href="#exp10">Enrolment, and where the threshold goes</a></li>
+        <li><span class="n">11</span><a href="#exp11">Do the renders carry the identity?</a></li>
+        <li><span class="n">12</span><a href="#exp12">One recipe: the renderer cleanup</a></li>
+        <li><span class="n">13</span><a href="#exp13">The transfer map</a></li>
+        <li><span class="n">14</span><a href="#exp14">One pixel buffer</a></li>
+        <li><span class="n">15</span><a href="#exp15">Framing, and the StyleGAN3 decision</a></li>
       </ol>
     </nav>
 
@@ -252,13 +258,53 @@
         <p class="beat"><b>Came back</b> 16 of 16 on subject-targeted trials, at about a second each, including an observer who had never met the subject. The renders do carry matchable identity. Both statements survive: they sit above stranger-level identity signal and below felt likeness, and those are different things a single cosine does not distinguish.</p>
         <p class="beat"><b>Changed</b> The surface is a surface of the person, not of a nearby region of the generator&rsquo;s manifold &mdash; the framing the rest of this site uses is sound. But it is a floor: those distractors sat about 0.08 away, plainly different people. The <a href="perceptual.html">public version</a> is 2.6&times; harder (median 0.208, max 0.336), and because its per-trial distances are known, pooled responses measure human accuracy as a function of embedding distance &mdash; the human boundary and the model boundary in the same units. A first correction came out of this too: an early claim that the public test was the <em>easier</em> one was an assumption, never measured, and was wrong.</p>
       </article>
+
+      <article class="exp" id="exp12">
+        <div class="exp-num">12</div>
+        <span class="exp-tag">Instrument audit &middot; renderer</span>
+        <h2>One recipe: the renderer cleanup</h2>
+        <p class="beat"><b>Question</b> The withdrawal of the measured figures (a run that silently took a different rendering preset, with no record of which) forced the question underneath it: of the renderer&rsquo;s ten generation presets, how many actually measure the thing this project asks about?</p>
+        <p class="beat"><b>Done</b> Audited all ten presets and the second backend against the rule the measurement implies: <em>nothing but the embedding may condition the render.</em></p>
+        <p class="beat"><b>Came back</b> One preset survives. Every other preset conditioned the render on the subject&rsquo;s own photograph &mdash; ControlNet on its structure, IP-Adapter on its identity, SMIRK on its expression &mdash; which answers &ldquo;how far can the embedding move before a render <em>that is still structurally the anchor&rsquo;s photograph</em> is rejected&rdquo;, not the question being asked. Two presets turned out to be byte-identical configurations under different names.</p>
+        <p class="beat"><b>Changed</b> <code>pure_math</code> is the renderer&rsquo;s one setting, and the machinery was deleted, not just the preset entries, so the silent-default contamination behind the withdrawal cannot recur. One leak survives the cleanup, recorded rather than fixed: the anchor&rsquo;s <em>reference</em> image is picked best-of-8 with 35% of the selection weight on resemblance to the subject&rsquo;s photograph, in embedding and in pixels &mdash; the deleted presets&rsquo; leak moved into the selection stage. It is confined to that reference image; the measurement path renders exactly one image per (embedding, seed), and which renders are kept is decided by detection, never by similarity. The condition for fixing it is named: before the reference path is used for anything load-bearing.</p>
+      </article>
+
+      <article class="exp" id="exp13">
+        <div class="exp-num">13</div>
+        <span class="exp-tag">Instrument characterisation</span>
+        <h2>The transfer map</h2>
+        <p class="beat"><b>Question</b> The pilot showed a fixed offset between requested and achieved position; the cleanup left one recipe. Before trusting any boundary measured through it, the instrument&rsquo;s error had to become a measured map rather than an impression.</p>
+        <p class="beat"><b>Done</b> 1,330 renders through the measurement path &mdash; one image per (embedding, seed), full configuration recorded, so these renders post-date and are not subject to the withdrawal &mdash; each re-embedded and its achieved angle compared to the one requested.</p>
+        <p class="beat"><b>Came back</b> <code>achieved &theta; = 0.644 &times; target &theta; + 33.6&deg;</code>, r&nbsp;=&nbsp;0.867, residual sd 6.9&deg;. Ask for a face 20&deg; from the anchor and you get one about 46&deg; away: a fixed offset and a 36% compression of the request.</p>
+        <p class="beat"><b>Changed</b> The offset and the slope are bias and can be pre-corrected. The 6.9&deg; residual cannot be &mdash; it is the instrument&rsquo;s noise floor, and it sets how finely a boundary can be located: &asymp;4.0&deg; with 3 renders per point, &asymp;3.1&deg; with 5. No preset change moves it; only a different generative model would, which is where experiment 15 ends up.</p>
+      </article>
+
+      <article class="exp" id="exp14">
+        <div class="exp-num">14</div>
+        <span class="exp-tag">SiL vs HiL &middot; one buffer</span>
+        <h2>One pixel buffer</h2>
+        <p class="beat"><b>Question</b> Experiment 8 compared two detectors. A prior question had never been checked: were the rigs even being shown the same pixels?</p>
+        <p class="beat"><b>Done</b> Traced what each ESP-DL path feeds the model. Three code paths prepared three different images from the same render &mdash; one resized to a maximum side, one letterboxed to VGA, and the device received whatever the caller sent.</p>
+        <p class="beat"><b>Came back</b> On eight renders the first path found 8 faces at 0.79&ndash;1.00; the second found 2. The faces were present and recognisable; the disagreement was entirely preprocessing. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution &mdash; a divergence could have been the silicon or the resize, with nothing to say which.</p>
+        <p class="beat"><b>Changed</b> The buffer is now prepared in one module and every ESP-DL path uses it. After unification, SiL and HiL agreed on 8/8 detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. That made a full device pass worth trusting: the whole 1,330-render set of experiment 13 has since been judged on the board itself &mdash; a pass run, with its analysis still pending, not yet a result.</p>
+      </article>
+
+      <article class="exp" id="exp15">
+        <div class="exp-num">15</div>
+        <span class="exp-tag">Detection &middot; framing</span>
+        <h2>Framing, and the StyleGAN3 decision</h2>
+        <p class="beat"><b>Question</b> StyleGAN was retired from this project months ago on a recorded 100% ESP-DL detection failure, and that retirement is part of why Arc2Face became the only render path. The measurement spec listed one prerequisite before any generator change: re-test that record. Was it ever evidence?</p>
+        <p class="beat"><b>Done</b> The record refuted itself on re-reading &mdash; the StyleGAN reconstruction and the real photograph it was compared against both scored exactly 0.531209: the identical-embeddings SiL defect (since fixed), measured through a multi-scale pyramid and a dlib fallback (since deleted). No StyleGAN image survives in the tree, so the <em>framing</em> was reconstructed instead of the image: 40 renders the current detector is known to handle, recomposed into FFHQ-tight alignment &mdash; the framing every StyleGAN output has by construction &mdash; with resolution and padding controls, through the current measurement path.</p>
+        <p class="beat"><b>Came back</b> The detector finds tightly-framed faces &mdash; 37/40 at threshold 0.1, refinement scores around 0.999 &mdash; yet at the vendor 0.5 they do not exist: 0/40. The proposal stage gates on framing; the scoring stage doesn&rsquo;t see it. Resolution is irrelevant (512 versus 1024 changes nothing), and a 50% pad partially restores vendor-threshold detection. And Arc2Face&rsquo;s own native renders survive the vendor threshold only 14/40 &mdash; partly framing, previously attributed wholly to render quality.</p>
+        <p class="beat"><b>Changed</b> The retirement was invalid, and any FFHQ-aligned generator is usable with a recorded padding stage. Decision (2026-08-23): Arc2Face is not capable of what the measurement needs &mdash; too few renders survive the pipeline even under honest conditioning, on top of experiment 13&rsquo;s 33.6&deg; offset and 6.9&deg; floor. The next stimulus generator is StyleGAN3: invert the identity anchor to W once (the only place a photograph enters the pipeline), perturb W directly, render <code>G(w)</code> per sample &mdash; &asymp;50&nbsp;ms against &asymp;11&nbsp;s, every W point a face, deterministic, no per-probe optimisation and so no judge circularity. Adopted, not yet run &mdash; with its costs stated as requirements: boundaries reported only in achieved ArcFace coordinates, the padding stage mandatory and recorded, and cross-identity anisotropy treated as generator-confounded until a two-generator control runs.</p>
+      </article>
     </div>
 
     <div class="callout">
       <h2>Read this whole chain for what it is</h2>
       <ul>
         <li>One identity, still. Every number above describes Dr James&rsquo; enrolment against this SUT &mdash; not a population result. Cross-identity comparison needs the synthetic identity corpus, which is prepared but not yet run.</li>
-        <li>Renders come from Arc2Face, so its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out.</li>
+        <li>Renders come from Arc2Face, so its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out. Its measured cost as an instrument is experiment 13 (33.6&deg; offset, 6.9&deg; noise floor), and it has since been retired as the stimulus generator (experiment 15). That retirement neither reinstates the withdrawn surface figures nor withdraws anything further &mdash; the provenance notice above is unchanged by it.</li>
         <li>The SiL&rsquo;s detector runs at a relaxed score threshold of 0.3 (vendor default 0.5) because raw renders sit under the default &mdash; see experiment 2 for the compositing trade-off this creates.</li>
         <li>3 of the 64 rays reject the unperturbed anchor render outright (anchor-rejected) and are excluded from the headline statistics; a further 3 were decided from fewer than 4 evaluations and are flagged rather than silently kept. Both classes are shown, not dropped &mdash; see experiment 4.</li>
         <li>7 rays remain right-censored at the dataset&rsquo;s cos-0.60 edge; their true boundary lies further out, unmeasured.</li>
