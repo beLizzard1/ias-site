@@ -38,6 +38,12 @@
     .row p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
     .row p+p{margin-top:8px}
     .row code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--paper-2);padding:1px 5px;border-radius:4px}
+    .row figure{margin:14px 0 4px;background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:10px 10px 8px}
+    .row figure img,.row figure video{display:block;width:100%;max-width:100%;height:auto;border-radius:4px}
+    .row figure video{background:#0b0e14}
+    .row figcaption{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 2px 0}
+    .row .film-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .row .film-pair figure{margin:14px 0 0}
     .callout{margin:30px 0 8px;background:var(--paper-2);border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;padding:18px 20px}
     .callout h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:19px}
     .callout ul{margin:0;padding-left:18px}
@@ -209,7 +215,7 @@
       <summary>
         <span class="ph-k">Phase 3 &middot; current</span>
         <h2>StyleGAN3, the W-walk<span class="pill prog">In progress</span></h2>
-        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed and the first calibration sweep is measured; no boundary has been measured through it yet.</span>
+        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. Three design decisions are open; no boundary has been measured through it yet.</span>
       </summary>
 
       <div class="row">
@@ -232,6 +238,35 @@
         <div>
           <p>The anchor inversion gate has <strong>passed</strong>. The inverted anchor&rsquo;s render sits <strong>28.5&deg;</strong> from the centroid in anchor space, against the 37.6&deg; bar set by Arc2Face&rsquo;s own anchor renders &mdash; reached in three steps: 69.8&deg; with the VGG perceptual loss alone, 35.1&deg; adding a single-photo identity proxy, 28.5&deg; targeting the nine-photo centroid. That is within 2.2&deg; of the best source photograph&rsquo;s own distance (26.3&deg;), and closer to the centroid than eight of the nine photographs. Real SG3 renders also detect on ESP-DL at the vendor threshold <em>unpadded</em> &mdash; generated hair and background survive framing far better than the gray-border proxy suggested.</p>
           <p>The calibration sweep has now run &mdash; the W-walk&rsquo;s first transfer map, 96 probes over 12 random unit W-directions &times; 8 alphas from the gated anchor: <strong>achieved &theta; = 0.889&deg;/unit &times; &alpha; + 26.6&deg;</strong>, r&nbsp;=&nbsp;0.939, residual sd <strong>1.59&deg;</strong> against Arc2Face&rsquo;s 6.9&deg; &mdash; 4.3&times; tighter. The yield problem is gone: every probe embeds, and detection at the vendor threshold holds <strong>12/12 through &alpha;=12</strong> (9/12 at &alpha;=16), where Arc2Face managed 14/40 on native renders. Median &theta; walks from 28.6&deg; to 42.4&deg; across the grid. One honest caveat: &alpha;=16 reaches only about 45&deg; while the SiL boundaries sit at 38&ndash;54&deg;, so the production grid needs larger &alpha; &mdash; and no boundary has been measured through StyleGAN3 yet. The phase stays in progress, and Arc2Face stays available as the characterised baseline the two-generator control needs.</p>
+          <p>The grid was then pushed (2026-09-15): every integer &alpha; from 1 to 32 &mdash; about 1&deg; of achieved angle per step, all 385 renders detected through a recorded 25% padding &mdash; and on to 80, which found the edge of the generator&rsquo;s face manifold rather than more angle: past &alpha;&asymp;48 the slope collapses, the angle saturates near 75&ndash;90&deg;, steps run backwards by up to 16&deg;, and the renders stop being faces. Two further things came out of the same afternoon. A <em>target</em> angle can be requested rather than walked to: each direction&rsquo;s measured curve predicts the &alpha;, the render is measured, one or two corrections land it within 0.5&deg;. And the high-frequency noise visible on the inversion turned out to be distance from the generator&rsquo;s own distribution &mdash; the anchor sat 87 &sigma;-norm from the mean where natural samples sit at 22&ndash;26 &mdash; which a prior on the inversion removes. From a regularised anchor the walk has to be <em>whitened</em>, &alpha; in units of the pinned W statistics, and walked that way with the full covariance it reaches 75&deg; on all twelve directions as plausible faces (60/60 targets in 105 renders) where the raw walk could not. Three decisions follow and are open: which regularised anchor to adopt, since it re-bases every sweep so far; walking in whitened W with angle targeting; and which off-distribution number becomes the recorded gate. The <a href="explorer.html">Explorer</a> will carry the full chain once they are taken.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div><h3>The walk, on film</h3><div class="st"><span class="pill done">Rendered 2026-09-15</span></div></div>
+        <div>
+          <p>The <a href="explainer.html">acceptance sphere</a> explainer puts the identity at the centre, accepted faces inside, rejected outside, an ideal system as one crisp radius against a ragged measured surface. These films draw real StyleGAN3 sweeps in that same picture. Every probe sits at a radius equal to its <em>achieved</em> angle to the anchor centroid &mdash; the measured quantity, exact &mdash; and on a heading given by where its achieved direction falls on the sweep&rsquo;s three principal axes, a sketch of &ldquo;which way&rdquo; whose share of the variance is printed on the frame. The dashed sphere is the ideal radius at the M2 mean boundary of 44.3&deg;. One direction is picked out in yellow with its previous, current and next points marked, and its render sits in the corner. Blue points detected on ESP-DL at the vendor threshold as rendered; orange did not. On the raw-W grid every one of those was framing and the recorded padding restored all 385; on the fully whitened walk padding restores all of them through &alpha;&nbsp;=&nbsp;12 and most, not all, at the top of the range (10 of 12 at &alpha;&nbsp;=&nbsp;24) &mdash; the reason the walk needs a recorded manifold gate before boundaries are measured through it.</p>
+          <div class="film-pair">
+            <figure>
+              <video controls muted playsinline preload="metadata" poster="video/sg3/sphere_walk_full_whitened_poster.jpg" width="1280" height="720"><source src="video/sg3/sphere_walk_full_whitened.mp4" type="video/mp4">Your browser does not play MP4; the file is <a href="video/sg3/sphere_walk_full_whitened.mp4">here</a>.</video>
+              <figcaption>The recommended configuration: a regularised anchor and a fully whitened walk, integer &alpha; 1&ndash;24. The rays reach past the ideal sphere unevenly &mdash; the anisotropy the method exists to measure &mdash; and are coherent faces through the targeted 75&deg;; the top of the range, where one ray stops embedding and two lose padded detection, is where the manifold gate is needed.</figcaption>
+            </figure>
+            <figure>
+              <video controls muted playsinline preload="metadata" poster="video/sg3/sphere_walk_unit_grid_raw_poster.jpg" width="1280" height="720"><source src="video/sg3/sphere_walk_unit_grid_raw.mp4" type="video/mp4">Your browser does not play MP4; the file is <a href="video/sg3/sphere_walk_unit_grid_raw.mp4">here</a>.</video>
+              <figcaption>For comparison, the first grid: the unregularised anchor and a raw-W walk, integer &alpha; 1&ndash;32. Usable to about &alpha; 48; the orange runs are where raw framing loses the detector.</figcaption>
+            </figure>
+          </div>
+          <figure>
+            <video controls muted playsinline preload="metadata" poster="video/sg3/walk_unit_grid_raw_poster.jpg" width="960" height="480"><source src="video/sg3/walk_unit_grid_raw.mp4" type="video/mp4">Your browser does not play MP4; the file is <a href="video/sg3/walk_unit_grid_raw.mp4">here</a>.</video>
+            <figcaption>The same first grid as a flat walk, one direction at a time: the render on the left, and on the right where that frame is on its own transfer curve against the M2 boundary band, with detection status raw and padded.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/sg3/targets_75deg_diag_vs_full.png" width="900" height="336" loading="lazy" alt="Two rows of six face renders each targeted to 75 degrees from the anchor. Top row, diagonal prior and diagonal whitening: several are degraded, one with wiry texture, one melted, one distorted. Bottom row, full prior and full whitening: all six are plausible photographs of different people.">
+            <figcaption>Why the full covariance matters. Six directions targeted to 75&deg; achieved. Top: the diagonal prior and diagonal whitening &mdash; the renders that reach 75&deg; are degraded, at two to four times the natural distance from the generator&rsquo;s distribution. Bottom: full prior and full whitening &mdash; plausible faces at a distance not much beyond the anchor&rsquo;s own. Same seed indices, different geometric directions.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/sg3/anchors_prior_comparison.png" width="900" height="320" loading="lazy" alt="Three renders of the same person from three anchor inversions: without a prior, with a diagonal prior, and with a full-covariance prior. The first has a grainy periodic background texture; the other two are cleaner and calmer.">
+            <figcaption>The three anchor candidates and the open decision. Left, the current anchor with no prior: gate 28.6&deg;, grainy. Middle, diagonal prior: gate 26.6&deg;, the closest to the identity. Right, full prior: gate 28.3&deg;, the closest to the generator&rsquo;s distribution. The subject&rsquo;s own &ldquo;do I see myself&rdquo; judgement is the one that decides; each is a different presentation of the same person.</figcaption>
+          </figure>
         </div>
       </div>
     </details>
