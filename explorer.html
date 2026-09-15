@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Explorer &mdash; Identity Acceptance Surfaces</title>
-  <meta name="description" content="The full experiment chain behind the measured acceptance surface: fifteen experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, hardware-in-the-loop parity, a human check on whether the renders carry the identity, and the instrument audit that retired the renderer.">
+  <meta name="description" content="The full experiment chain behind the measured acceptance surface: sixteen experiments, each forced by what the last one found, from the pilot sweep to a 64-direction surface, four calibrated judges, hardware-in-the-loop parity, a human check on whether the renders carry the identity, the instrument audit that retired the renderer, and the re-measurement that produced the successor boundary figures under full provenance.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -78,6 +78,28 @@
     details.exp>summary .exp-num{left:-52px;top:2px}
     .exp-num{pointer-events:none}
 
+    /* measured figures inside an experiment entry. The PNGs are drawn on a
+       light card by scripts/build_m2_figures.py, so — like the explainer's
+       3D stage — each figure keeps its own light backdrop in both themes;
+       only the border follows the tokens. */
+    .exp figure{margin:14px 0 6px;background:#ffffff;border:1px solid var(--ex-line);border-radius:8px;padding:12px 12px 10px}
+    .exp figure img{display:block;width:100%;max-width:100%;height:auto;border-radius:4px}
+    .exp figcaption{font-size:12.5px;line-height:1.55;color:var(--ex-muted);margin:9px 2px 0}
+
+    /* tau-slider interactive (exp 16). Hidden until data/m2_rays.json loads;
+       with no fetch (file://, JS off) the static figures above it stand alone. */
+    .tauwidget{display:none;margin:16px 0 6px;background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px;padding:14px 16px 12px}
+    .tauwidget .tw-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 4px}
+    .tauwidget .tw-head label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ex-muted);white-space:nowrap}
+    .tauwidget .tw-val{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ex-ink);min-width:74px}
+    .tauwidget input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:var(--ex-line);border-radius:3px;outline:none;flex:1;min-width:150px;max-width:360px}
+    .tauwidget input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--ex-accent);cursor:pointer}
+    .tauwidget input[type=range]::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;background:var(--ex-accent);cursor:pointer}
+    .tauwidget .tw-stats{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ex-muted);margin:2px 0 10px}
+    .tauwidget .tw-stats b{color:var(--ex-ink);font-weight:500}
+    .tauwidget svg{display:block;width:100%;height:auto}
+    .tauwidget .tw-note{font-size:12.5px;line-height:1.55;color:var(--ex-muted);margin:10px 2px 0;max-width:80ch}
+
     .callout{margin:34px 0 8px;background:var(--ex-warn-soft);border:1px solid var(--ex-line);border-left:3px solid var(--ex-warn);border-radius:6px;padding:18px 20px}
     .callout h2{margin:0 0 8px;font-family:'Newsreader',serif;font-weight:500;font-size:17px;color:var(--ex-ink)}
     .callout ul{margin:0;padding-left:18px}
@@ -97,7 +119,7 @@
       <div class="kicker"><span class="n">04</span> &middot; The data</div>
       <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
       <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 64 directions</div>
-      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and the chain below is fifteen experiments long: the eleven that produced this figure, each one forced by a problem or a surprise the last one turned up, and four more that put the instrument itself under the same scrutiny and ended by retiring it. This page walks the whole chain, not just the headline.</p>
+      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and the chain below is sixteen experiments long: the eleven that produced this figure, each one forced by a problem or a surprise the last one turned up, four more that put the instrument itself under the same scrutiny and ended by retiring it, and a sixteenth that re-measured the boundaries under full provenance &mdash; the successor figures to the withdrawn set shown here. This page walks the whole chain, not just the headline.</p>
     </section>
 
     <div class="stats">
@@ -132,7 +154,7 @@
       <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
     </div>
 
-    <p class="bridge">What follows is the whole chain: fifteen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. The last four turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator. Earlier entries are folded to keep the page walkable &mdash; open any of them, or jump from the list below; the most recent, the decision that closes the chain, is already open.</p>
+    <p class="bridge">What follows is the whole chain: sixteen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. Experiments 12&ndash;15 turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator. The sixteenth closes the loop the withdrawal opened: the same boundary diagrams, re-measured under full provenance. Earlier entries are folded to keep the page walkable &mdash; open any of them, or jump from the list below; the most recent, the re-measurement, is already open.</p>
 
     <nav class="toc" aria-label="Experiments on this page">
       <span class="toc-label">On this page</span>
@@ -152,6 +174,7 @@
         <li><span class="n">13</span><a href="#exp13">The transfer map</a></li>
         <li><span class="n">14</span><a href="#exp14">One pixel buffer</a></li>
         <li><span class="n">15</span><a href="#exp15">Framing, and the StyleGAN3 decision</a></li>
+        <li><span class="n">16</span><a href="#exp16">Re-measured: the successor figures</a></li>
       </ol>
     </nav>
 
@@ -326,7 +349,7 @@
         <p class="beat"><b>Changed</b> The buffer is now prepared in one module and every ESP-DL path uses it. After unification, SiL and HiL agreed on 8/8 detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. That made a full device pass worth trusting: the whole 1,330-render set of experiment 13 has since been judged on the board itself. Row-for-row against the SiL: detection agrees 1,328/1,330 (99.8%), mean score delta &minus;0.00034 (sd 0.023) over the 533 co-detected probes, and 527/533 accept agreement at the vendor &tau; with all six flips inside 0.479&ndash;0.534 &mdash; rounding noise, not identity disagreements. At boundary level &mdash; the deliverable &mdash; all 12 rays classify identically, and the 9 co-bounded boundaries differ by mean +0.46&deg;, sd 0.98&deg;, max 1.72&deg;: host-computed boundaries describe the silicon. Scope, kept deliberately: measured on Arc2Face renders, so it does not yet license host-side StyleGAN3 curves &mdash; a 50&ndash;100 render HiL spot-check is owed on the first SG3 set.</p>
       </details>
 
-      <details class="exp" id="exp15" open>
+      <details class="exp" id="exp15">
         <summary>
           <span class="exp-num">15</span>
           <span class="exp-tag">Detection &middot; framing</span>
@@ -336,6 +359,48 @@
         <p class="beat"><b>Done</b> The record refuted itself on re-reading &mdash; the StyleGAN reconstruction and the real photograph it was compared against both scored exactly 0.531209: the identical-embeddings SiL defect (since fixed), measured through a multi-scale pyramid and a dlib fallback (since deleted). No StyleGAN image survives in the tree, so the <em>framing</em> was reconstructed instead of the image: 40 renders the current detector is known to handle, recomposed into FFHQ-tight alignment &mdash; the framing every StyleGAN output has by construction &mdash; with resolution and padding controls, through the current measurement path.</p>
         <p class="beat"><b>Came back</b> The detector finds tightly-framed faces &mdash; 37/40 at threshold 0.1, refinement scores around 0.999 &mdash; yet at the vendor 0.5 they do not exist: 0/40. The proposal stage gates on framing; the scoring stage doesn&rsquo;t see it. Resolution is irrelevant (512 versus 1024 changes nothing), and a 50% pad partially restores vendor-threshold detection. And Arc2Face&rsquo;s own native renders survive the vendor threshold only 14/40 &mdash; partly framing, previously attributed wholly to render quality.</p>
         <p class="beat"><b>Changed</b> The retirement was invalid, and any FFHQ-aligned generator is usable with a recorded padding stage. Decision (2026-08-23): Arc2Face is not capable of what the measurement needs &mdash; too few renders survive the pipeline even under honest conditioning, on top of experiment 13&rsquo;s 33.6&deg; offset and 6.9&deg; floor. The next stimulus generator is StyleGAN3: invert the identity anchor to W once (the only place a photograph enters the pipeline), perturb W directly, render <code>G(w)</code> per sample &mdash; &asymp;50&nbsp;ms against &asymp;11&nbsp;s, every W point a face, deterministic, no per-probe optimisation and so no judge circularity. Adopted, not yet run &mdash; with its costs stated as requirements: boundaries reported only in achieved ArcFace coordinates, the padding stage mandatory and recorded, and cross-identity anisotropy treated as generator-confounded until a two-generator control runs.</p>
+      </details>
+
+      <details class="exp" id="exp16" open>
+        <summary>
+          <span class="exp-num">16</span>
+          <span class="exp-tag">Re-measurement &middot; full provenance</span>
+          <h2>Re-measured: the successor figures</h2>
+        </summary>
+        <p class="beat"><b>Question</b> The withdrawal left the project with no presentable boundary figures &mdash; the geometry stood, the numbers didn&rsquo;t. What do the same diagrams look like when the measurement is run under full provenance: preset recorded, weight digests recorded, per-render detection recorded, nothing taken on trust?</p>
+        <p class="beat"><b>Done</b> 12 directions around the same anchor, target shells out to 60&deg;, rendered through the one surviving recipe (<code>pure_math</code>, experiment 12) with the full configuration in the run manifest. Every render re-embedded (the transfer map&rsquo;s n&nbsp;=&nbsp;1,326), and the identical recorded crops scored by three judges at once: the deployed pipeline as host SiL, the same pipeline on the silicon (HiL, experiment 14&rsquo;s unified buffer), and the float MobileFaceNet parent with no INT8 and no detector gate. Boundaries extracted in achieved degrees at the vendor &tau;&nbsp;=&nbsp;0.5, then the whole extraction swept over &tau; from 0.30 to 0.70.</p>
+        <p class="beat"><b>Came back</b> Deployed (SiL): 9 of 12 rays bounded at <b style="color:var(--ex-ink);font-family:inherit;text-transform:none;letter-spacing:normal">37.7&ndash;54.5&deg;</b> achieved (spread 16.7&deg;, ratio 1.44&times;), 3 censored-right &mdash; still accepted at the 60&deg; grid edge, so a lower bound, not a boundary. The HiL squares sit on the SiL circles. The float parent bounds all 12 rays, mostly <em>below</em> the deployed points: deployed minus float is <b style="color:var(--ex-ink);font-family:inherit;text-transform:none;letter-spacing:normal">+4.53&deg; mean</b> (sd 3.26&deg;, max +11.99&deg;) &mdash; the deployed INT8-plus-detector pipeline is <em>looser</em> than the float model it was quantised from, on identical crops. Acceptance moved outward through deployment, which is the assurance-relevant direction. Swept over &tau;, the surface is a function of the operating point, not a property of the system: at &tau;&nbsp;=&nbsp;0.30 nine of twelve directions are still accepted beyond the grid edge, the mean boundary walks 52.7&deg;&nbsp;&rarr;&nbsp;7.6&deg; across the band, and at &tau;&nbsp;=&nbsp;0.70 most rays cannot even hold the anchor&rsquo;s own render. Two more results rode along. The error budget splits evenly: within-point seed noise (median score sd 0.020) and host&ndash;device rig noise (sd 0.023) contribute about equally. And an honest negative &mdash; the withdrawn-era claim that per-ray boundary tracks per-ray render fidelity (r&nbsp;=&nbsp;+0.45) does <em>not</em> replicate: r&nbsp;=&nbsp;&minus;0.32 over the 9 bounded rays, which at this n is noise, and no coupling is claimed in either direction. Catching exactly that kind of orphaned claim is what the re-measurement exists for.</p>
+
+        <figure>
+          <img src="img/m2/m2_ray_boundaries.png" width="1720" height="880" loading="lazy" alt="Dot plot of boundary angle per direction at tau 0.5 for three judges. SiL circles and HiL squares coincide; float-MFN triangles sit mostly below them; rays 3, 4 and 9 are marked with arrows at the 60-degree grid edge, still accepted there.">
+          <figcaption>Where acceptance ends, per direction, at the vendor &tau;&nbsp;=&nbsp;0.5. SiL circles with HiL squares sitting on top of them &mdash; host and silicon agree. Float-MFN triangles (no INT8, no detector gate) mostly below. The arrows at the 60&deg; grid edge are the three censored rays: still accepted there, boundary unmeasured.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/m2/m2_ray_trajectories.png" width="1720" height="920" loading="lazy" alt="Twelve recognition-score curves against achieved angle, all falling from about 0.73, crossing the tau 0.5 line between roughly 55 and 70 degrees at different slopes.">
+          <figcaption>Score against achieved angle, one curve per ray, same &tau; line. Cliffs and plateaus, not one radius: ray 0 stays above &tau; until &asymp;70&deg; while ray 2 falls through it at &asymp;55&deg;.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/m2/m2_transfer_map.png" width="1280" height="920" loading="lazy" alt="Scatter of achieved versus target angle for 1,326 renders with the fit line achieved = 0.644 times target + 33.6 degrees, well above the perfect-renderer diagonal.">
+          <figcaption>The instrument behind the numbers: target versus achieved angle over all 1,326 scored renders. <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px">achieved = 0.644&middot;target + 33.6&deg;</span>, residual sd 6.9&deg; &mdash; the noise floor sitting inside every boundary above.</figcaption>
+        </figure>
+
+        <div class="tauwidget" id="tau-widget">
+          <div class="tw-head">
+            <label for="tau-range">operating point</label>
+            <input type="range" id="tau-range" min="0" max="8" step="1" value="4" aria-label="Decision threshold tau">
+            <span class="tw-val" id="tau-val">&tau; = 0.50</span>
+          </div>
+          <div class="tw-stats" id="tau-stats"></div>
+          <svg id="tau-chart" viewBox="0 0 920 300" role="img" aria-label="Per-ray boundary angle at the selected threshold, with censored and multimodal rays marked distinctly"></svg>
+          <div class="legend" style="margin-top:10px">
+            <span><i class="sw bounded"></i>bounded &mdash; &theta;* in achieved degrees</span>
+            <span><i class="sw censored"></i>censored &mdash; still accepted at the 60&deg; grid edge</span>
+            <span><i class="sw weak"></i>multimodal &mdash; the score crosses &tau; more than once; first crossing shown</span>
+          </div>
+          <p class="tw-note">The same twelve rays under every operating point the sweep covers, straight from <code>data/m2_rays.json</code>. This is the threshold-band finding of experiment 10 with real boundaries attached: FAR and FRR barely move across this band, while the mean boundary walks from 52.7&deg; to 7.6&deg;.</p>
+        </div>
+
+        <p class="beat"><b>Changed</b> These figures supersede the withdrawn ones as the project&rsquo;s current boundary measurement; the withdrawn set stays withdrawn &mdash; the two share a question, not provenance. The caveats travel with the numbers: one identity, 12 directions, so the anisotropy is a within-identity result, not a cross-identity comparison; boundaries are in achieved degrees, with the renderer&rsquo;s 6.9&deg; residual inside every number; censored means still accepted, a lower bound; and the renders are Arc2Face <code>pure_math</code> &mdash; the generator has since been retired for yield (experiment 15), which affects what gets measured next, not the validity of what was measured here.</p>
       </details>
     </div>
 
@@ -793,6 +858,114 @@
         bars();
       })
       .catch(function(){ /* keep the inline fallback */ });
+  })();
+  </script>
+  <script>
+  (function(){
+    // exp 16 interactive: per-ray boundary vs operating point, driven by the
+    // published tau sweep. Progressive enhancement only — the widget stays
+    // hidden unless data/m2_rays.json actually loads (it won't over file://),
+    // in which case the static PNGs above it are the whole story.
+    var host = document.getElementById("tau-widget");
+    if (!host || !window.fetch) return;
+    fetch("data/m2_rays.json", {cache:"no-cache"})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(doc){
+        if (doc && doc.taus && doc.taus.length && doc.rays && doc.rays.length) build(doc);
+      })
+      .catch(function(){ /* keep the static figures */ });
+
+    function build(doc){
+      var taus = doc.taus, edge = doc.grid_edge_deg || 60;
+      var range = document.getElementById("tau-range");
+      var chart = document.getElementById("tau-chart");
+      var stats = document.getElementById("tau-stats");
+      var val   = document.getElementById("tau-val");
+      range.min = "0"; range.max = String(taus.length-1);
+      var def = -1;
+      taus.forEach(function(t,i){ if (Math.abs(t-0.5) < 1e-9) def = i; });
+      range.value = String(def >= 0 ? def : Math.floor(taus.length/2));
+
+      function entryFor(ray, t){
+        var bt = ray.by_tau || {};
+        if (bt[String(t)]) return bt[String(t)];
+        var found = null;
+        Object.keys(bt).forEach(function(k){ if (Math.abs(parseFloat(k)-t) < 1e-9) found = bt[k]; });
+        return found || {};
+      }
+      function css(n,f){
+        var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+        return v || f;
+      }
+
+      function paint(){
+        var accent = css('--ex-accent','#2f5d62'), warn = css('--ex-warn','#875c23'),
+            flag = css('--ex-flag','#8a3b52'), grid = css('--ex-grid','#e2e6e2'),
+            muted = css('--ex-muted','#5a5f5d');
+        var t = taus[+range.value];
+        val.innerHTML = "&tau; = " + t.toFixed(2);
+        var W=920, H=300, padL=42, padR=10, padT=20, padB=42;
+        var plotW=W-padL-padR, plotH=H-padT-padB, MAX=64;
+        var y = function(d){ return padT + plotH - Math.min(d,MAX)/MAX*plotH; };
+        var base = padT + plotH, sv = '';
+        [10,20,30,40,50].forEach(function(d){
+          var yy = y(d);
+          sv += '<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yy.toFixed(1)+'" stroke="'+grid+'" stroke-width="1"/>';
+          sv += '<text x="'+(padL-6)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+muted+'">'+d+'&#176;</text>';
+        });
+        var ye60 = y(edge);
+        sv += '<line x1="'+padL+'" y1="'+ye60.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+ye60.toFixed(1)+'" stroke="'+warn+'" stroke-width="1" stroke-dasharray="2 3"/>';
+        sv += '<text x="'+(padL-6)+'" y="'+(ye60+4).toFixed(1)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+warn+'">'+edge+'&#176;</text>';
+        sv += '<text x="'+(W-padR)+'" y="'+(ye60-6).toFixed(1)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+warn+'">grid edge &#8212; still accepted beyond here</text>';
+
+        var n = doc.rays.length, gap = 18, bw = (plotW - gap*(n-1))/n;
+        var bounded = [], nc = 0, nm = 0;
+        doc.rays.forEach(function(ray, j){
+          var e = entryFor(ray, t);
+          var x = padL + j*(bw+gap), mx = x + bw/2;
+          if (e.status === 'bounded' && typeof e.theta_star === 'number'){
+            bounded.push(e.theta_star);
+            var yy = y(e.theta_star);
+            sv += '<rect x="'+x.toFixed(1)+'" y="'+yy.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(base-yy).toFixed(1)+'" fill="'+accent+'" opacity="0.88"/>';
+            sv += '<text x="'+mx.toFixed(1)+'" y="'+(yy-6).toFixed(1)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+muted+'">'+e.theta_star.toFixed(1)+'&#176;</text>';
+          } else if (e.status === 'censored_right'){
+            nc++;
+            sv += '<rect x="'+x.toFixed(1)+'" y="'+ye60.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(base-ye60).toFixed(1)+'" fill="'+warn+'" opacity="0.35" stroke="'+warn+'" stroke-width="1" stroke-dasharray="3 2"/>';
+            sv += '<path d="M '+(mx-5).toFixed(1)+' '+(ye60-6).toFixed(1)+' L '+mx.toFixed(1)+' '+(ye60-15).toFixed(1)+' L '+(mx+5).toFixed(1)+' '+(ye60-6).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+          } else if (e.status === 'multimodal' && typeof e.theta_star === 'number'){
+            nm++;
+            var ym = y(e.theta_star);
+            sv += '<rect x="'+x.toFixed(1)+'" y="'+ym.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(base-ym).toFixed(1)+'" fill="'+flag+'" opacity="0.45" stroke="'+flag+'" stroke-width="1" stroke-dasharray="1.5 2"/>';
+            sv += '<text x="'+mx.toFixed(1)+'" y="'+(ym-6).toFixed(1)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+flag+'">'+e.theta_star.toFixed(1)+'&#176;</text>';
+          } else {
+            sv += '<rect x="'+x.toFixed(1)+'" y="'+(base-2)+'" width="'+bw.toFixed(1)+'" height="2" fill="'+muted+'"/>';
+            sv += '<text x="'+mx.toFixed(1)+'" y="'+(base-8).toFixed(1)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+muted+'">no crossing</text>';
+          }
+          sv += '<text x="'+mx.toFixed(1)+'" y="'+(H-24)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+muted+'">'+ray.ray+'</text>';
+        });
+        sv += '<text x="'+(padL+plotW/2).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+muted+'">ray (direction index) &#183; bar height = boundary &#952;* in achieved degrees, deployed pipeline (SiL)</text>';
+        chart.innerHTML = sv;
+
+        var d1 = function(v){ return v.toFixed(1); };
+        if (bounded.length){
+          var mn = Math.min.apply(null,bounded), mx2 = Math.max.apply(null,bounded);
+          var mean = bounded.reduce(function(a,b){ return a+b; },0)/bounded.length;
+          stats.innerHTML = 'bounded <b>'+bounded.length+' / '+n+'</b> &#183; censored <b>'+nc+'</b> &#183; multimodal <b>'+nm+'</b> &#8212; &#952;* '+d1(mn)+'&#8211;'+d1(mx2)+'&#176;, mean '+d1(mean)+'&#176; (bounded rays only)';
+        } else {
+          stats.innerHTML = 'bounded <b>0 / '+n+'</b> &#183; censored <b>'+nc+'</b> &#183; multimodal <b>'+nm+'</b>';
+        }
+      }
+
+      range.addEventListener('input', paint);
+      // colours come from the theme tokens, so repaint when the theme changes
+      document.querySelectorAll('.theme .th').forEach(function(b){
+        b.addEventListener('click', function(){ setTimeout(paint, 0); });
+      });
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      mq.addEventListener && mq.addEventListener('change', function(){ setTimeout(paint, 0); });
+      paint();
+      host.style.display = 'block';
+    }
   })();
   </script>
   <script>(function(){
