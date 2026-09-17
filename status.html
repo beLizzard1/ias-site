@@ -32,6 +32,10 @@
     details.phase[open]>summary::after{transform:rotate(225deg);top:37px}
     details.phase>summary:hover h2{color:var(--accent)}
     details.phase:not([open])>summary .ph-sum{margin-bottom:2px}
+    .phase .sowhat{display:block;margin:4px 0 14px;padding:12px 16px;background:var(--paper-2);border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;max-width:74ch;cursor:auto}
+    .phase .sowhat .sw-k{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+    .phase .sowhat .sw-li{display:block;position:relative;padding-left:16px;font-size:14px;line-height:1.55;color:var(--ink-2);margin:4px 0}
+    .phase .sowhat .sw-li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--accent)}
     .row{border-top:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;align-items:start}
     .row h3{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:18px}
     .row .st{margin-top:8px}
@@ -211,11 +215,19 @@
       </div>
     </details>
 
-    <details class="phase" open>
+    <details class="phase">
       <summary>
-        <span class="ph-k">Phase 3 &middot; current</span>
-        <h2>StyleGAN3, the W-walk<span class="pill prog">In progress</span></h2>
+        <span class="ph-k">Phase 3 &middot; one identity</span>
+        <h2>StyleGAN3, the W-walk<span class="pill done">Closed 2026-09-17</span></h2>
         <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. The three design decisions are taken, the first boundary has been measured through it on twelve rays by four models and checked on the device, and the grid of record &mdash; 1,024 rays &mdash; is rendered and judged: at the vendor threshold the deployed pipeline accepts her out to a median of 67.4&deg;.</span>
+        <span class="sowhat"><span class="sw-k">So what</span>
+          <span class="sw-li"><strong>The deployed face unlock lets in far more than her own photographs.</strong> It still accepts altered versions of her 30&ndash;45&deg; further from her than any real photo sits &mdash; a broad region, not a tight fit around her face.</span>
+          <span class="sw-li"><strong>The edge model is looser and more uneven than desktop models.</strong> On the same images the INT8 pipeline accepts about 7&deg; further out, and by how much depends strongly on the direction of change.</span>
+          <span class="sw-li"><strong>The weak spots cannot be reasoned out.</strong> Direction predicts the looseness only weakly, and the one attempt to predict the weakest direction failed. They have to be measured.</span>
+          <span class="sw-li"><strong>The simulation stands in for the chip.</strong> Host and device agree to about 0.4&deg;, so large studies can run on the host.</span>
+          <span class="sw-li"><strong>Not shown yet:</strong> that a stranger could get in &mdash; no direction reaches as far as the nearest stranger sits, but nobody has walked the path towards one &mdash; or that any of this holds for anyone but her. That is the next phase.</span>
+          <span class="sw-li"><strong>Why it matters:</strong> a desktop model and a single threshold do not describe an edge face-unlock system; its acceptance region has to be measured on the deployed pipeline, direction by direction.</span>
+        </span>
       </summary>
 
       <div class="row">
@@ -296,6 +308,14 @@
       </div>
     </details>
 
+    <details class="phase" open>
+      <summary>
+        <span class="ph-k">Phase 4 &middot; current</span>
+        <h2>The population<span class="pill next">Next</span></h2>
+        <span class="ph-sum">The same measurement across a cohort of synthetic identities, and the cross-identity statistics the method was designed for. The procedure is written down from Phase 3; the cohort&rsquo;s construction is being decided.</span>
+      </summary>
+    </details>
+
     <div class="callout">
       <h2>The through-line</h2>
       <ul>
@@ -325,6 +345,7 @@
     m.addEventListener&&m.addEventListener("change",paint);
     paint();
   })();</script>
+  <script>document.querySelectorAll(".phase .sowhat").forEach(function(e){e.addEventListener("click",function(v){if(!v.target.closest("a"))v.preventDefault();});});</script>
   <script src="js/boundary-radar.js" defer></script>
 </body>
 </html>
