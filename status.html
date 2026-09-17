@@ -121,6 +121,12 @@
         <span class="ph-k">Phase 1 &middot; to 2026-08-22</span>
         <h2>Building the apparatus<span class="pill done">Complete</span></h2>
         <span class="ph-sum">Everything needed to ask the question at all: exact perturbation geometry, real anchors from photographs, a renderer, and the same INT8 pipeline running both as host software (SiL) and on the silicon it ships on (HiL).</span>
+        <span class="sowhat"><span class="sw-k">So what</span>
+          <span class="sw-li"><strong>&ldquo;How different&rdquo; is now a number.</strong> Any face can be placed at an exact angle from a person&rsquo;s identity, using several of their photographs combined into one reference point. That gives a ruler for &ldquo;structurally different&rdquo;.</span>
+          <span class="sw-li"><strong>The system under test was broken, and is now fixed.</strong> The vendor&rsquo;s edge model gave identical outputs for different faces because of three bugs in its host build. Once fixed it matches an independent reference exactly, and on the chip itself its boundaries move by about 1&deg; on average (&plusmn;4&deg; across rays).</span>
+          <span class="sw-li"><strong>Not yet:</strong> a way to produce real images at a chosen distance. The ruler existed; the faces to measure did not.</span>
+          <span class="sw-li"><strong>Why it matters:</strong> before this, nobody could say how different a face must be before this system stops accepting it &mdash; the question could not even be asked.</span>
+        </span>
       </summary>
 
       <div class="row">
@@ -158,6 +164,13 @@
         <span class="ph-k">Phase 2 &middot; 2026-08-22 &rarr; 2026-08-23</span>
         <h2>Measuring with Arc2Face<span class="pill prog">Closed &mdash; generator retired</span></h2>
         <span class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures are withdrawn (notice above); measured surfaces now exist again under full provenance &mdash; <a href="explorer.html#exp16">experiment 16</a> on the Explorer &mdash; while the earlier figures remain withdrawn. The phase ends with a verdict on the renderer itself.</span>
+        <span class="sowhat"><span class="sw-k">So what</span>
+          <span class="sw-li"><strong>A system can look perfect and still be loose.</strong> Every threshold from 0.27 to 0.60 gives zero errors on her photographs and on 1,164 strangers, yet across that range how far the system accepts altered versions of her swings from a tight region to one it barely bounds. The usual error rates cannot see this.</span>
+          <span class="sw-li"><strong>Deployment loosens acceptance.</strong> The edge pipeline accepts faces about 4.5&deg; further out than its float counterpart on the same images, and the chip agrees with the host simulation.</span>
+          <span class="sw-li"><strong>The first generator could not make a face &ldquo;N degrees different&rdquo; reliably.</strong> Its settings copied her original photograph into the renders, so it measured the same photo relabelled rather than a different face. Once cleaned, asking for 20&deg; gave about 46&deg;, with about 7&deg; of noise, and the first surface figures were withdrawn.</span>
+          <span class="sw-li"><strong>Not shown:</strong> a reliable size for her acceptance region &mdash; the first figures were withdrawn, and their re-measured successors are limited by the generator&rsquo;s 7&deg; noise.</span>
+          <span class="sw-li"><strong>Why it matters:</strong> the tool that generates the altered faces has to be tested as rigorously as the system under test, or you are measuring the generator. That is why the work moved to StyleGAN3.</span>
+        </span>
       </summary>
 
       <div class="row">
@@ -221,6 +234,7 @@
         <h2>StyleGAN3, the W-walk<span class="pill done">Closed 2026-09-17</span></h2>
         <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. The three design decisions are taken, the first boundary has been measured through it on twelve rays by four models and checked on the device, and the grid of record &mdash; 1,024 rays &mdash; is rendered and judged: at the vendor threshold the deployed pipeline accepts her out to a median of 67.4&deg;.</span>
         <span class="sowhat"><span class="sw-k">So what</span>
+          <span class="sw-li"><strong>The method works.</strong> Her photographs are converted into the generator&rsquo;s own representation once (inversion); faces are then moved away from that point in controlled steps (perturbation); each face&rsquo;s actual difference is measured to within 1&deg; and tested on the deployed pipeline. Her photographs fix only the starting point; no altered face is conditioned on them.</span>
           <span class="sw-li"><strong>The deployed face unlock lets in far more than her own photographs.</strong> It still accepts altered versions of her 30&ndash;45&deg; further from her than any real photo sits &mdash; a broad region, not a tight fit around her face.</span>
           <span class="sw-li"><strong>The edge model is looser and more uneven than desktop models.</strong> On the same images the INT8 pipeline accepts about 7&deg; further out, and by how much depends strongly on the direction of change.</span>
           <span class="sw-li"><strong>The weak spots cannot be reasoned out.</strong> Direction predicts the looseness only weakly, and the one attempt to predict the weakest direction failed. They have to be measured.</span>
