@@ -79,9 +79,20 @@
     <details class="phase" open>
       <summary>
         <span class="ph-k">Phase 4 &middot; current</span>
-        <h2>The population<span class="pill next">Next</span></h2>
-        <span class="ph-sum">The same measurement across a cohort of synthetic identities, and the cross-identity statistics the method was designed for. The procedure is written down from Phase 3; the cohort&rsquo;s construction is being decided.</span>
+        <h2>The population<span class="pill prog">In progress</span></h2>
+        <span class="ph-sum">The same measurement across a cohort of synthetic identities, and the cross-identity statistics the method was designed for. The procedure is written down from Phase 3. The first question was which synthetic faces to draw from, and the answer changed where the subject sits: two pilot cohorts of ten are now chosen, one from a text-to-image dataset and one from StyleGAN3&rsquo;s own faces, so the choice of source can itself be measured.</span>
       </summary>
+
+      <div class="row">
+        <div><h3>Where she sits among synthetic faces</h3><div class="st"><span class="pill done">Measured 2026-09-17</span></div></div>
+        <div>
+          <p>Before choosing a cohort, every face in two synthetic populations was placed in the same recognition space the boundaries are measured in: all 122,726 images of the SFHQ-T2I text-to-image dataset (68,961 adults with a clear face) and 20,000 faces drawn from StyleGAN3 itself (17,515 eligible). For each identity, the question is how far away its nearest other identity sits &mdash; how crowded its neighbourhood is.</p>
+          <p><strong>The source matters.</strong> At the same pool size, SFHQ-T2I packs its identities about 9&deg; closer together than StyleGAN3&rsquo;s own faces or the HSFace dataset do (nearest neighbour 66.5&deg; against 74.9&deg; and 75.9&deg; among 2,000). A text-to-image generator&rsquo;s faces are not a stand-in for how crowded people are.</p>
+          <p><strong>She sits in a sparse region.</strong> Among StyleGAN3&rsquo;s faces, a typical identity&rsquo;s nearest neighbour gets closer as the pool grows &mdash; 77.5&deg; among 500, 71.4&deg; among about 17,300 &mdash; while hers barely moves (79.7&deg; to 77.1&deg;), which puts her beyond 99% of them in the full pool. It is not an artefact of how she was measured: her nine-photograph centroid, each photograph on its own, and her own StyleGAN3 render all sit in the same sparse region.</p>
+          <p><strong>What that means for authentication.</strong> A face unlock can fail two ways. Someone else can be accepted as her: for a stranger to get in by chance their face has to fall inside her acceptance region, which reaches a median of 67&deg; at the vendor threshold, and her nearest synthetic stranger is about 77&deg; away &mdash; so fewer natural look-alikes threaten her than threaten a typical identity. For most of the text-to-image faces (92%), and for the most crowded of StyleGAN3&rsquo;s, the nearest other identity already sits inside a boundary that size. Or she can be rejected: sparseness changes nothing there, since her own photographs sit 23&ndash;36&deg; from her centre. What it does not protect against is someone moving a face <em>towards</em> her on purpose &mdash; her region is still 30&ndash;45&deg; wider than her own photographs &mdash; and the margin shrinks fast on a looser device: at a threshold of 0.4 her median boundary is 75&deg;, at 0.3 about 80&deg;. One global threshold gives different people different risks; measuring that spread is what this phase is for.</p>
+          <p>What this does not say. The populations are synthetic, so this places her among one generator&rsquo;s faces, not among real people; a consented real-image set is being sought for that. The distances are measured with the reference recogniser, not the deployed chip. And comparing her boundary with a stranger&rsquo;s distance compares radii in different directions &mdash; a guide to exposure, not a measured attack.</p>
+        </div>
+      </div>
     </details>
 
     <details class="phase">
