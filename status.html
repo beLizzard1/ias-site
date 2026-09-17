@@ -68,7 +68,7 @@
     <section class="head">
       <div class="eyebrow">Where we are</div>
       <h1>Project status</h1>
-      <div class="updated">Last updated 2026-08-23</div>
+      <div class="updated">Last updated 2026-09-17</div>
       <p class="lead">A running snapshot, told as three phases: building the apparatus, measuring with Arc2Face until the instrument itself failed the audit, and the generator that replaces it. Completed phases are folded up; the honest failures stay visible. The two notices below qualify everything under them.</p>
     </section>
 
@@ -215,7 +215,7 @@
       <summary>
         <span class="ph-k">Phase 3 &middot; current</span>
         <h2>StyleGAN3, the W-walk<span class="pill prog">In progress</span></h2>
-        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. The three design decisions are taken, the first boundary has been measured through it on twelve rays and checked on the device, and the grid of record &mdash; 1,024 rays, in batches &mdash; is rendering.</span>
+        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. The three design decisions are taken, the first boundary has been measured through it on twelve rays by four models and checked on the device, and the grid of record &mdash; 1,024 rays &mdash; is rendered and being judged.</span>
       </summary>
 
       <div class="row">
@@ -272,6 +272,24 @@
             <img src="img/sg3/anchor_candidates_judged.png" width="900" height="239" loading="lazy" alt="Five renders of the same person from five anchor inversions, each labelled with its scores on four identity models and its Mahalanobis distance from the generator's distribution. The rightmost, full-covariance prior at lambda 0.02, is marked adopted.">
             <figcaption>The decision, taken 2026-09-16 on the numbers. Five candidates scored by the desktop-class ArcFace R100, MobileFaceNet and the deployed ESP-DL pipeline against the subject&rsquo;s nine photographs, and by angle to the centroid in anchor space, each at three paddings; her photographs score 0.82, 0.75 and 0.75 against each other on the three models. Every candidate is as much the identity as another photograph of her is. Mahalanobis distance is what separates them &mdash; 32 against 48 for the two &lambda;&nbsp;=&nbsp;0.02 priors, natural samples near 26 &mdash; and the full prior&rsquo;s walk was the one that reached 75&deg; as faces. Adopted: full &lambda;&nbsp;=&nbsp;0.02.</figcaption>
           </figure>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>Four boundaries, on twelve rays</h3><div class="st"><span class="pill prog">Preview 2026-09-16</span></div></div>
+        <div>
+          <p>The sphere with its boundaries measured rather than drawn. Twelve rays of the adopted configuration, each judged by four models on the same renders: a desktop-class ArcFace R100, a float MobileFaceNet, and the deployed INT8 pipeline on the host and on the device. Every model finds a boundary on every ray at the vendor threshold. The desktop model&rsquo;s boundary is close to a single radius &mdash; <strong>60.5&deg;</strong> median, standard deviation 1.8&deg; across rays &mdash; and it grows more ragged as the model gets further from it: 3.4&deg; for the float MobileFaceNet, 4.6&deg; for the INT8 pipeline, whose boundary also sits further out (<strong>66.0&deg;</strong>). The device tracks the host: per ray it differs by +0.7&deg; on average (sd 1.9&deg;), inside the 5&deg; spacing of the shells, so it is drawn as hollow markers in the host&rsquo;s colour rather than as a surface of its own. On identical crops, quantisation alone makes the MobileFaceNet boundary 6&deg; looser.</p>
+          <p>Two readings the numbers do not support, stated so nobody takes them. The desktop model is not an ideal system: the angles are measured with an ArcFace model, so its near-round boundary is partly the ruler measuring itself, and it is labelled the <em>reference</em>. And one threshold applied to four models whose scores are not on a common scale makes the absolute radii threshold-relative; the ordering of the spreads is the claim, and it holds at every threshold from 0.4 to 0.7. At twelve rays the step from the float MobileFaceNet to INT8 rests largely on two rays; the 1,024-ray grid, rendered overnight and now being judged, decides it, and replaces this preview.</p>
+          <div class="film-pair">
+            <figure>
+              <video controls muted playsinline preload="metadata" poster="video/sg3/sphere_boundaries_12ray_poster.jpg" width="1280" height="720"><source src="video/sg3/sphere_boundaries_12ray.mp4" type="video/mp4">Your browser does not play MP4; the file is <a href="video/sg3/sphere_boundaries_12ray.mp4">here</a>.</video>
+              <figcaption>The walk, then the boundaries, then an orbit. Radius is the achieved angle to the identity; each ray keeps one heading, so all four judges&rsquo; markers for a ray sit on one line. Points are filled where the deployed model accepts and hollow where it rejects. Blue: desktop R100; green: float MobileFaceNet; orange: INT8 on the host, hollow orange on the device; dashed circles, each model&rsquo;s median. On the right, the anchor render beside the featured ray&rsquo;s current render.</figcaption>
+            </figure>
+            <figure>
+              <img src="img/sg3/boundaries_radar_12ray.png" width="540" height="600" loading="lazy" alt="A radar chart with twelve spokes, one per ray, and four polygons, one per recognition model, giving the boundary angle on each ray at the vendor threshold. The blue desktop-model polygon is nearly circular near 60 degrees; the orange host and device polygons are larger and more irregular, reaching 75 degrees on ray 1.">
+              <figcaption>The same boundaries as a still: one spoke per ray, one polygon per model, dotted rings at each model&rsquo;s median. The desktop polygon is nearly round; the INT8 polygons are larger and uneven, and the host and device outlines nearly coincide.</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </details>
