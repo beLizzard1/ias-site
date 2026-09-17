@@ -73,119 +73,15 @@
       <div class="eyebrow">Where we are</div>
       <h1>Project status</h1>
       <div class="updated">Last updated 2026-09-17</div>
-      <p class="lead">A running snapshot, told in phases: building the apparatus, measuring with Arc2Face until the instrument itself failed the audit, one identity measured through the generator that replaced it, and the population next. Completed phases are folded up with their &ldquo;so what&rdquo; left in view; the honest failures stay recorded inside them.</p>
+      <p class="lead">A running snapshot, told in phases: building the apparatus, measuring with Arc2Face until the instrument itself failed the audit, one identity measured through the generator that replaced it, and the population next &mdash; newest first. Completed phases are folded up with their &ldquo;so what&rdquo; left in view; the honest failures stay recorded inside them.</p>
     </section>
 
-    <details class="phase">
+    <details class="phase" open>
       <summary>
-        <span class="ph-k">Phase 1 &middot; to 2026-08-22</span>
-        <h2>Building the apparatus<span class="pill done">Complete</span></h2>
-        <span class="ph-sum">Everything needed to ask the question at all: exact perturbation geometry, real anchors from photographs, a renderer, and the same INT8 pipeline running both as host software (SiL) and on the silicon it ships on (HiL).</span>
-        <span class="sowhat"><span class="sw-k">So what</span>
-          <span class="sw-li"><strong>&ldquo;How different&rdquo; is now a number.</strong> Any face can be placed at an exact angle from a person&rsquo;s identity, using several of their photographs combined into one reference point. That gives a ruler for &ldquo;structurally different&rdquo;.</span>
-          <span class="sw-li"><strong>The system under test was broken, and is now fixed.</strong> The vendor&rsquo;s edge model gave identical outputs for different faces because of three bugs in its host build. Once fixed it matches an independent reference exactly, and on the chip itself its boundaries move by about 1&deg; on average (&plusmn;4&deg; across rays).</span>
-          <span class="sw-li"><strong>Not yet:</strong> a way to produce real images at a chosen distance. The ruler existed; the faces to measure did not.</span>
-          <span class="sw-li"><strong>Why it matters:</strong> before this, nobody could say how different a face must be before this system stops accepting it &mdash; the question could not even be asked.</span>
-        </span>
+        <span class="ph-k">Phase 4 &middot; current</span>
+        <h2>The population<span class="pill next">Next</span></h2>
+        <span class="ph-sum">The same measurement across a cohort of synthetic identities, and the cross-identity statistics the method was designed for. The procedure is written down from Phase 3; the cohort&rsquo;s construction is being decided.</span>
       </summary>
-
-      <div class="row">
-        <div><h3>Perturbation core &amp; real anchors</h3><div class="st"><span class="pill done">Done</span></div></div>
-        <div>
-          <p>Embeddings-first shells with exact cosine geometry &mdash; <code>unit(anchor + &epsilon;&middot;tangent)</code>, <code>cos = 1/&radic;(1+&epsilon;&sup2;)</code> &mdash; and reproducible, index-addressable sampling. Real 512-D anchors extract from photos via InsightFace / antelopev2, the model pack pinned with a verified digest, and a shell dataset builds and probes around a real identity locally. The chart is a gnomonic projection and reaches only up to 90&deg;; inside that range it is exact (worst difference from the great-circle form 2.8&times;10<sup>&minus;17</sup>), so no measurement was affected. The StyleGAN3 work does not use it &mdash; there the angle is measured on every render &mdash; and extending it past 90&deg; matters only for paths towards other identities, which are still to come. Two statements once made on this site were artefacts of the chart, not results: that other identities are unreachable, and that &ldquo;how far towards a given person&rdquo; has no denominator.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>Edge model (ESP-DL SiL)</h3><div class="st"><span class="pill done">Fixed &amp; verified</span></div></div>
-        <div>
-          <p>The &ldquo;identical embeddings&rdquo; bug was three upstream defects, all in the vendor&rsquo;s generic C/C++ fallback path that only a host build exercises: a packed Conv filter layout the loader didn&rsquo;t unpack, a PReLU kernel skipping requantisation, and a memory planner aliasing every tensor to the same offset. Two are reported upstream (<a href="https://github.com/espressif/esp-dl/issues/319">#319</a>, <a href="https://github.com/espressif/esp-dl/issues/320">#320</a>), the #319 fix is submitted as <a href="https://github.com/espressif/esp-dl/pull/321">PR #321</a>, and the third was already fixed on esp-dl&rsquo;s own <code>master</code>. After the fixes and a bump to esp-dl v3.3.9, the runner is bit-exact against an independent int8 reference on all three models &mdash; agreement with a reference, not yet with the chip, which is what the harness below exists to close.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>On-device harness (HiL)</h3><div class="st"><span class="pill done">Live</span></div></div>
-        <div>
-          <p>The board speaks the host protocol over its native USB &mdash; the UART bridge tops out at 11.5&nbsp;kB/s and was most of an early 10.8&nbsp;s/probe ceiling; native USB brings a probe to &asymp;1&nbsp;s. Parity is measured rather than guessed: identical pixels <em>and</em> identical keypoints agree to cosine <strong>0.980&ndash;0.983</strong>; letting each side run its own detector drops that to <strong>0.900</strong>, and the detector stays on the device anyway, because the deployed pipeline &mdash; detect, crop, embed, decide &mdash; is the measurement target. Re-measuring boundaries on the device displaced them by &minus;1.1&deg; &plusmn; 4.3&deg; across 8 rays: the host SiL is a good proxy for bulk mapping, and the device is the arbiter.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>Face compositor</h3><div class="st"><span class="pill next">Withdrawn</span></div></div>
-        <div>
-          <p>Warped and blended a generated face into a real background photo, keeping the real hair and scene. It worked: the compositor itself was near-lossless &mdash; putting a face back into its own photo differed by at most one level per pixel.</p>
-          <p>Removed in August 2026 along with every other render-time stage that saw the original photograph. The trial result stands; what changed is where such a stage may sit. Anything conditioned on the subject&rsquo;s own image belongs <em>after</em> the measurement, as presentation, not inside the render being measured.</p>
-        </div>
-      </div>
-    </details>
-
-    <details class="phase">
-      <summary>
-        <span class="ph-k">Phase 2 &middot; 2026-08-22 &rarr; 2026-08-23</span>
-        <h2>Measuring with Arc2Face<span class="pill prog">Closed &mdash; generator retired</span></h2>
-        <span class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures were withdrawn; measured surfaces now exist again under full provenance &mdash; <a href="explorer.html#exp16">experiment 16</a> on the Explorer &mdash; while the earlier figures remain withdrawn. The phase ends with a verdict on the renderer itself.</span>
-        <span class="sowhat"><span class="sw-k">So what</span>
-          <span class="sw-li"><strong>A system can look perfect and still be loose.</strong> Every threshold from 0.27 to 0.60 gives zero errors on her photographs and on 1,164 strangers, yet across that range how far the system accepts altered versions of her swings from a tight region to one it barely bounds. The usual error rates cannot see this.</span>
-          <span class="sw-li"><strong>Deployment loosens acceptance.</strong> The edge pipeline accepts faces about 4.5&deg; further out than its float counterpart on the same images, and the chip agrees with the host simulation.</span>
-          <span class="sw-li"><strong>The first generator could not make a face &ldquo;N degrees different&rdquo; reliably.</strong> Its settings copied her original photograph into the renders, so it measured the same photo relabelled rather than a different face. Once cleaned, asking for 20&deg; gave about 46&deg;, with about 7&deg; of noise, and the first surface figures were withdrawn.</span>
-          <span class="sw-li"><strong>Not shown:</strong> a reliable size for her acceptance region &mdash; the first figures were withdrawn, and their re-measured successors are limited by the generator&rsquo;s 7&deg; noise.</span>
-          <span class="sw-li"><strong>Why it matters:</strong> the tool that generates the altered faces has to be tested as rigorously as the system under test, or you are measuring the generator. That is why the work moved to StyleGAN3.</span>
-        </span>
-      </summary>
-
-      <div class="row">
-        <div><h3>The measured surfaces</h3><div class="st"><span class="pill prog">Figures withdrawn</span> <span class="pill done">Re-measured</span></div></div>
-        <div>
-          <p>A 20-ray pilot, then all 64 directions bisected against the SiL around one real identity (Dr James&rsquo;): 51 usable rays, boundary angle 37.7&deg; &plusmn; 13.3&deg;, anisotropy 7.6&times; &mdash; a star, not a circle. Two analysis bugs were caught on the way, both of which had made the result look more dramatic than it is: rays decided on two evaluations drove a spurious 30&times; ratio, and detection failures plotted as scores of zero drew fictitious &ldquo;identity cliffs&rdquo;. Then the run&rsquo;s real defect surfaced &mdash; no render configuration was recorded, model assets had changed on the machine that day, and a re-run under a known configuration moved all thirteen re-tested rays the same way, which fits a changed pipeline better than thirteen independent corrections &mdash; and the figures were withdrawn (2026-08-23). It cannot recur the same way: there is one rendering recipe, and every run records its configuration and weight digests. The acceptance region is still direction-dependent; what could not be substantiated was <em>how far</em>, in numbers. See the <a href="explorer.html">Explorer</a> for the full chain.</p>
-          <p>Re-measured 2026-08-23 under full provenance &mdash; preset, weight digests and per-render detection all recorded. Twelve directions, boundaries in achieved degrees: the deployed pipeline bounds 9 of 12 rays at <strong>37.7&ndash;54.5&deg;</strong> (spread 16.7&deg;, ratio 1.44&times;), with <strong>3 rays still accepted at the 60&deg; grid edge</strong> (censored &mdash; a lower bound, not a boundary), and runs <strong>+4.5&deg; looser</strong> on average than its own float parent scored on identical crops: acceptance moves outward through INT8-plus-detector deployment. Device HiL boundaries sit on the SiL&rsquo;s. These are the successor figures &mdash; see <a href="explorer.html#exp16">experiment 16</a>, including a &tau;-swept interactive &mdash; and the earlier figures remain withdrawn.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>The threshold band &amp; enrolment</h3><div class="st"><span class="pill done">Measured</span></div></div>
-        <div>
-          <p>Any decision threshold between <strong>0.269 and 0.602</strong> gives zero false accepts and zero false rejects on this subject&rsquo;s nine photographs and 1,164 synthetic impostors &mdash; and across that flat, perfect band the acceptance region goes from &ldquo;95% of directions still accepted at the edge of the corpus&rdquo; to &ldquo;a bounded star averaging 28.8&deg;&rdquo;. An operator tuning against FAR and FRR alone sees nothing changing underneath. Also settled: anchoring on the centroid of several photographs beats a single image by +0.115 leave-one-out and widens the impostor margin from +0.462 to +0.623, so the centroid stays.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>Do the renders look like the person?</h3><div class="st"><span class="pill done">Tested</span></div></div>
-        <div>
-          <p>The recognition model said the renders were <em>more</em> like the subject than her own photographs are like each other; the subject did not see herself in them. Forced choice with the reference visible settled the direction: <strong>16 of 16</strong> subject-targeted trials correct, including an observer who had never met her &mdash; above stranger-level identity signal, below felt likeness, and a floor rather than a ceiling. The <a href="perceptual.html">public version</a> is 2.6&times; harder and measures human accuracy as a function of embedding distance. The subject is also not poorly represented: her renders sit at the 50th percentile of 20 comparison identities.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>Rendering (Arc2Face)</h3><div class="st"><span class="pill next">Retired as generator</span></div></div>
-        <div>
-          <p>Ten presets became one. The audit that followed the withdrawal found that every preset except <code>pure_math</code> conditioned the render on the subject&rsquo;s own photograph &mdash; ControlNet on its structure, IP-Adapter on its identity, SMIRK on its expression &mdash; which measures how far the embedding can move while the render is still structurally that photograph: the wrong question. Two presets were byte-identical configurations under different names. The machinery was deleted, not just the preset entries, so the silent-default contamination behind the withdrawal cannot recur.</p>
-          <p>The one remaining recipe was then characterised as an instrument, on 1,330 renders through the clean measurement path with full configuration recorded (these renders post-date, and are not subject to, the withdrawal above): <strong>achieved &theta; = 0.644 &times; target &theta; + 33.6&deg;</strong>, r&nbsp;=&nbsp;0.867, residual sd <strong>6.9&deg;</strong>. Ask for a face 20&deg; from the anchor and you get one about 46&deg; away. The offset and the compression are correctable bias; the 6.9&deg; spread is the instrument&rsquo;s noise floor, and it bounds how precisely any boundary can be placed &mdash; &asymp;4.0&deg; with 3 renders per point, &asymp;3.1&deg; with 5.</p>
-          <p>The verdict (2026-08-23): Arc2Face is not capable of what the measurement needs. Only 14 of 40 of its native renders survive the vendor detection threshold even under honest conditioning, on top of the offset and the noise floor. It remains the characterised baseline &mdash; every judge and the boundary extraction are renderer-agnostic &mdash; and the stimulus generator moves to StyleGAN3, Phase 3 below.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>A residual leak, recorded</h3><div class="st"><span class="pill prog">Recorded, not fixed</span></div></div>
-        <div>
-          <p>The cleanup left one leak in place, on purpose and on the record. The anchor&rsquo;s <em>reference</em> image is picked best-of-8, and <strong>35% of that selection weight is resemblance to the subject&rsquo;s own photograph</strong> &mdash; in embedding and in pixels. That is the deleted presets&rsquo; leak moved from the diffusion stage into the selection stage. It is confined to the reference image: the measurement path renders exactly one image per (embedding, seed), no candidate ranking, no re-render on a low score, and which renders are kept is decided by detection, never by similarity. The condition for fixing it is named &mdash; before the reference path is used for anything load-bearing, the selection must be reduced to its target term and re-characterised rather than assumed harmless.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>One pixel buffer</h3><div class="st"><span class="pill done">Measured</span></div></div>
-        <div>
-          <p>Three code paths fed the same model three differently prepared images; on eight renders one path found 8 faces at 0.79&ndash;1.00 and another found 2. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution. The buffer is now prepared in one module used by every ESP-DL path, and after unification SiL and HiL agree on <strong>8/8</strong> detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. The full device pass over the same 1,330-render set has since completed on the board, and the comparison is measured. Row-for-row: detection agrees on <strong>1,328 of 1,330</strong> (99.8%; two SiL-only detections, no HiL-only). Over the 533 co-detected probes the mean score delta is &minus;0.00034 with sd 0.023, no systematic bias in either direction. Accept decisions at the vendor &tau; agree <strong>527/533</strong>, with all six flips between 0.479 and 0.534 &mdash; borderline probes inside the rounding noise, not disagreements about an identity.</p>
-          <p>The comparison that matters is at boundary level, because boundaries are the deliverable: the same extraction over both judges&rsquo; rows classifies <strong>all 12 rays identically</strong> (the same 9 bounded, the same 3 censored-right), and over the 9 co-bounded rays the boundaries differ by <strong>mean +0.46&deg;, sd 0.98&deg;, max 1.72&deg;</strong> &mdash; an order of magnitude inside the renderer&rsquo;s 6.9&deg; residual. Host-computed boundaries describe the silicon. One scope caveat, kept deliberately: this was measured on Arc2Face renders, and the framing experiment below proves the detector is image-distribution-sensitive, so it does not yet license computing StyleGAN3 curves host-side &mdash; a 50&ndash;100 render HiL spot-check is owed when the first SG3 calibration set exists.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div><h3>Detection is framing-sensitive</h3><div class="st"><span class="pill done">Measured 2026-08-23</span></div></div>
-        <div>
-          <p>FFHQ-tight framing &mdash; the framing every StyleGAN output has by construction &mdash; is found by the detector <strong>37 of 40</strong> times at threshold 0.1 with refinement scores around 0.999, and does not exist at the vendor 0.5: <strong>0 of 40</strong>. The proposal stage gates on framing; the scoring stage doesn&rsquo;t see it. Resolution is irrelevant (512 versus 1024 changes nothing in either direction), and a 50% pad partially restores vendor-threshold detection &mdash; a presentation transform, applied after the identity is fixed, parameters recorded per render.</p>
-          <p>Two consequences. The record that retired StyleGAN from this project months ago &mdash; a 100% detection failure &mdash; was never evidence: it scored the reconstruction and the real photograph it was compared against at the same constant 0.531209, the identical-embeddings SiL defect since fixed, measured through a pipeline since deleted. And Arc2Face&rsquo;s own vendor-threshold losses (14/40 native) are partly framing, previously attributed wholly to render quality.</p>
-        </div>
-      </div>
     </details>
 
     <details class="phase">
@@ -215,7 +111,7 @@
       <div class="row">
         <div><h3>What it must record</h3><div class="st"><span class="pill prog">Requirements</span></div></div>
         <div>
-          <p>The costs, stated as requirements rather than caveats. W&nbsp;&rarr;&nbsp;ArcFace is nonlinear and per-identity, so an even spread in W arrives distorted on the ArcFace sphere: the achieved ArcFace direction and magnitude are recorded per probe, and boundaries are reported only in achieved ArcFace coordinates, never in &alpha; or W units. The padding stage stays mandatory and recorded per render &mdash; FFHQ-tight framing fails the vendor detector by default, per the framing experiment above &mdash; though the first real renders detect unpadded (below), so it is insurance rather than rescue. Cross-identity anisotropy is treated as generator-confounded until a two-generator control (same identity, same rays, both renderers) has run. And the anchor gate stays: the rendered <code>w_anchor</code> must re-embed near the centroid and detect on ESP-DL before any ray is walked.</p>
+          <p>The costs, stated as requirements rather than caveats. W&nbsp;&rarr;&nbsp;ArcFace is nonlinear and per-identity, so an even spread in W arrives distorted on the ArcFace sphere: the achieved ArcFace direction and magnitude are recorded per probe, and boundaries are reported only in achieved ArcFace coordinates, never in &alpha; or W units. The padding stage stays mandatory and recorded per render &mdash; FFHQ-tight framing fails the vendor detector by default, per the framing experiment in Phase 2 &mdash; though the first real renders detect unpadded (below), so it is insurance rather than rescue. Cross-identity anisotropy is treated as generator-confounded until a two-generator control (same identity, same rays, both renderers) has run. And the anchor gate stays: the rendered <code>w_anchor</code> must re-embed near the centroid and detect on ESP-DL before any ray is walked.</p>
         </div>
       </div>
 
@@ -282,12 +178,116 @@
       </div>
     </details>
 
-    <details class="phase" open>
+    <details class="phase">
       <summary>
-        <span class="ph-k">Phase 4 &middot; current</span>
-        <h2>The population<span class="pill next">Next</span></h2>
-        <span class="ph-sum">The same measurement across a cohort of synthetic identities, and the cross-identity statistics the method was designed for. The procedure is written down from Phase 3; the cohort&rsquo;s construction is being decided.</span>
+        <span class="ph-k">Phase 2 &middot; 2026-08-22 &rarr; 2026-08-23</span>
+        <h2>Measuring with Arc2Face<span class="pill prog">Closed &mdash; generator retired</span></h2>
+        <span class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures were withdrawn; measured surfaces now exist again under full provenance &mdash; <a href="explorer.html#exp16">experiment 16</a> on the Explorer &mdash; while the earlier figures remain withdrawn. The phase ends with a verdict on the renderer itself.</span>
+        <span class="sowhat"><span class="sw-k">So what</span>
+          <span class="sw-li"><strong>A system can look perfect and still be loose.</strong> Every threshold from 0.27 to 0.60 gives zero errors on her photographs and on 1,164 strangers, yet across that range how far the system accepts altered versions of her swings from a tight region to one it barely bounds. The usual error rates cannot see this.</span>
+          <span class="sw-li"><strong>Deployment loosens acceptance.</strong> The edge pipeline accepts faces about 4.5&deg; further out than its float counterpart on the same images, and the chip agrees with the host simulation.</span>
+          <span class="sw-li"><strong>The first generator could not make a face &ldquo;N degrees different&rdquo; reliably.</strong> Its settings copied her original photograph into the renders, so it measured the same photo relabelled rather than a different face. Once cleaned, asking for 20&deg; gave about 46&deg;, with about 7&deg; of noise, and the first surface figures were withdrawn.</span>
+          <span class="sw-li"><strong>Not shown:</strong> a reliable size for her acceptance region &mdash; the first figures were withdrawn, and their re-measured successors are limited by the generator&rsquo;s 7&deg; noise.</span>
+          <span class="sw-li"><strong>Why it matters:</strong> the tool that generates the altered faces has to be tested as rigorously as the system under test, or you are measuring the generator. That is why the work moved to StyleGAN3.</span>
+        </span>
       </summary>
+
+      <div class="row">
+        <div><h3>The measured surfaces</h3><div class="st"><span class="pill prog">Figures withdrawn</span> <span class="pill done">Re-measured</span></div></div>
+        <div>
+          <p>A 20-ray pilot, then all 64 directions bisected against the SiL around one real identity (Dr James&rsquo;): 51 usable rays, boundary angle 37.7&deg; &plusmn; 13.3&deg;, anisotropy 7.6&times; &mdash; a star, not a circle. Two analysis bugs were caught on the way, both of which had made the result look more dramatic than it is: rays decided on two evaluations drove a spurious 30&times; ratio, and detection failures plotted as scores of zero drew fictitious &ldquo;identity cliffs&rdquo;. Then the run&rsquo;s real defect surfaced &mdash; no render configuration was recorded, model assets had changed on the machine that day, and a re-run under a known configuration moved all thirteen re-tested rays the same way, which fits a changed pipeline better than thirteen independent corrections &mdash; and the figures were withdrawn (2026-08-23). It cannot recur the same way: there is one rendering recipe, and every run records its configuration and weight digests. The acceptance region is still direction-dependent; what could not be substantiated was <em>how far</em>, in numbers. See the <a href="explorer.html">Explorer</a> for the full chain.</p>
+          <p>Re-measured 2026-08-23 under full provenance &mdash; preset, weight digests and per-render detection all recorded. Twelve directions, boundaries in achieved degrees: the deployed pipeline bounds 9 of 12 rays at <strong>37.7&ndash;54.5&deg;</strong> (spread 16.7&deg;, ratio 1.44&times;), with <strong>3 rays still accepted at the 60&deg; grid edge</strong> (censored &mdash; a lower bound, not a boundary), and runs <strong>+4.5&deg; looser</strong> on average than its own float parent scored on identical crops: acceptance moves outward through INT8-plus-detector deployment. Device HiL boundaries sit on the SiL&rsquo;s. These are the successor figures &mdash; see <a href="explorer.html#exp16">experiment 16</a>, including a &tau;-swept interactive &mdash; and the earlier figures remain withdrawn.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>The threshold band &amp; enrolment</h3><div class="st"><span class="pill done">Measured</span></div></div>
+        <div>
+          <p>Any decision threshold between <strong>0.269 and 0.602</strong> gives zero false accepts and zero false rejects on this subject&rsquo;s nine photographs and 1,164 synthetic impostors &mdash; and across that flat, perfect band the acceptance region goes from &ldquo;95% of directions still accepted at the edge of the corpus&rdquo; to &ldquo;a bounded star averaging 28.8&deg;&rdquo;. An operator tuning against FAR and FRR alone sees nothing changing underneath. Also settled: anchoring on the centroid of several photographs beats a single image by +0.115 leave-one-out and widens the impostor margin from +0.462 to +0.623, so the centroid stays.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>Do the renders look like the person?</h3><div class="st"><span class="pill done">Tested</span></div></div>
+        <div>
+          <p>The recognition model said the renders were <em>more</em> like the subject than her own photographs are like each other; the subject did not see herself in them. Forced choice with the reference visible settled the direction: <strong>16 of 16</strong> subject-targeted trials correct, including an observer who had never met her &mdash; above stranger-level identity signal, below felt likeness, and a floor rather than a ceiling. The <a href="perceptual.html">public version</a> is 2.6&times; harder and measures human accuracy as a function of embedding distance. The subject is also not poorly represented: her renders sit at the 50th percentile of 20 comparison identities.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>Rendering (Arc2Face)</h3><div class="st"><span class="pill next">Retired as generator</span></div></div>
+        <div>
+          <p>Ten presets became one. The audit that followed the withdrawal found that every preset except <code>pure_math</code> conditioned the render on the subject&rsquo;s own photograph &mdash; ControlNet on its structure, IP-Adapter on its identity, SMIRK on its expression &mdash; which measures how far the embedding can move while the render is still structurally that photograph: the wrong question. Two presets were byte-identical configurations under different names. The machinery was deleted, not just the preset entries, so the silent-default contamination behind the withdrawal cannot recur.</p>
+          <p>The one remaining recipe was then characterised as an instrument, on 1,330 renders through the clean measurement path with full configuration recorded (these renders post-date, and are not subject to, the withdrawal above): <strong>achieved &theta; = 0.644 &times; target &theta; + 33.6&deg;</strong>, r&nbsp;=&nbsp;0.867, residual sd <strong>6.9&deg;</strong>. Ask for a face 20&deg; from the anchor and you get one about 46&deg; away. The offset and the compression are correctable bias; the 6.9&deg; spread is the instrument&rsquo;s noise floor, and it bounds how precisely any boundary can be placed &mdash; &asymp;4.0&deg; with 3 renders per point, &asymp;3.1&deg; with 5.</p>
+          <p>The verdict (2026-08-23): Arc2Face is not capable of what the measurement needs. Only 14 of 40 of its native renders survive the vendor detection threshold even under honest conditioning, on top of the offset and the noise floor. It remains the characterised baseline &mdash; every judge and the boundary extraction are renderer-agnostic &mdash; and the stimulus generator moves to StyleGAN3 (Phase 3).</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>A residual leak, recorded</h3><div class="st"><span class="pill prog">Recorded, not fixed</span></div></div>
+        <div>
+          <p>The cleanup left one leak in place, on purpose and on the record. The anchor&rsquo;s <em>reference</em> image is picked best-of-8, and <strong>35% of that selection weight is resemblance to the subject&rsquo;s own photograph</strong> &mdash; in embedding and in pixels. That is the deleted presets&rsquo; leak moved from the diffusion stage into the selection stage. It is confined to the reference image: the measurement path renders exactly one image per (embedding, seed), no candidate ranking, no re-render on a low score, and which renders are kept is decided by detection, never by similarity. The condition for fixing it is named &mdash; before the reference path is used for anything load-bearing, the selection must be reduced to its target term and re-characterised rather than assumed harmless.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>One pixel buffer</h3><div class="st"><span class="pill done">Measured</span></div></div>
+        <div>
+          <p>Three code paths fed the same model three differently prepared images; on eight renders one path found 8 faces at 0.79&ndash;1.00 and another found 2. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution. The buffer is now prepared in one module used by every ESP-DL path, and after unification SiL and HiL agree on <strong>8/8</strong> detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. The full device pass over the same 1,330-render set has since completed on the board, and the comparison is measured. Row-for-row: detection agrees on <strong>1,328 of 1,330</strong> (99.8%; two SiL-only detections, no HiL-only). Over the 533 co-detected probes the mean score delta is &minus;0.00034 with sd 0.023, no systematic bias in either direction. Accept decisions at the vendor &tau; agree <strong>527/533</strong>, with all six flips between 0.479 and 0.534 &mdash; borderline probes inside the rounding noise, not disagreements about an identity.</p>
+          <p>The comparison that matters is at boundary level, because boundaries are the deliverable: the same extraction over both judges&rsquo; rows classifies <strong>all 12 rays identically</strong> (the same 9 bounded, the same 3 censored-right), and over the 9 co-bounded rays the boundaries differ by <strong>mean +0.46&deg;, sd 0.98&deg;, max 1.72&deg;</strong> &mdash; an order of magnitude inside the renderer&rsquo;s 6.9&deg; residual. Host-computed boundaries describe the silicon. One scope caveat, kept deliberately: this was measured on Arc2Face renders, and the framing experiment below proves the detector is image-distribution-sensitive, so it does not yet license computing StyleGAN3 curves host-side &mdash; a 50&ndash;100 render HiL spot-check is owed when the first SG3 calibration set exists.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>Detection is framing-sensitive</h3><div class="st"><span class="pill done">Measured 2026-08-23</span></div></div>
+        <div>
+          <p>FFHQ-tight framing &mdash; the framing every StyleGAN output has by construction &mdash; is found by the detector <strong>37 of 40</strong> times at threshold 0.1 with refinement scores around 0.999, and does not exist at the vendor 0.5: <strong>0 of 40</strong>. The proposal stage gates on framing; the scoring stage doesn&rsquo;t see it. Resolution is irrelevant (512 versus 1024 changes nothing in either direction), and a 50% pad partially restores vendor-threshold detection &mdash; a presentation transform, applied after the identity is fixed, parameters recorded per render.</p>
+          <p>Two consequences. The record that retired StyleGAN from this project months ago &mdash; a 100% detection failure &mdash; was never evidence: it scored the reconstruction and the real photograph it was compared against at the same constant 0.531209, the identical-embeddings SiL defect since fixed, measured through a pipeline since deleted. And Arc2Face&rsquo;s own vendor-threshold losses (14/40 native) are partly framing, previously attributed wholly to render quality.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase">
+      <summary>
+        <span class="ph-k">Phase 1 &middot; to 2026-08-22</span>
+        <h2>Building the apparatus<span class="pill done">Complete</span></h2>
+        <span class="ph-sum">Everything needed to ask the question at all: exact perturbation geometry, real anchors from photographs, a renderer, and the same INT8 pipeline running both as host software (SiL) and on the silicon it ships on (HiL).</span>
+        <span class="sowhat"><span class="sw-k">So what</span>
+          <span class="sw-li"><strong>&ldquo;How different&rdquo; is now a number.</strong> Any face can be placed at an exact angle from a person&rsquo;s identity, using several of their photographs combined into one reference point. That gives a ruler for &ldquo;structurally different&rdquo;.</span>
+          <span class="sw-li"><strong>The system under test was broken, and is now fixed.</strong> The vendor&rsquo;s edge model gave identical outputs for different faces because of three bugs in its host build. Once fixed it matches an independent reference exactly, and on the chip itself its boundaries move by about 1&deg; on average (&plusmn;4&deg; across rays).</span>
+          <span class="sw-li"><strong>Not yet:</strong> a way to produce real images at a chosen distance. The ruler existed; the faces to measure did not.</span>
+          <span class="sw-li"><strong>Why it matters:</strong> before this, nobody could say how different a face must be before this system stops accepting it &mdash; the question could not even be asked.</span>
+        </span>
+      </summary>
+
+      <div class="row">
+        <div><h3>Perturbation core &amp; real anchors</h3><div class="st"><span class="pill done">Done</span></div></div>
+        <div>
+          <p>Embeddings-first shells with exact cosine geometry &mdash; <code>unit(anchor + &epsilon;&middot;tangent)</code>, <code>cos = 1/&radic;(1+&epsilon;&sup2;)</code> &mdash; and reproducible, index-addressable sampling. Real 512-D anchors extract from photos via InsightFace / antelopev2, the model pack pinned with a verified digest, and a shell dataset builds and probes around a real identity locally. The chart is a gnomonic projection and reaches only up to 90&deg;; inside that range it is exact (worst difference from the great-circle form 2.8&times;10<sup>&minus;17</sup>), so no measurement was affected. The StyleGAN3 work does not use it &mdash; there the angle is measured on every render &mdash; and extending it past 90&deg; matters only for paths towards other identities, which are still to come. Two statements once made on this site were artefacts of the chart, not results: that other identities are unreachable, and that &ldquo;how far towards a given person&rdquo; has no denominator.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>Edge model (ESP-DL SiL)</h3><div class="st"><span class="pill done">Fixed &amp; verified</span></div></div>
+        <div>
+          <p>The &ldquo;identical embeddings&rdquo; bug was three upstream defects, all in the vendor&rsquo;s generic C/C++ fallback path that only a host build exercises: a packed Conv filter layout the loader didn&rsquo;t unpack, a PReLU kernel skipping requantisation, and a memory planner aliasing every tensor to the same offset. Two are reported upstream (<a href="https://github.com/espressif/esp-dl/issues/319">#319</a>, <a href="https://github.com/espressif/esp-dl/issues/320">#320</a>), the #319 fix is submitted as <a href="https://github.com/espressif/esp-dl/pull/321">PR #321</a>, and the third was already fixed on esp-dl&rsquo;s own <code>master</code>. After the fixes and a bump to esp-dl v3.3.9, the runner is bit-exact against an independent int8 reference on all three models &mdash; agreement with a reference, not yet with the chip, which is what the harness below exists to close.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>On-device harness (HiL)</h3><div class="st"><span class="pill done">Live</span></div></div>
+        <div>
+          <p>The board speaks the host protocol over its native USB &mdash; the UART bridge tops out at 11.5&nbsp;kB/s and was most of an early 10.8&nbsp;s/probe ceiling; native USB brings a probe to &asymp;1&nbsp;s. Parity is measured rather than guessed: identical pixels <em>and</em> identical keypoints agree to cosine <strong>0.980&ndash;0.983</strong>; letting each side run its own detector drops that to <strong>0.900</strong>, and the detector stays on the device anyway, because the deployed pipeline &mdash; detect, crop, embed, decide &mdash; is the measurement target. Re-measuring boundaries on the device displaced them by &minus;1.1&deg; &plusmn; 4.3&deg; across 8 rays: the host SiL is a good proxy for bulk mapping, and the device is the arbiter.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><h3>Face compositor</h3><div class="st"><span class="pill next">Withdrawn</span></div></div>
+        <div>
+          <p>Warped and blended a generated face into a real background photo, keeping the real hair and scene. It worked: the compositor itself was near-lossless &mdash; putting a face back into its own photo differed by at most one level per pixel.</p>
+          <p>Removed in August 2026 along with every other render-time stage that saw the original photograph. The trial result stands; what changed is where such a stage may sit. Anything conditioned on the subject&rsquo;s own image belongs <em>after</em> the measurement, as presentation, not inside the render being measured.</p>
+        </div>
+      </div>
     </details>
 
     <div class="callout">
