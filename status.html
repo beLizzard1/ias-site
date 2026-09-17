@@ -73,48 +73,8 @@
       <div class="eyebrow">Where we are</div>
       <h1>Project status</h1>
       <div class="updated">Last updated 2026-09-17</div>
-      <p class="lead">A running snapshot, told as three phases: building the apparatus, measuring with Arc2Face until the instrument itself failed the audit, and the generator that replaces it. Completed phases are folded up; the honest failures stay visible. The two notices below qualify everything under them.</p>
+      <p class="lead">A running snapshot, told in phases: building the apparatus, measuring with Arc2Face until the instrument itself failed the audit, one identity measured through the generator that replaced it, and the population next. Completed phases are folded up with their &ldquo;so what&rdquo; left in view; the honest failures stay recorded inside them.</p>
     </section>
-
-    <div class="withdrawn" style="border-color:var(--accent);background:var(--accent-soft)">
-      <div class="k" style="color:var(--accent)">Geometry &mdash; 2026-08-23</div>
-      <p><strong>The coordinate chart covers a hemisphere, and is being extended.</strong>
-      Perturbations are built as <span class="mono">unit(anchor + &epsilon; &middot; tangent)</span>,
-      which is a gnomonic projection &mdash; the tangent plane pushed onto the sphere. It reaches
-      only cos&nbsp;&gt;&nbsp;0: ninety degrees sits at &epsilon;&nbsp;=&nbsp;&infin;, and nothing
-      past it has a coordinate at any budget.</p>
-      <p><strong>No measurement is affected.</strong> For cos&nbsp;&gt;&nbsp;0 the chart is
-      point-for-point identical to the great-circle form &mdash; worst difference 2.8&times;10<sup>&minus;17</sup>,
-      float rounding &mdash; so every shell ever generated already sits where the angle it records
-      says it does. This is a change of domain, not a correction. It is also
-      <em>separate</em> from the withdrawal below, which is about runs that recorded no
-      render configuration.</p>
-      <p>The reason to extend is that the boundary search bisects in &epsilon;, which saturates
-      exactly in the band where other identities sit, and that placing those identities on the
-      same map as the acceptance region requires coordinates for all of them. A scan of 2,115
-      synthetic identities puts 55% of them beyond ninety degrees &mdash; though that figure is
-      concentration of measure rather than a finding, since a random cloud in 512 dimensions
-      gives 49%.</p>
-      <p>Two earlier statements on this site&rsquo;s pages were artefacts of the chart rather than
-      results: that impostors are unreachable, and that &ldquo;how far toward a given person&rdquo;
-      has no denominator. With the extended chart both are well defined.</p>
-    </div>
-
-    <div class="withdrawn">
-      <div class="k">Withdrawn 2026-08-23</div>
-      <p><strong>The measured figures are withdrawn pending re-measurement.</strong> The run behind them
-      recorded no render configuration &mdash; the run table stores the backend name and nothing else, with
-      no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine
-      during the day those renders were made, and a re-run under a known configuration moved every one of
-      thirteen re-tested rays in the same direction. That is more consistent with a changed rendering
-      pipeline than with thirteen independent corrections, and no record exists that would settle it.</p>
-      <p>It cannot recur in the same way. Since August 2026 there is only one rendering recipe, so there is
-      no wrong default left to take, and every run records the full generator configuration and the digests
-      of the weights it opened.</p>
-      <p>The geometry is unaffected: perturbations are still exact, and the acceptance region is still
-      direction-dependent. What cannot currently be substantiated is <em>how far</em>, in numbers.
-      The ESP-DL defect findings and their upstream reports are unaffected.</p>
-    </div>
 
     <details class="phase">
       <summary>
@@ -132,7 +92,7 @@
       <div class="row">
         <div><h3>Perturbation core &amp; real anchors</h3><div class="st"><span class="pill done">Done</span></div></div>
         <div>
-          <p>Embeddings-first shells with exact cosine geometry &mdash; <code>unit(anchor + &epsilon;&middot;tangent)</code>, <code>cos = 1/&radic;(1+&epsilon;&sup2;)</code> &mdash; and reproducible, index-addressable sampling. Real 512-D anchors extract from photos via InsightFace / antelopev2, the model pack pinned with a verified digest, and a shell dataset builds and probes around a real identity locally. The hemisphere limitation of this chart, and its extension, are the geometry notice above.</p>
+          <p>Embeddings-first shells with exact cosine geometry &mdash; <code>unit(anchor + &epsilon;&middot;tangent)</code>, <code>cos = 1/&radic;(1+&epsilon;&sup2;)</code> &mdash; and reproducible, index-addressable sampling. Real 512-D anchors extract from photos via InsightFace / antelopev2, the model pack pinned with a verified digest, and a shell dataset builds and probes around a real identity locally. The chart is a gnomonic projection and reaches only up to 90&deg;; inside that range it is exact (worst difference from the great-circle form 2.8&times;10<sup>&minus;17</sup>), so no measurement was affected. The StyleGAN3 work does not use it &mdash; there the angle is measured on every render &mdash; and extending it past 90&deg; matters only for paths towards other identities, which are still to come. Two statements once made on this site were artefacts of the chart, not results: that other identities are unreachable, and that &ldquo;how far towards a given person&rdquo; has no denominator.</p>
         </div>
       </div>
 
@@ -163,7 +123,7 @@
       <summary>
         <span class="ph-k">Phase 2 &middot; 2026-08-22 &rarr; 2026-08-23</span>
         <h2>Measuring with Arc2Face<span class="pill prog">Closed &mdash; generator retired</span></h2>
-        <span class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures are withdrawn (notice above); measured surfaces now exist again under full provenance &mdash; <a href="explorer.html#exp16">experiment 16</a> on the Explorer &mdash; while the earlier figures remain withdrawn. The phase ends with a verdict on the renderer itself.</span>
+        <span class="ph-sum">The first surfaces were measured, and then the instrument was put under the same scrutiny as the system it measures. Most of what this phase produced survives &mdash; the threshold band, the perceptual results, the parity numbers. The headline surface figures were withdrawn; measured surfaces now exist again under full provenance &mdash; <a href="explorer.html#exp16">experiment 16</a> on the Explorer &mdash; while the earlier figures remain withdrawn. The phase ends with a verdict on the renderer itself.</span>
         <span class="sowhat"><span class="sw-k">So what</span>
           <span class="sw-li"><strong>A system can look perfect and still be loose.</strong> Every threshold from 0.27 to 0.60 gives zero errors on her photographs and on 1,164 strangers, yet across that range how far the system accepts altered versions of her swings from a tight region to one it barely bounds. The usual error rates cannot see this.</span>
           <span class="sw-li"><strong>Deployment loosens acceptance.</strong> The edge pipeline accepts faces about 4.5&deg; further out than its float counterpart on the same images, and the chip agrees with the host simulation.</span>
@@ -176,7 +136,7 @@
       <div class="row">
         <div><h3>The measured surfaces</h3><div class="st"><span class="pill prog">Figures withdrawn</span> <span class="pill done">Re-measured</span></div></div>
         <div>
-          <p>A 20-ray pilot, then all 64 directions bisected against the SiL around one real identity (Dr James&rsquo;): 51 usable rays, boundary angle 37.7&deg; &plusmn; 13.3&deg;, anisotropy 7.6&times; &mdash; a star, not a circle. Two analysis bugs were caught on the way, both of which had made the result look more dramatic than it is: rays decided on two evaluations drove a spurious 30&times; ratio, and detection failures plotted as scores of zero drew fictitious &ldquo;identity cliffs&rdquo;. Then the run&rsquo;s real defect surfaced &mdash; no render configuration was recorded &mdash; and the figures were withdrawn pending re-measurement. The acceptance region is still direction-dependent; what could not be substantiated was <em>how far</em>, in numbers. See the <a href="explorer.html">Explorer</a> for the full chain.</p>
+          <p>A 20-ray pilot, then all 64 directions bisected against the SiL around one real identity (Dr James&rsquo;): 51 usable rays, boundary angle 37.7&deg; &plusmn; 13.3&deg;, anisotropy 7.6&times; &mdash; a star, not a circle. Two analysis bugs were caught on the way, both of which had made the result look more dramatic than it is: rays decided on two evaluations drove a spurious 30&times; ratio, and detection failures plotted as scores of zero drew fictitious &ldquo;identity cliffs&rdquo;. Then the run&rsquo;s real defect surfaced &mdash; no render configuration was recorded, model assets had changed on the machine that day, and a re-run under a known configuration moved all thirteen re-tested rays the same way, which fits a changed pipeline better than thirteen independent corrections &mdash; and the figures were withdrawn (2026-08-23). It cannot recur the same way: there is one rendering recipe, and every run records its configuration and weight digests. The acceptance region is still direction-dependent; what could not be substantiated was <em>how far</em>, in numbers. See the <a href="explorer.html">Explorer</a> for the full chain.</p>
           <p>Re-measured 2026-08-23 under full provenance &mdash; preset, weight digests and per-render detection all recorded. Twelve directions, boundaries in achieved degrees: the deployed pipeline bounds 9 of 12 rays at <strong>37.7&ndash;54.5&deg;</strong> (spread 16.7&deg;, ratio 1.44&times;), with <strong>3 rays still accepted at the 60&deg; grid edge</strong> (censored &mdash; a lower bound, not a boundary), and runs <strong>+4.5&deg; looser</strong> on average than its own float parent scored on identical crops: acceptance moves outward through INT8-plus-detector deployment. Device HiL boundaries sit on the SiL&rsquo;s. These are the successor figures &mdash; see <a href="explorer.html#exp16">experiment 16</a>, including a &tau;-swept interactive &mdash; and the earlier figures remain withdrawn.</p>
         </div>
       </div>
