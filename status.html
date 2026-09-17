@@ -215,7 +215,7 @@
       <summary>
         <span class="ph-k">Phase 3 &middot; current</span>
         <h2>StyleGAN3, the W-walk<span class="pill prog">In progress</span></h2>
-        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. The three design decisions are taken, the first boundary has been measured through it on twelve rays by four models and checked on the device, and the grid of record &mdash; 1,024 rays &mdash; is rendered and being judged.</span>
+        <span class="ph-sum">The adopted stimulus generator, with its requirements stated up front. The anchor inversion gate has passed, the grid has been walked out to where the face gives out and back, the inversion&rsquo;s noise has been traced to its cause, and the walk is on film in the explainer&rsquo;s own picture. The three design decisions are taken, the first boundary has been measured through it on twelve rays by four models and checked on the device, and the grid of record &mdash; 1,024 rays &mdash; is rendered and judged: at the vendor threshold the deployed pipeline accepts her out to a median of 67.4&deg;.</span>
       </summary>
 
       <div class="row">
@@ -276,20 +276,18 @@
       </div>
 
       <div class="row">
-        <div><h3>Four boundaries, on twelve rays</h3><div class="st"><span class="pill prog">Preview 2026-09-16</span></div></div>
+        <div><h3>Four boundaries, on 1,024 rays</h3><div class="st"><span class="pill done">Judged 2026-09-17</span></div></div>
         <div>
-          <p>The sphere with its boundaries measured rather than drawn. Twelve rays of the adopted configuration, each judged by four models on the same renders: a desktop-class ArcFace R100, a float MobileFaceNet, and the deployed INT8 pipeline on the host and on the device. Every model finds a boundary on every ray at the vendor threshold. The desktop model&rsquo;s boundary is close to a single radius &mdash; <strong>60.5&deg;</strong> median, standard deviation 1.8&deg; across rays &mdash; and it grows more ragged as the model gets further from it: 3.4&deg; for the float MobileFaceNet, 4.6&deg; for the INT8 pipeline, whose boundary also sits further out (<strong>66.0&deg;</strong>). The device tracks the host: per ray it differs by +0.7&deg; on average (sd 1.9&deg;), inside the 5&deg; spacing of the shells, so it is drawn as hollow markers in the host&rsquo;s colour rather than as a surface of its own. On identical crops, quantisation alone makes the MobileFaceNet boundary 6&deg; looser.</p>
-          <p>Two readings the numbers do not support, stated so nobody takes them. The desktop model is not an ideal system: the angles are measured with an ArcFace model, so its near-round boundary is partly the ruler measuring itself, and it is labelled the <em>reference</em>. And one threshold applied to four models whose scores are not on a common scale makes the absolute radii threshold-relative; the ordering of the spreads is the claim, and it holds at every threshold from 0.4 to 0.7. At twelve rays the step from the float MobileFaceNet to INT8 rests largely on two rays; the 1,024-ray grid, rendered overnight and now being judged, decides it, and replaces this preview.</p>
-          <div class="film-pair">
-            <figure>
-              <video controls muted playsinline preload="metadata" poster="video/sg3/sphere_boundaries_12ray_poster.jpg" width="1280" height="720"><source src="video/sg3/sphere_boundaries_12ray.mp4" type="video/mp4">Your browser does not play MP4; the file is <a href="video/sg3/sphere_boundaries_12ray.mp4">here</a>.</video>
-              <figcaption>The walk, then the boundaries, then an orbit. Radius is the achieved angle to the identity; each ray keeps one heading, so all four judges&rsquo; markers for a ray sit on one line. Points are filled where the deployed model accepts and hollow where it rejects. Blue: desktop R100; green: float MobileFaceNet; orange: INT8 on the host, hollow orange on the device; dashed circles, each model&rsquo;s median. On the right, the anchor render beside the featured ray&rsquo;s current render.</figcaption>
-            </figure>
-            <figure>
-              <img src="img/sg3/boundaries_radar_12ray.png" width="540" height="600" loading="lazy" alt="A radar chart with twelve spokes, one per ray, and four polygons, one per recognition model, giving the boundary angle on each ray at the vendor threshold. The blue desktop-model polygon is nearly circular near 60 degrees; the orange host and device polygons are larger and more irregular, reaching 75 degrees on ray 1.">
-              <figcaption>The same boundaries as a still: one spoke per ray, one polygon per model, dotted rings at each model&rsquo;s median. The desktop polygon is nearly round; the INT8 polygons are larger and uneven, and the host and device outlines nearly coincide.</figcaption>
-            </figure>
-          </div>
+          <p>The grid of record, every ray judged by four models on the same renders: a desktop-class ArcFace R100, a float MobileFaceNet, and the deployed INT8 pipeline on the host and on the device &mdash; 11,667 renders, each scored five times. At the vendor threshold the deployed pipeline accepts her out to a median of <strong>67.4&deg;</strong> (95% interval 67.1&ndash;67.7&deg;, over rays), with half of all directions between 64.5&deg; and 70.2&deg; and the extremes at 52&deg; and 80&deg;. Her own nine photographs sit 23&ndash;36&deg; from her centroid. The desktop model&rsquo;s boundary is the roundest (<strong>60.8&deg;</strong>, standard deviation 2.2&deg; across rays), the float MobileFaceNet&rsquo;s less so (59.8&deg;, 3.4&deg;), and the INT8 pipeline&rsquo;s the most uneven (4.2&deg;), and the unevenness grows as the threshold tightens. The device reproduces the host ray by ray: +0.4&deg; on average (sd 2.0&deg;, correlation 0.88). At the vendor threshold no direction is accepted as far out as the nearest of 2,115 synthetic strangers sits (80&deg;); at 0.4, 73 of 1,024 are.</p>
+          <p>What the numbers do not say. The INT8 pipeline sits about 7.5&deg; further out than the float MobileFaceNet and follows it ray by ray only loosely (correlation 0.53), but that is a pipeline against a float reference on the same crop, not quantisation of the same weights: whether the ESP-DL network is that MobileFaceNet quantised is unverified, and the pipeline runs its own detector. The desktop model is the <em>reference</em>, not an ideal system: the angles are measured with an ArcFace model, so its near-round boundary is partly the ruler measuring itself. One threshold across models whose scores are not on a common scale makes the radii threshold-relative. And the stranger comparison is radius against radius: each stranger lies in its own direction, and how close a path towards one comes has not been measured yet. The boundary is weakly predictable from the direction (held-out correlation 0.23), and rays whose faces change in similar ways have similar boundaries.</p>
+          <figure>
+            <img src="img/sg3/surface_ecdf.png" loading="lazy" alt="Five panels, one per threshold from 0.3 to 0.7, each showing the fraction of rays rejected by a given angle for the four models. The desktop and float MobileFaceNet curves rise together; the INT8 host and device curves overlap each other and sit about 7 degrees further out, with a shallower rise. At 0.3 the INT8 curves stop near 0.6 because many rays are still accepted at the last rendered point.">
+            <figcaption>The same boundaries as distributions, one panel per threshold: the fraction of rays each model has stopped accepting by a given angle. A curve that ends below the top is rays still accepted at their last rendered point. Shaded, her photographs; dash-dot, the nearest synthetic stranger.</figcaption>
+          </figure>
+          <figure>
+            <div class="bradar" data-src="data/sg3_radar_1024.json"></div>
+            <figcaption>Every ray as a spoke, every model as an outline. Scroll or use + and &minus; to open a sector, drag or the arrow keys to turn it, double-click to see every ray again; hover a spoke for its boundaries and the last face the deployed model accepts on it, click to pin it. Spokes are ordered so that rays whose faces change in similar ways sit side by side (neighbouring spokes are a median 57&deg; apart in identity space, against 82&deg; for two random rays); the order can be switched to sorted or ray number. The table below the chart lists the rays in view.</figcaption>
+          </figure>
         </div>
       </div>
     </details>
@@ -323,5 +321,6 @@
     m.addEventListener&&m.addEventListener("change",paint);
     paint();
   })();</script>
+  <script src="js/boundary-radar.js" defer></script>
 </body>
 </html>
