@@ -227,7 +227,15 @@ body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .tiles.t3{grid-template-columns:repeat(3,minmax(0,1fr));margin:0}
 .tiles.t2{grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
 .tilerows{display:grid;gap:24px;margin:30px 0 34px}
-@media (max-width:820px){.tiles,.tiles.t3,.tiles.t2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:820px){
+  .tiles,.tiles.t3,.tiles.t2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* below this .wrap already fills the viewport, so the bleed would push the
+     page sideways by exactly its padding. */
+  .figure-bleed{width:100%;margin-left:0;transform:none}
+  /* a six-column numeric table cannot reflow; let it scroll inside itself
+     rather than pushing the whole page sideways */
+  .numtable{display:block;overflow-x:auto;max-width:100%;white-space:nowrap}
+}
 
 /* A date/status pill must not break across lines. */
 .pill{white-space:nowrap}
