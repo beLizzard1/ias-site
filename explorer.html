@@ -40,6 +40,17 @@
     .stats{display:flex;flex-wrap:wrap;gap:10px 22px;margin:22px 0 0;padding:16px 20px;background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px}
     .stat{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ex-muted)}
     .stat b{color:var(--ex-ink);font-weight:500}
+    .figures.is-withdrawn .fig{opacity:.55}
+    /* The withdrawal notice: static, so it cannot fail open. Same shape the JS
+       used to build, in this page's own palette. */
+    .withdrawn{border:1px solid var(--ex-warn);border-left:3px solid var(--ex-warn);border-radius:8px;
+      background:var(--ex-warn-soft);padding:18px 20px;margin:22px 0 0}
+    .withdrawn .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--ex-warn);margin-bottom:8px}
+    .withdrawn p{margin:0 0 10px;font-size:15px;line-height:1.55;color:var(--ex-ink)}
+    .withdrawn p:last-of-type{margin-bottom:0}
+    .withdrawn strong{color:var(--ex-ink)}
+    .withdrawn code{font-family:'IBM Plex Mono',monospace;font-size:13px}
     .figures{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0 0}
     .fig{background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px;padding:18px 18px 14px}
     .fig h2{margin:0 0 4px;font-family:'Newsreader',serif;font-weight:500;font-size:16.5px;color:var(--ex-ink)}
@@ -130,7 +141,7 @@
     <section class="head" id="surface">
       <div class="kicker"><span class="n">04</span> &middot; The data</div>
       <h1>The measured acceptance surface<span class="pill">One identity to the end &middot; a pilot of twenty beside her</span></h1>
-      <div class="updated">Current measurement 2026-09-18 &middot; StyleGAN3 &middot; one identity on 1,024 directions and a pilot of twenty on 128 each, five judges, host and device &middot; the surface drawn below is experiment 4&rsquo;s, withdrawn 2026-08-23, kept for the chain</div>
+      <div class="updated">Current measurement 2026-09-18 &middot; StyleGAN3 &middot; one identity on 1,024 directions and a pilot of twenty on 128 each, five judges, host and device &middot; experiment 4&rsquo;s surface, withdrawn 2026-08-23, is kept further down as the start of the chain and is marked where it appears</div>
       <div class="stats" style="margin-top:16px">
         <div class="stat">grid of record <b>1,024 directions</b> <span style="opacity:.7">11,667 renders, each judged five times</span></div>
         <div class="stat">bounded at &tau; 0.5 <b>1,004 / 1,024</b></div>
@@ -141,23 +152,32 @@
         <div class="stat">parity is a cohort claim <b>5 of 21</b> <span style="opacity:.7">device medians outside the host&rsquo;s own interval</span></div>
         <div class="stat"><a href="status.html">the radar and films, on the status page &rarr;</a></div>
       </div>
-      <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and the chain below is seventeen experiments long: the eleven that produced this figure, each one forced by a problem or a surprise the last one turned up, four more that put the instrument itself under the same scrutiny and ended by retiring it, a sixteenth that re-measured the boundaries under full provenance &mdash; the successor figures to the withdrawn set shown here &mdash; and a seventeenth that carried the method to its intended scale under StyleGAN3 and then out across a pilot of twenty more identities. This page walks the whole chain, not just the headline.</p>
+      <p class="lead">One real identity (Dr James&rsquo;), moved away from herself in <strong>1,024 measured directions</strong> through StyleGAN3, every render judged by five models including the deployed chip. At the vendor threshold the acceptance region reaches a median of 67.4&deg; &mdash; and it is not a circle. Twenty more identities have since been measured the same way. That is the current measurement, and it is experiment 17; the chain below is seventeen experiments long, each one forced by a problem or a surprise the last turned up, including four that put the instrument under its own scrutiny and ended by retiring it, and a withdrawal that cost the project its first surface entirely. This page walks the whole chain, not just the headline.</p>
+      <figure class="figure-bleed" style="margin-top:22px">
+        <a class="figure-zoom" href="img/sg3/surface_ecdf.png" target="_blank" rel="noopener">
+          <img src="img/sg3/surface_ecdf.png" loading="lazy" alt="Five panels, one per threshold, each the fraction of rays rejected by a given angle for four models; the INT8 host and device curves overlap and sit about seven degrees beyond the desktop and float curves.">
+        </a>
+        <figcaption>The current measurement: where each model stops accepting her, over all 1,024 directions, one panel per threshold. The INT8 host and device curves lie on each other; both sit about 7&deg; outside the desktop model&rsquo;s. A curve that ends below the top is rays still accepted at their last rendered point.</figcaption>
+      </figure>
     </section>
 
-    <div class="stats" style="opacity:.75">
-      <div class="stat" style="width:100%;opacity:1"><b>Experiment 4&rsquo;s surface (withdrawn 2026-08-23; the interactive below is that data)</b></div>
-      <div class="stat" data-stat="wd">well-determined <b>51 / 64</b></div>
-      <div class="stat" data-stat="censored">censored <b>7 / 64</b></div>
-      <div class="stat" data-stat="rejected">anchor-rejected <b>3 / 64</b></div>
-      <div class="stat" data-stat="flagged">flagged (&lt;4 evals) <b>3 / 64</b></div>
-      <div class="stat" data-stat="angle">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
-      <div class="stat" data-stat="extremes">extremes ratio <b>7.6&times;</b></div>
-      <div class="stat" data-stat="p90p10">robust P90/P10 <b>3.8&times;</b></div>
+    <div class="withdrawn" id="provenance-notice">
+      <div class="k">Withdrawn 2026-08-23 &mdash; the two figures below are this data</div>
+      <p><strong>These figures are withdrawn pending re-measurement.</strong> They are kept on the page because they are where the chain starts, not because they are current. The successor figures are experiment 16; the project&rsquo;s current boundary measurement is experiment 17, above.</p>
+      <p>The run that produced them recorded no render configuration &mdash; <code>surface_runs</code> stored the backend name and nothing else, with no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine during the day these renders were made, and a re-run under a known configuration moved every one of thirteen re-tested rays in the same direction. That is more consistent with a changed rendering pipeline than with thirteen independent corrections, and there is no record that would settle it.</p>
+      <p style="font-size:13.5px;margin-bottom:4px">Not affected: the perturbation geometry (<code>unit(anchor + &epsilon;&middot;tangent)</code>, cos&nbsp;=&nbsp;1/&radic;(1+&epsilon;&sup2;)); the ESP-DL SiL defect findings and their upstream reports; that the acceptance region is direction-dependent &mdash; the shape is not in question, the numbers are.</p>
+      <div class="stats" style="opacity:.75;margin-top:12px">
+        <div class="stat" data-stat="wd">well-determined <b>51 / 64</b></div>
+        <div class="stat" data-stat="censored">censored <b>7 / 64</b></div>
+        <div class="stat" data-stat="rejected">anchor-rejected <b>3 / 64</b></div>
+        <div class="stat" data-stat="flagged">flagged (&lt;4 evals) <b>3 / 64</b></div>
+        <div class="stat" data-stat="angle">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
+        <div class="stat" data-stat="extremes">extremes ratio <b>7.6&times;</b></div>
+        <div class="stat" data-stat="p90p10">robust P90/P10 <b>3.8&times;</b></div>
+      </div>
     </div>
 
-    <div id="provenance-notice"></div>
-
-    <div class="figures">
+    <div class="figures is-withdrawn">
       <div class="fig">
         <h2>Boundary by direction</h2>
         <p class="sub">64 spokes, spaced evenly for legibility &mdash; only the radius carries meaning. Anchor-rejected rays sit at the centre.</p>
@@ -177,7 +197,7 @@
       <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
     </div>
 
-    <p class="bridge">What follows is the whole chain: sixteen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. Experiments 12&ndash;15 turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator. The sixteenth closes the loop the withdrawal opened: the same boundary diagrams, re-measured under full provenance. Earlier entries are folded to keep the page walkable &mdash; open any of them, or jump from the list below; the most recent, the re-measurement, is already open.</p>
+    <p class="bridge">What follows is the whole chain: seventeen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. Experiments 12&ndash;15 turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator. The sixteenth closes the loop the withdrawal opened: the same boundary diagrams, re-measured under full provenance. Earlier entries are folded to keep the page walkable &mdash; open any of them, or jump from the list below; the most recent, the re-measurement, is already open.</p>
 
     <nav class="toc" aria-label="Experiments on this page">
       <span class="toc-label">On this page</span>
@@ -854,28 +874,21 @@
     }
 
     function paintNotice(doc){
+      // The withdrawal notice is STATIC in the markup and the figures are marked
+      // by a CSS class. This only cross-checks that the served record still says
+      // "withdrawn" -- a provenance warning that exists only if a fetch succeeds
+      // can fail open, which is the one way it must not fail. If the record ever
+      // disagrees with the page, say so loudly rather than quietly rewriting it.
       var ps = doc.provenance_status;
-      if(!ps) return;
       var host = document.getElementById("provenance-notice");
       if(!host) return;
-      var ul = (ps.what_is_unaffected||[]).map(function(x){
-        return '<li style="margin:0 0 4px">'+x+'</li>'; }).join("");
-      host.innerHTML =
-        '<div style="border:1px solid var(--ex-warn);border-left:3px solid var(--ex-warn);'
-        + 'border-radius:8px;background:var(--ex-warn-soft);padding:18px 20px;margin:22px 0 0">'
-        + '<div style="font-family:monospace;font-size:10.5px;letter-spacing:.12em;'
-        + 'text-transform:uppercase;color:var(--ex-warn);margin-bottom:8px">Withdrawn '
-        + (ps.withdrawn||"") + '</div>'
-        + '<p style="margin:0 0 10px;font-size:16px;line-height:1.5;color:var(--ex-ink)">'
-        + (ps.headline||"") + '</p>'
-        + '<p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:var(--ex-ink);opacity:.85">'
-        + (ps.reason||"") + '</p>'
-        + (ul ? '<div style="font-size:13.5px;color:var(--ex-muted);margin-bottom:6px">Not affected:</div>'
-              + '<ul style="margin:0 0 10px;padding-left:20px;font-size:13.5px;line-height:1.55;'
-              + 'color:var(--ex-muted)">'+ul+'</ul>' : "")
-        + '<div style="font-family:monospace;font-size:12px;color:var(--ex-muted)">'
-        + (ps.next||"") + '</div></div>';
-      document.querySelectorAll(".fig").forEach(function(f){ f.style.opacity = ".55"; });
+      if(!ps || ps.state !== "withdrawn"){
+        var warn = document.createElement("p");
+        warn.style.cssText = "margin:10px 0 0;font-family:monospace;font-size:12px;color:var(--ex-warn)";
+        warn.textContent = "Note: results/surface.json no longer records this set as withdrawn — "
+          + "the page and the record disagree; the page is the conservative one.";
+        host.appendChild(warn);
+      }
     }
 
     function paintStats(doc){

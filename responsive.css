@@ -38,7 +38,8 @@
   body figcaption,body .tile .c,body .herocard .hc,body .numtable,body .nextstep .b,
   body .sub,body .stat,body .stat span,body .beat,body blockquote{font-size:13.5px;line-height:1.55}
   body .tlbl,body .herocard .hk,body .eyebrow,body .ph-k,body .sw-k,body .codelbl,body .lbl,
-  body .pill,body .exp-tag,body .k,body .toc-label,body .chain-label,body .dk,body .tnum{font-size:12px}
+  body .pill,body .exp-tag,body .k,body .withdrawn .k,body .toc-label,body .chain-label,
+  body .dk,body .tnum{font-size:12px}
   /* The pages scope these with a class (`.row figcaption`, `.fig .sub`), which
      outranks a bare element selector whatever the load order. Matching their
      shape is the cheap fix; the real one is lifting those declarations out of
