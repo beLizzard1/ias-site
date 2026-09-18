@@ -88,6 +88,67 @@
     </section>
 
     <section>
+      <h2>Threats</h2>
+      <p>What can go wrong when altered images of enrolled people are generated and scored. Numbered so the controls below can point at them.</p>
+      <table>
+        <tr><th>#</th><th>Threat</th><th>Why it matters here</th></tr>
+        <tr><td>T1</td><td><strong>Leak of a biometric that cannot be revoked</strong></td><td>Anchors, templates and embeddings identify the person. A password can be changed; a face cannot. Every copy is a permanent liability.</td></tr>
+        <tr><td>T2</td><td><strong>Impersonation material by construction</strong></td><td>The faces generated near a boundary are, by definition, faces the deployed system accepts as the participant. The output of the measurement is a ready-made spoof set for that person on that system.</td></tr>
+        <tr><td>T3</td><td><strong>Function creep</strong></td><td>Data gathered to test a system is reused to train one, to profile, or for a purpose nobody consented to.</td></tr>
+        <tr><td>T4</td><td><strong>Excess retention</strong></td><td>Generated images and embeddings kept after the boundaries have been extracted, for no stated reason.</td></tr>
+        <tr><td>T5</td><td><strong>Defective consent</strong></td><td>Consent bundled with enrolment; not specific to the generation of altered faces; obtained under an imbalance of power (employer, public body); no way to withdraw.</td></tr>
+        <tr><td>T6</td><td><strong>Inference of sensitive attributes</strong></td><td>Age, ethnicity, health or other characteristics estimated from faces and attached to people; group reporting that singles out individuals in small groups.</td></tr>
+        <tr><td>T7</td><td><strong>Third-party exposure</strong></td><td>Images or embeddings sent to a vendor cloud, a hosted inference API, a model provider, or leaving through device telemetry.</td></tr>
+        <tr><td>T8</td><td><strong>Minors and vulnerable people</strong></td><td>Enrolled without capacity to consent, or admitted by an automatic age estimate that this project has shown to be unreliable.</td></tr>
+        <tr><td>T9</td><td><strong>Publication leakage</strong></td><td>Faces, near-faces, or &ldquo;aggregates&rdquo; over a handful of people that identify them, in reports, figures or a website.</td></tr>
+        <tr><td>T10</td><td><strong>Memorisation by a model</strong></td><td>Any generator or encoder fine-tuned on participants (future work) can reproduce them.</td></tr>
+        <tr><td>T11</td><td><strong>Loss of provenance or integrity</strong></td><td>Results that cannot be tied to a configuration, weights and inputs cannot be defended or withdrawn cleanly &mdash; the lesson this project learned in Phase 2.</td></tr>
+        <tr><td>T12</td><td><strong>Compromise of the system under test</strong></td><td>Templates or galleries copied off the device or host during testing; test access becoming a standing back door.</td></tr>
+        <tr><td>T13</td><td><strong>Withdrawal not honoured in derived data</strong></td><td>A participant withdraws, their images are deleted, and they persist in embeddings, per-identity result rows, aggregates or a model.</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Controls</h2>
+      <table>
+        <tr><th>Control</th><th>What it is</th><th>Threats</th></tr>
+        <tr><td><strong>Separate, specific, explicit consent</strong></td><td>Its own form, in plain language, distinct from consent to enrol; names the generation of altered faces; withdrawable at any time without consequence for the participant&rsquo;s use of the system.</td><td>T5, T13</td></tr>
+        <tr><td><strong>Limited purpose, in writing</strong></td><td>One purpose in the DPIA and the consent: measuring how the deployed system behaves on the participant&rsquo;s identity. No training, no profiling, no other analytics. Any new purpose is a new consent.</td><td>T3, T10</td></tr>
+        <tr><td><strong>Time-bound approval, re-sought</strong></td><td>Consent and processing expire on a stated date (twelve months is a reasonable default). Re-running the measurement after that date, on a new model version, on new hardware, or under a changed method means seeking approval again.</td><td>T3, T5, T4</td></tr>
+        <tr><td><strong>Removal requests</strong></td><td>A documented path a participant can use without justification: deletion of anchor, templates, generated images, embeddings and per-identity result rows; aggregates recomputed without them; written confirmation; a deletion register kept.</td><td>T13, T4</td></tr>
+        <tr><td><strong>Minimisation and prompt deletion</strong></td><td>One anchor per person; generate, score, extract the boundary, delete. Generated images and embeddings do not outlive the measurement window unless a participant has opted into audit retention.</td><td>T1, T2, T4</td></tr>
+        <tr><td><strong>Encryption and key custody</strong></td><td>Encrypted at rest (full-disk or per-dataset) and in transit; keys held by the operator, not the vendor; device templates protected by the device&rsquo;s own secure storage where it exists.</td><td>T1, T7, T12</td></tr>
+        <tr><td><strong>On-premises, no hosted inference</strong></td><td>Generator, judges and the system under test run on the operator&rsquo;s own hardware; no images or embeddings to cloud APIs or model providers; device telemetry disabled during runs.</td><td>T7</td></tr>
+        <tr><td><strong>Access control and audit</strong></td><td>Named individuals only; every run logged (who, when, which configuration, which identities); exports of anything but aggregates need two people.</td><td>T2, T11, T12</td></tr>
+        <tr><td><strong>Generated faces treated as spoof material</strong></td><td>Never leave the measurement environment; deleted once boundaries are extracted; if retained for audit, watermarked and encrypted with access logged.</td><td>T2</td></tr>
+        <tr><td><strong>No attribute inference; safe group reporting</strong></td><td>Only self-reported attributes, and only where the participant opted in; groups reported at a minimum size (ten is a defensible floor); no single-person cells.</td><td>T6, T9</td></tr>
+        <tr><td><strong>Age verified, not estimated</strong></td><td>Adults only, confirmed at consent; no automatic age gate in place of it.</td><td>T8</td></tr>
+        <tr><td><strong>Publication rule</strong></td><td>Distributions, aggregates and figures without faces; small-number suppression; a review by eye before anything leaves.</td><td>T9</td></tr>
+        <tr><td><strong>Provenance and integrity</strong></td><td>Every run records configuration, weight digests, per-render detection and the identity of the code; result files hashed; withdrawals and corrections recorded rather than overwritten.</td><td>T11</td></tr>
+        <tr><td><strong>DPIA and DPO sign-off</strong></td><td>Before the first run and at each re-approval; the generation of altered faces assessed as its own processing activity.</td><td>all</td></tr>
+        <tr><td><strong>Vendor terms and roles settled</strong></td><td>Off-line testing permitted in the contract; controller and processor roles for templates written down; nothing exported to the vendor.</td><td>T7, T12</td></tr>
+        <tr><td><strong>Breach plan that admits the limit</strong></td><td>Participants told promptly; because a face cannot be rotated, the plan is scope limitation &mdash; small data, short retention, strong encryption &mdash; rather than recovery.</td><td>T1</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>An example consent form</h2>
+      <p>A starting point for an operator, in plain language, to be adapted with their DPO. Square brackets are the operator&rsquo;s to fill.</p>
+      <div class="note" style="border-left-color:var(--line-2)">
+        <p><strong>Taking part in a test of [system name] on your identity</strong></p>
+        <p style="margin-top:10px"><strong>Who is asking.</strong> [Organisation], which operates the face-verification system you are enrolled in. Data protection contact: [DPO name, email].</p>
+        <p style="margin-top:10px"><strong>What we want to do.</strong> Measure how the system behaves on <em>your</em> face, not on an average. To do that we will take the photographs you are already enrolled with (or [number] new ones), and use a computer model to <strong>generate altered versions of your face</strong> &mdash; changed by controlled amounts in many directions &mdash; and score each one with the system to find where it stops recognising you. The result is a set of numbers describing that region. Some of the generated images will, by construction, be images the system accepts as you.</p>
+        <p style="margin-top:10px"><strong>What data.</strong> Your enrolment photographs; the mathematical representation of your face the system uses (a template); the generated images and their representations; the scores. Nothing else about you. We will <em>not</em> estimate your age, ethnicity or anything else from your face. If you choose to tell us characteristics for group reporting, you do so in the box below, and only what you write is used.</p>
+        <p style="margin-top:10px"><strong>What we will not do.</strong> Use this data to train any model. Share it with the system&rsquo;s vendor or any third party. Send it to any cloud service. Publish your face or any generated image of it. Use it for any purpose other than this test.</p>
+        <p style="margin-top:10px"><strong>Where and how long.</strong> On [organisation]&rsquo;s own equipment at [site], encrypted. Generated images and representations are deleted within [30 days] of the test; the resulting numbers are kept for [period] in aggregate form. This consent expires on [date]. If we want to repeat the test after that, or on a new version of the system, we will ask you again.</p>
+        <p style="margin-top:10px"><strong>Your rights.</strong> You can withdraw at any time, without giving a reason and without any effect on your use of the system, by contacting [contact]. We will delete your photographs, template, generated images and results, recompute any aggregate without you, and confirm in writing. You can ask what we hold about you at any time.</p>
+        <p style="margin-top:10px"><strong>The risks, honestly.</strong> A face cannot be changed if it leaks; that is why we keep as little as possible for as short a time as possible, encrypted. The generated images are ones the system accepts as you and are treated as sensitive for that reason. Taking part is voluntary; your employment / access / service does not depend on it.</p>
+        <p style="margin-top:10px"><strong>Please confirm.</strong><br>&#9744; I am 18 or over.<br>&#9744; I understand altered images of my face will be generated and scored for this test only.<br>&#9744; I agree to the processing described above, until [date].<br>&#9744; (optional) I am willing for the following self-described characteristics to be used for group-level reporting, in groups of at least ten people: [free text].<br>&#9744; (optional) I agree that generated images may be kept, encrypted, for audit until [date].</p>
+        <p style="margin-top:10px">Name &nbsp; ____________________ &nbsp;&nbsp; Signature &nbsp; ____________________ &nbsp;&nbsp; Date &nbsp; __________</p>
+      </div>
+    </section>
+
+    <section>
       <h2>What remains open</h2>
       <p>Three questions this project has not resolved. Whether a generator trained on photographs collected without biometric consent can be an acceptable instrument for a consented study, even when it never reproduces those photographs. Whether a synthetic face that happens to resemble a real person is that person&rsquo;s data. And the dual-use fact that an instrument which moves a face towards someone by a known amount is also a tool for impersonation, which argues for access control and no public release of any model built for it. The <a href="status.html">status page</a> carries these under future work.</p>
     </section>
