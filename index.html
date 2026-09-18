@@ -24,6 +24,16 @@
   <style>
     .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
     .hero{padding:56px 0 8px}
+    .herogrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:44px;align-items:start}
+    .herocard{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;
+      background:var(--card);padding:18px 20px;margin-top:6px}
+    .herocard .hk{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .herocard .hrow{padding:10px 0;border-top:1px solid var(--line)}
+    .herocard .hrow:first-of-type{border-top:0;padding-top:0}
+    .herocard .hn{font-family:'IBM Plex Mono',monospace;font-size:22px;color:var(--ink);line-height:1.15}
+    .herocard .hc{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+    @media (max-width:900px){.herogrid{grid-template-columns:1fr;gap:20px}}
     .deck{font-family:'Newsreader',Georgia,serif;font-size:clamp(18px,2.4vw,21px);line-height:1.4;color:var(--accent);margin:16px 0 0;max-width:46ch}
     .hero h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,5vw,46px);font-weight:400;line-height:1.08;letter-spacing:-.01em;margin:14px 0 16px;max-width:20ch}
     .lead{font-size:17px;line-height:1.6;color:var(--ink-2);max-width:64ch;margin:0 0 30px}
@@ -82,11 +92,22 @@
 
   <main class="wrap">
     <section class="hero">
+      <div class="herogrid">
+      <div>
       <div class="eyebrow">Identity Acceptance Surfaces</div>
       <h1>You can measure a password. Can you measure a face?</h1>
       <p class="deck">Where an identity stops being accepted &mdash; measured on the hardware actually deployed.</p>
       <p class="lead">Move a face away from an enrolled identity in controlled steps of measured size &mdash; inside a generator whose space we control, rather than by nudging an embedding an operator has no access to &mdash; and map where the real discriminator flips from accepting to rejecting it. Along chosen geometric directions, not random noise. Built for INT8 / edge deployments, where a single threshold and a population rate hide how far the accepted region actually reaches, and how differently it reaches in different directions and for different people.</p>
       <p class="lead" style="margin-top:10px">Underneath it is an operator&rsquo;s question. A service that buys a face-verification system from a vendor is handed population rates &mdash; and may benefit from, want, or be obliged to know what those rates hide: how the system treats <em>each person actually enrolled</em>, on the device actually installed. This is a process for finding that out, against a black box, with perturbations of measured size. <a href="why.html">The argument</a> &middot; <a href="data-protection.html">what it means for the data</a>.</p>
+      </div>
+      <aside class="herocard">
+        <div class="hk">What has been measured</div>
+        <div class="hrow"><div class="hn">67.4&deg;</div><div class="hc">how far one enrolled identity can be altered and still be accepted &mdash; 1,024 directions, on the deployed chip. Her own photographs sit 23&ndash;36&deg; out.</div></div>
+        <div class="hrow"><div class="hn">55&ndash;68&deg;</div><div class="hc">the same measurement across twenty more identities. One system, one threshold, and this much difference between people.</div></div>
+        <div class="hrow"><div class="hn">5 of 21</div><div class="hc">identities whose boundary on the chip falls outside what the host predicted &mdash; the fast way to measure ranks a crowd but misnames the person.</div></div>
+        <div class="hrow" style="padding-bottom:0"><a href="status.html" style="font-family:'IBM Plex Mono',monospace;font-size:12px">the full status &rarr;</a></div>
+      </aside>
+      </div>
 
       <div class="figgrid">
         <div class="figbox">
@@ -167,8 +188,8 @@ ias shells-probe \
         </a>
         <a class="xcard" href="explorer.html">
           <div class="dk"><span class="n">03</span> &middot; The data</div>
-          <h3>The sample explorer</h3>
-          <p>The real shell geometry as a rotatable point cloud. Move the threshold and watch accept/reject recolour, or take the guided walkthrough.</p>
+          <h3>The experiment chain</h3>
+          <p>Seventeen experiments, each forced by what the last one found &mdash; the grid of record, the pilot of twenty, and the instrument audit that retired a generator mid-project.</p>
         </a>
         <a class="xcard accent" href="perceptual.html">
           <div class="dk"><span class="n">04</span> &middot; Help measure</div>

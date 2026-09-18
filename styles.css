@@ -185,6 +185,20 @@ body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
   margin-left:50%;transform:translateX(-50%)}
 .figure-bleed img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px;background:var(--card)}
 .figure-bleed figcaption,.figure-full figcaption{margin-top:8px}
+
+/* A figure has a light and a dark rendering -- each stepped against its own
+   surface, not an inverted copy. Written twice for the same reason the tokens
+   are: once so the OS preference wins when nobody has chosen, once so an
+   explicit choice wins over the OS in either direction. */
+.fig-dark{display:none}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .fig-light{display:none}
+  :root:not([data-theme="light"]) .fig-dark{display:block}
+}
+:root[data-theme="dark"] .fig-light{display:none}
+:root[data-theme="dark"] .fig-dark{display:block}
+:root[data-theme="light"] .fig-light{display:block}
+:root[data-theme="light"] .fig-dark{display:none}
 .figure-full img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px;background:var(--card)}
 .figure-zoom{display:block;position:relative}
 .figure-zoom::after{content:"open full size \2197";position:absolute;right:10px;bottom:10px;

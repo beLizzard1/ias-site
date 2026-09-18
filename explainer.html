@@ -113,6 +113,18 @@
     var accent="#7fb3d3", reject="#e0965a", pin="#e9c46a";
     var state={threshold:0.80, mode:"3d", surface:"measured"};
     var rotY=22, rotX=-16, drag=null, S3=150, S2=150;
+    // The stage fills the viewport but the scale was a fixed 150px, so on any
+    // tall window the cloud sat in the middle of a mostly empty screen. Scale
+    // to the stage, pinned to the LOOSEST threshold the slider reaches so the
+    // region still visibly grows and shrinks as you drag it.
+    var EPS_MAX = Math.sqrt(1/(0.50*0.50)-1);   // the slider's loosest end
+    function rescale(){
+      var w = stage.clientWidth || window.innerWidth,
+          h = stage.clientHeight || window.innerHeight,
+          m = Math.min(w, h);
+      S3 = Math.max(110, 0.40 * m / EPS_MAX);
+      S2 = Math.max(110, 0.40 * Math.min(slice.clientWidth || w, slice.clientHeight || h) / EPS_MAX);
+    }
     function epsFor(c){return Math.sqrt(1/(c*c)-1);}
     // theta is the parameter of record everywhere else on this site (degrees); epsilon stays the drawing unit
     function degFor(e){return (Math.atan(e)*180/Math.PI).toFixed(1);}
@@ -298,7 +310,10 @@
     document.getElementById("bMeas").addEventListener("click",function(){state.surface="measured";syncButtons();render();});
     document.getElementById("thr").addEventListener("input",function(e){state.threshold=parseFloat(e.target.value); if(sp.active) searchReset(); render();});
 
-    syncButtons(); render();
+    rescale(); syncButtons(); render();
+    var rt; window.addEventListener("resize", function(){
+      clearTimeout(rt); rt = setTimeout(function(){ rescale(); render(); }, 120);
+    });
   })();
   </script>
   <script>(function(){
