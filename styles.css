@@ -177,7 +177,14 @@ body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
 /* A figure that breaks out of the prose column, and opens full-size on click.
    Matplotlib panels were rendering ~500px wide with 4px axis labels.       */
-.figure-full{max-width:none;width:100%;margin:18px 0}
+.figure-full{width:100%;max-width:none;margin:22px 0}
+/* .figure-bleed centres on the VIEWPORT, so it is only correct on a figure whose
+   containing block is itself page-centred (a direct child of .wrap / a section).
+   Inside an offset column -- status.html's two-column .row -- it lands off-screen. */
+.figure-bleed{width:min(1280px,calc(100vw - 56px));max-width:none;margin:22px 0;
+  margin-left:50%;transform:translateX(-50%)}
+.figure-bleed img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+.figure-bleed figcaption,.figure-full figcaption{margin-top:8px}
 .figure-full img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px;background:var(--card)}
 .figure-zoom{display:block;position:relative}
 .figure-zoom::after{content:"open full size \2197";position:absolute;right:10px;bottom:10px;
