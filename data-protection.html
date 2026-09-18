@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data protection &mdash; Identity Acceptance Surfaces</title>
+  <meta name="description" content="What data this project processes, on what basis, and what an operator would need to run the same measurement on their own enrolled users: a GDPR and consent reflection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .wrap{max-width:820px;margin:0 auto;padding:0 28px}
+    .head{padding:52px 0 6px}
+    .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
+    .lead{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:60ch;margin:0}
+    section{padding:26px 0;border-top:1px solid var(--line)}
+    section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
+    section h3{font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:600;margin:18px 0 6px}
+    section p,section li{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0 0 12px;max-width:66ch}
+    section ul{margin:0 0 12px;padding-left:20px}
+    section li{margin:0 0 6px}
+    strong{color:var(--ink);font-weight:600}
+    .note{margin:18px 0 0;border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;padding:14px 16px;background:var(--paper-2)}
+    .note p{margin:0;font-size:14.5px}
+    table{border-collapse:collapse;width:100%;margin:8px 0 14px;font-size:14.5px}
+    th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+    th{font-weight:600;color:var(--ink);font-size:13px}
+    footer{margin:40px 0;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-family:'IBM Plex Mono',monospace;font-size:12px}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.5" style="stroke:var(--accent, #2f5d62)"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="6.5" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="10"/></svg>IAS</a>
+    <div class="links"><span class="grp"><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a><a href="data-protection.html" class="on">Data protection</a></span><span class="sep"></span><span class="grp"><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
+  </header>
+
+  <main class="wrap">
+    <section class="head" style="border:0">
+      <div class="kicker"><span class="n">03</span> &middot; Data protection</div>
+      <h1>Faces are special-category data. This page says what that means here.</h1>
+      <p class="lead">What this project processes, on what basis, what it has deliberately not done, and what an operator would need in place to run the same measurement on the people actually enrolled in their system. A reflection under UK and EU GDPR by the person whose face is the data, not legal advice.</p>
+    </section>
+
+    <section>
+      <h2>Why this page exists</h2>
+      <p>The measurement this project makes is only meaningful on a real enrolled identity: it asks how far a specific person can be altered before a specific deployed system stops recognising them. That is biometric processing twice over &mdash; the enrolment, and then the generation and scoring of altered images of that person&rsquo;s face. Under Article 9 of the GDPR, biometric data used to identify someone is special-category data: prohibited unless one of a short list of conditions applies, and even then subject to the ordinary principles of purpose, minimisation, security and transparency.</p>
+      <p>The project&rsquo;s position is that the honest route to a population measurement is <strong>an operator building a dataset of their own users, with explicit consent and adequate controls</strong> &mdash; not scraped faces, and not synthetic faces standing in for people. Everything below is written to make that route concrete.</p>
+    </section>
+
+    <section>
+      <h2>What has been processed so far</h2>
+      <table>
+        <tr><th>Data</th><th>Whose</th><th>Basis and handling</th></tr>
+        <tr><td>Nine photographs, their embeddings, and thousands of generated variations</td><td>The author&rsquo;s own face</td><td>The data subject is the researcher: consent is her own, informed and revocable. Processed on her own machine and on a development board on her desk; nothing uploaded to a cloud service. Renders of her face appear on this site by her own decision.</td></tr>
+        <tr><td>Synthetic faces (SFHQ-T2I, MIT licence; faces sampled from StyleGAN3)</td><td>No one &mdash; with a caveat</td><td>Not personal data as such. But the generators were trained on real photographs (StyleGAN3 on FFHQ, 70,000 Flickr images published under permissive licences that did not contemplate biometric use), so synthetic faces inherit a provenance question at one remove. The project records this rather than treating synthetic as free of it.</td></tr>
+        <tr><td>Embeddings and boundaries derived from the above</td><td>Same as their source</td><td>An embedding identifies its person and is treated as biometric data. A boundary distribution, an aggregate, or a chart does not, and those are what get published.</td></tr>
+        <tr><td>Real-face datasets considered for a consented arm</td><td>Third parties</td><td>Casual Conversations v2 (Meta): paid, consenting participants with self-reported labels; its licence permits fairness and robustness evaluation but <em>forbids derivative works</em>, so generated variations of its participants are off the table &mdash; measurement only. Color FERET (NIST): a research release for face recognition, publication of at most fifteen images per paper. Chicago Face Database: its terms forbid use in facial recognition software, so it was not used. VGGFace2: web-scraped without consent and since withdrawn; not used.</td></tr>
+      </table>
+      <div class="note"><p><strong>Minors.</strong> Synthetic populations contain faces that read as children, and the age estimator used to filter them called several such faces adults. Every identity selected for measurement was reviewed by eye and children were removed; the frame is not published until a reliable filter exists. No real minor&rsquo;s data has been processed.</p></div>
+    </section>
+
+    <section>
+      <h2>The principles, applied</h2>
+      <ul>
+        <li><strong>Purpose limitation.</strong> One purpose: measuring how an authentication system behaves on an identity. The data is not used to train a recogniser, to identify anyone, or to infer anything about a person beyond that behaviour.</li>
+        <li><strong>Minimisation.</strong> One anchor per identity; generated images kept only as long as the measurement needs them; published outputs are aggregates and, for the author alone, illustrative renders.</li>
+        <li><strong>Security.</strong> Local processing; no third-party inference services; the device under test holds only the enrolled template it would hold in deployment.</li>
+        <li><strong>Transparency.</strong> This page, the open methodology, and a status page that records what was withdrawn and why.</li>
+        <li><strong>No re-identification.</strong> Synthetic identities are compared with each other only to describe how crowded the space is; no attempt is made to match a synthetic face to a real person.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>What an operator would need</h2>
+      <p>An organisation that has deployed a vendor&rsquo;s face-verification system and wants to know how it behaves on its own enrolled users &mdash; rather than on the vendor&rsquo;s benchmark &mdash; is the audience this measurement was built for. Running it on real users means:</p>
+      <ul>
+        <li><strong>An Article 9 condition, and explicit consent is the honest default.</strong> Consent to enrol is not consent to this. The measurement needs its own, specific, informed and freely given consent: that altered images of the participant&rsquo;s face will be generated and scored to test the system&rsquo;s behaviour on their identity, with the results reported in aggregate. Employers and public bodies should be cautious about the imbalance of power that can undermine consent, and may need another Article 9 condition alongside a statutory basis; that is a question for their DPO.</li>
+        <li><strong>A data protection impact assessment</strong> (Article 35). Biometric processing of this kind is squarely in the high-risk category; the DPIA should cover the generation of altered faces as a distinct processing activity, and the retention of generated images and embeddings.</li>
+        <li><strong>Controller and processor roles settled in the vendor contract.</strong> Who holds the templates, who may run the system off-line for testing, and whether the vendor&rsquo;s terms permit it.</li>
+        <li><strong>Retention and deletion.</strong> Generated images and embeddings deleted once boundaries are extracted; a participant&rsquo;s withdrawal deletes their anchor, templates and generated data, with the aggregate re-computed without them.</li>
+        <li><strong>On-premises processing and no publication of faces.</strong> Results leave the organisation as distributions, not images.</li>
+        <li><strong>No children</strong>, and a review by eye rather than trust in an automatic filter.</li>
+        <li><strong>Reporting by group</strong> where equality duties require it, with the caveat that self-reported attributes are the only defensible labels.</li>
+      </ul>
+      <p>With those in place, an operator gets what a vendor&rsquo;s FAR cannot give: the shape of the accepted region for each person actually enrolled, on the device actually installed, and the spread of that shape across the population they are responsible for.</p>
+    </section>
+
+    <section>
+      <h2>What remains open</h2>
+      <p>Three questions this project has not resolved. Whether a generator trained on photographs collected without biometric consent can be an acceptable instrument for a consented study, even when it never reproduces those photographs. Whether a synthetic face that happens to resemble a real person is that person&rsquo;s data. And the dual-use fact that an instrument which moves a face towards someone by a known amount is also a tool for impersonation, which argues for access control and no public release of any model built for it. The <a href="status.html">status page</a> carries these under future work.</p>
+    </section>
+
+    <footer>Identity Acceptance Surfaces &middot; a reflection, not legal advice &middot; the author is the data subject</footer>
+  </main>
+  <script>(function(){
+    var root=document.documentElement, m=window.matchMedia("(prefers-color-scheme: dark)");
+    function paint(){
+      var t=root.dataset.theme||(m.matches?"dark":"light");
+      document.querySelectorAll(".theme .th").forEach(function(b){
+        b.setAttribute("aria-pressed", String(b.dataset.set===t));
+      });
+    }
+    document.querySelectorAll(".theme .th").forEach(function(b){
+      b.addEventListener("click",function(){
+        root.dataset.theme=b.dataset.set;
+        try{localStorage.setItem("ias-theme",b.dataset.set)}catch(e){}
+        paint();
+      });
+    });
+    m.addEventListener&&m.addEventListener("change",paint);
+    paint();
+  })();</script>
+</body>
+</html>
