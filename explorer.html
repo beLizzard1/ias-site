@@ -118,6 +118,7 @@
     .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:var(--ex-warn-soft);color:var(--ex-warn);vertical-align:middle;margin-left:10px}
     footer{margin:44px 0 0;padding-top:16px;border-top:1px solid var(--ex-line);color:var(--ex-muted);font-family:'IBM Plex Mono',monospace;font-size:12px}
   </style>
+  <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
   <header class="nav">
@@ -769,7 +770,7 @@
         }
       });
       s += '<circle cx="'+cx+'" cy="'+cy+'" r="3.5" fill="'+muted+'"/>';
-      s += '<text x="'+cx+'" y="'+(cy+R+16)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="'+muted+'">anchor at centre &middot; radius = boundary angle</text>';
+      s += '<text x="'+cx+'" y="'+(cy+R+16)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="'+muted+'">anchor at centre &middot; radius = boundary angle</text>';
       svg.innerHTML = s;
     }
 
@@ -810,7 +811,7 @@
           s += '<path d="M '+(mx-2.5).toFixed(1)+' '+(y+4).toFixed(1)+' L '+mx.toFixed(1)+' '+(y-1.5).toFixed(1)+' L '+(mx+2.5).toFixed(1)+' '+(y+4).toFixed(1)+'" fill="none" stroke="'+warn+'" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>';
         }
       });
-      s += '<text x="'+(padL+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="'+muted+'">64 rays, sorted by boundary angle (degrees, left axis)</text>';
+      s += '<text x="'+(padL+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11.5" fill="'+muted+'">64 rays, sorted by boundary angle (degrees, left axis)</text>';
       svg.innerHTML = s;
 
     }

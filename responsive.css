@@ -1,0 +1,96 @@
+/* ==== the adaptive layer =================================================
+   Loaded AFTER each page's own <style> block, deliberately.
+
+   Every page carries an inline <style> that the shared stylesheet cannot
+   reach: at equal specificity the later rule wins, and the inline block comes
+   after <link href="styles.css">. So the responsive rules sat in styles.css
+   doing nothing -- a footer stayed 12px on a tablet because the page said so
+   later. Rather than an escalating specificity war, this file is linked last
+   and is the final word on how the site adapts.
+
+   styles.css  = tokens and components
+   responsive.css = how they behave at each viewport and pointer type
+
+   One place for how this site adapts. Breakpoints were previously ad hoc --
+   640 in status, 820 here, 820 and 900 in index, four more in explorer, and
+   three pages with none at all. These are the site's breakpoints; use them
+   and nothing else. (CSS custom properties cannot be used in media queries,
+   so they are a convention, written down rather than enforced.)
+
+     phone        <= 640px    single column, touch
+     tablet       <= 1024px   narrow two-column, usually touch
+     desktop       > 1024px   the layout the pages were designed at
+
+   Adaptive, not a separate mobile build: one document, one set of numbers.
+   Two versions of a page means two places for a boundary figure to live.
+   ------------------------------------------------------------------------ */
+
+/* The container primitive. A page sets only its own max-width; the gutter is
+   fluid so it never eats a phone's screen or looks mean on a desktop. */
+.wrap{width:100%;margin-inline:auto;padding-inline:clamp(16px,4vw,28px)}
+
+/* Prose that stays readable as the viewport shrinks. Applied at the phone
+   breakpoint only -- the small-label idiom is deliberate on a desktop, and a
+   10.5px uppercase mono kicker is legible there in a way it is not on a
+   phone held at arm's length. */
+@media (pointer:coarse),(max-width:640px){
+  /* body-prefixed so these beat a page's own `figure figcaption` etc. */
+  body figcaption,body .tile .c,body .herocard .hc,body .numtable,body .nextstep .b,
+  body .sub,body .stat,body .stat span,body .beat,body blockquote{font-size:13.5px;line-height:1.55}
+  body .tlbl,body .herocard .hk,body .eyebrow,body .ph-k,body .sw-k,body .codelbl,body .lbl,
+  body .pill,body .exp-tag,body .k,body .toc-label,body .chain-label,body .dk,body .tnum{font-size:12px}
+  /* The pages scope these with a class (`.row figcaption`, `.fig .sub`), which
+     outranks a bare element selector whatever the load order. Matching their
+     shape is the cheap fix; the real one is lifting those declarations out of
+     the nine inline <style> blocks, which is a job on its own. */
+  :is(.row,.callout,.exp,.fig,.figbox,figure) figcaption{font-size:13.5px;line-height:1.55}
+  :is(.fig,.exp,.head,section) .sub{font-size:13.5px;line-height:1.55}
+  :is(.exp,.head,summary) .exp-tag{font-size:12px}
+  body .updated,body footer,body .br-note,body .br-refs,body .tnote{font-size:13px}
+  body .sowhat .sw-li{font-size:14.5px}
+  .br-tick{font-size:17px}          /* SVG user units, not CSS px */
+}
+@media (max-width:640px){
+  h1,.hero h1,.head h1{overflow-wrap:break-word}
+  /* .pill is nowrap so a date never breaks across lines; a long descriptive
+     pill ("One identity to the end · a pilot of twenty beside her") then held
+     the explorer 461px wide on a 375px phone. Let it wrap down here. */
+  body .pill{white-space:normal}
+
+  /* The nav wrapped to three rows on a 375px phone -- about half the first
+     screen before any content. One row that scrolls sideways instead, with
+     the theme toggle pinned so it never scrolls out of reach. No JS: a
+     disclosure menu would need state, and this degrades to a plain row. */
+  .nav .links{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .nav .links::-webkit-scrollbar{display:none}
+  .nav .grp{flex:0 0 auto}
+  .nav .theme{position:sticky;right:0;flex:0 0 auto;background:var(--paper);
+    box-shadow:-8px 0 8px -6px var(--paper);margin-left:4px}
+}
+
+/* Touch targets. Applies wherever the pointer is coarse -- a tablet in
+   landscape is still a finger. Inline links inside a sentence are exempt
+   under WCAG 2.2 (SC 2.5.8); these are the standalone controls. */
+@media (pointer:coarse){
+  .nav .links a,.nav .brand{min-height:32px;display:inline-flex;align-items:center}
+  /* standalone links -- a stat row's "→ the status page", a card's footer link */
+  .stat a,.hrow a,.tile a,.br-table summary{min-height:28px;display:inline-flex;align-items:center}
+  .nextstep,.nextstep .go{min-height:44px}
+  .figure-zoom::after{opacity:1}        /* no hover on touch: always show the affordance */
+  summary{min-height:32px}
+  input[type=range]{height:34px;background:transparent}
+  input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px}
+}
+
+/* Anything laid out in columns collapses to one on a phone, and every grid
+   child gets min-width:0 -- the default min-width:auto sizes a child by its
+   min-content width, which is how a nowrap table dragged the status page
+   sideways (2026-09-18). */
+@media (max-width:640px){
+  .row,.herogrid,.figgrid,.tilesplit,.result{grid-template-columns:1fr}
+  .tiles,.tiles.t2,.tiles.t3{grid-template-columns:1fr}
+  .explore{grid-template-columns:1fr}
+}
+.row>*,.herogrid>*,.figgrid>*,.tilesplit>*,.tiles>*,.explore>*{min-width:0}
