@@ -106,7 +106,7 @@
           <tbody>
             <tr><td>HiL</td><td>the quantised model on the real ESP32-S3</td><td>the deployed artefact &mdash; ground truth</td></tr>
             <tr><td>SiL</td><td>the same quantised model, executed on a host</td><td>fast, fully observable, needs proving faithful</td></tr>
-            <tr><td>MobileFaceNet (float)</td><td>the same architecture family at full precision</td><td>isolates what quantisation costs</td></tr>
+            <tr><td>MobileFaceNet (float)</td><td>a float reference of the same architecture family, scored on identical crops</td><td>bounds what the edge pipeline costs against a small float model &mdash; whether the deployed network is this one quantised is unverified</td></tr>
             <tr><td>Desktop-class (float)</td><td>an unconstrained model (e.g. ArcFace R100)</td><td>isolates what the power budget costs</td></tr>
           </tbody>
         </table>
@@ -114,7 +114,7 @@
 
       <p>Three comparisons fall out of that set, and each answers a different question:</p>
       <p><strong>SiL vs HiL &mdash; a methodology question.</strong> Do we have to run every probe on real hardware, or is a host execution of the exact same model faithful enough to stand in? If the two agree, surface mapping can be done at software speed and the device is needed only for spot checks; if they diverge, every published number has to come off the device and the throughput of the whole method changes. This is a question about <em>how you are allowed to measure</em>, and it has to be settled before either of the others means anything.</p>
-      <p><strong>SiL or HiL vs float MobileFaceNet &mdash; a quantisation question.</strong> Same architecture family, full precision versus INT8. This is where the &ldquo;does squeezing the model into a chip change what it accepts&rdquo; question lives, and it is the comparison most likely to surface behaviour that exists only in the deployed artefact and not in anything the vendor benchmarked.</p>
+      <p><strong>SiL or HiL vs float MobileFaceNet &mdash; the edge pipeline against a float reference.</strong> A float MobileFaceNet scored on the same recorded crops, against the INT8 pipeline running its own detector. This is where the &ldquo;does squeezing the model into a chip change what it accepts&rdquo; question lives, with one honesty condition attached: whether the vendor&rsquo;s deployed network is <em>this</em> MobileFaceNet quantised has not been verified, so the comparison is a pipeline against a reference of the same family, not quantisation of the same weights. On the subject&rsquo;s grid of record the INT8 pipeline sat about 7&deg; further out and followed the float reference ray by ray only loosely.</p>
       <p><strong>SiL or HiL vs desktop-class vs MobileFaceNet &mdash; a parameterisation question.</strong> Holding precision aside, how much of the edge model&rsquo;s behaviour is down to it being small? A 1.2M-parameter MobileFaceNet and a ~65M-parameter ArcFace R100 are different answers to the same problem; comparing all three separates &ldquo;small model&rdquo; from &ldquo;quantised model&rdquo; from &ldquo;this particular model&rdquo;.</p>
 
       <h3 style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:600;margin:18px 0 8px">Making the judges comparable</h3>
