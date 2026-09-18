@@ -46,7 +46,7 @@
     .sp{margin:20px 0 4px}
     .sp-k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
       text-transform:uppercase;color:var(--ex-accent);margin:0 0 10px}
-    .sp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:24px;align-items:start}
+    .sp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:28px;align-items:start}
     .sp-svg{width:100%;height:auto;display:block}
     .sp-hit{fill:transparent;cursor:pointer}
     .sp-row{cursor:pointer}
@@ -61,9 +61,11 @@
     .sp-a{fill:#2a78d6;opacity:.5}
     .sp-b{fill:#eb6834;opacity:.5}
     .sp-both{fill:#1baf7a}
-    .sp-legend{font-size:12.5px;color:var(--ex-muted);margin:10px 0 0;line-height:1.9}
-    .sp-key{display:inline-block;width:22px;height:9px;border-radius:2px;vertical-align:middle;margin:0 4px 0 12px}
-    .sp-key.sp-ka{background:#2a78d6;opacity:.5;margin-left:0}
+    .sp-legend{font-size:12.5px;color:var(--ex-muted);margin:12px 0 0;line-height:2.1;
+      display:flex;flex-wrap:wrap;gap:4px 20px;align-items:center}
+    .sp-legend span.sp-item{white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
+    .sp-key{display:inline-block;width:22px;height:10px;border-radius:3px;flex:0 0 auto}
+    .sp-key.sp-ka{background:#2a78d6;opacity:.5}
     .sp-key.sp-kb{background:#eb6834;opacity:.5}
     .sp-key.sp-kboth{background:#1baf7a}
     .sp-film video{width:100%;height:auto;border-radius:8px;border:1px solid var(--ex-edge);display:block}
@@ -220,8 +222,8 @@
         <li><span class="n">16</span><a href="#exp16">Re-measured: the successor figures</a></li>
         <li><span class="n">17</span><a href="#exp17">StyleGAN3: one surface to the end, and a population begun</a></li>
         <li><span class="n">18</span><a href="#exp18">Can the boundary be predicted instead of measured?</a></li>
-        <li><span class="n">19</span><a href="#exp19">Walking at a named stranger</a> <span style="color:var(--ex-muted)">&mdash; host only</span></li>
-        <li><span class="n">20</span><a href="#exp20">Which stranger? And what the age estimator missed</a> <span style="color:var(--ex-muted)">&mdash; host only</span></li>
+        <li><span class="n">19</span><a href="#exp19">Walking at a named stranger</a></li>
+        <li><span class="n">20</span><a href="#exp20">Which stranger? And what the age estimator missed</a></li>
       </ol>
     </nav>
 
@@ -523,19 +525,17 @@
       <details class="exp" id="exp19" open>
         <summary>
           <span class="exp-num">19</span>
-          <span class="exp-tag">Stranger walks &middot; the security question &middot; host only</span>
+          <span class="exp-tag">Stranger walks &middot; the security question &middot; host and device</span>
           <h2>Walking at a named stranger</h2>
         </summary>
         <div class="scope">
-          <div class="k">Scope &mdash; not yet confirmed on the chip</div>
-          <p>Every number in this experiment comes from the <strong>host INT8 runner</strong>, the
-          software-in-the-loop stand-in for the ESP32-S3 &mdash; <strong>not from the device itself</strong>.
-          The host reproduces the chip to about a degree per surface across twenty-one identities, but
-          per direction the two differ by roughly 2&deg; and five identities&rsquo; device medians fall
-          outside the host&rsquo;s interval (experiment 17). Parity is a cohort claim, so it does not
-          license reading one identity&rsquo;s device behaviour off the host. Until the device pass is
-          run, <strong>&ldquo;the deployed pipeline accepts this face as either person&rdquo; is a claim
-          about the simulator, not the silicon.</strong></p>
+          <div class="k">Confirmed on the device</div>
+          <p>These walks have now been judged on the <strong>ESP32-S3 itself</strong> as well as on the
+          host stand-in. The chip agrees with the host on <strong>92%</strong> of individual
+          both-accepted verdicts, finds a mutually-accepted face on <strong>12 of 16</strong> walks
+          against the host&rsquo;s 13, and accepts <strong>263</strong> such renders against 287. The
+          two pairs that never overlap agree 65 of 65 both times. Note the host is <em>not</em> a safe
+          upper bound: on two walks the chip is the more permissive of the two.</p>
         </div>
         <p class="beat"><b>Question</b> Everything on this page so far compares radii. The acceptance region is measured outward in every direction, the nearest stranger is measured as a distance, and the two are set beside each other &mdash; but the stranger lies along its own direction and is never actually approached. The question an operator has is different and has never been answered here: does the region <em>reach somebody else</em>?</p>
         <p class="beat"><b>Done</b> Walked the chord in the generator&rsquo;s latent space straight at a named person &mdash; <code>w(t) = w<sub>a</sub> + t&middot;(w<sub>b</sub> &minus; w<sub>a</sub>)</code>, so t&nbsp;=&nbsp;0 is the walker and t&nbsp;=&nbsp;1 <em>is</em> the stranger and the path arrives rather than pointing. 65 samples a chord, uniform in t, with no targeting loop: a chord has two ends, so the parameterisation is already given. Every render is judged <em>twice</em>, once against each person&rsquo;s enrolment, so one image answers &ldquo;has she left&rdquo; and &ldquo;has he arrived&rdquo; together. Ten StyleGAN3 identities walked to their true nearest neighbour out of a 17,515-face frame &mdash; no inversion needed, because those neighbours&rsquo; latents were already on disk &mdash; and then the subject herself, nine real photographs inverted once, walked at her own nearest.</p>
@@ -545,125 +545,125 @@
         <p class="sp-k">Pick a pair &mdash; the bar is the control</p>
         <div class="sp-grid">
           <div class="sp-chart">
-            <svg class="sp-svg" viewBox="0 0 990 348" role="img" aria-label="Ten stranger walks; bars show where each identity is accepted along the chord.">
+            <svg class="sp-svg" viewBox="0 0 964 468" role="img" aria-label="Ten stranger walks; bars show where each identity is accepted along the chord.">
 <g class="sp-row" data-stem="G00r1__G00r1nn" data-a="G00r1" data-b="G00r1nn" data-both="39" data-n="65" data-apart="66.4" tabindex="0" role="button" aria-label="G00r1 to G00r1nn, anchors 66.4 degrees apart, 39 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="4" width="990" height="34"/>
-<text class="sp-lab" x="162" y="25.0" text-anchor="end">G00r1 → G00r1nn</text>
-<rect class="sp-track" x="172" y="16.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="16.0" width="617.5" height="10" rx="2"/>
-<rect class="sp-a" x="813.2" y="16.0" width="11.9" height="10" rx="2"/>
-<rect class="sp-b" x="362.0" y="16.0" width="570.0" height="10" rx="2"/>
-<rect class="sp-both" x="362.0" y="16.0" width="427.5" height="10" rx="2"/>
-<rect class="sp-both" x="813.2" y="16.0" width="11.9" height="10" rx="2"/>
-<text class="sp-n" x="942" y="25.0">39</text>
+<rect class="sp-hit" x="0" y="4" width="964" height="46"/>
+<text class="sp-lab" x="176" y="31.0" text-anchor="end">G00r1 → G00r1nn</text>
+<rect class="sp-track" x="186" y="21.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="21.0" width="585.0" height="12" rx="3"/>
+<rect class="sp-a" x="793.5" y="21.0" width="11.2" height="12" rx="3"/>
+<rect class="sp-b" x="366.0" y="21.0" width="540.0" height="12" rx="3"/>
+<rect class="sp-both" x="366.0" y="21.0" width="405.0" height="12" rx="3"/>
+<rect class="sp-both" x="793.5" y="21.0" width="11.2" height="12" rx="3"/>
+<text class="sp-n" x="916" y="31.0">39</text>
 </g>
 <g class="sp-row" data-stem="G01__G01r1" data-a="G01" data-b="G01r1" data-both="15" data-n="65" data-apart="68.7" tabindex="0" role="button" aria-label="G01 to G01r1, anchors 68.7 degrees apart, 15 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="38" width="990" height="34"/>
-<text class="sp-lab" x="162" y="59.0" text-anchor="end">G01 → G01r1</text>
-<rect class="sp-track" x="172" y="50.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="50.0" width="403.8" height="10" rx="2"/>
-<rect class="sp-a" x="599.5" y="50.0" width="23.8" height="10" rx="2"/>
-<rect class="sp-b" x="445.1" y="50.0" width="486.9" height="10" rx="2"/>
-<rect class="sp-both" x="445.1" y="50.0" width="130.6" height="10" rx="2"/>
-<rect class="sp-both" x="599.5" y="50.0" width="23.8" height="10" rx="2"/>
-<text class="sp-n" x="942" y="59.0">15</text>
+<rect class="sp-hit" x="0" y="50" width="964" height="46"/>
+<text class="sp-lab" x="176" y="77.0" text-anchor="end">G01 → G01r1</text>
+<rect class="sp-track" x="186" y="67.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="67.0" width="382.5" height="12" rx="3"/>
+<rect class="sp-a" x="591.0" y="67.0" width="22.5" height="12" rx="3"/>
+<rect class="sp-b" x="444.8" y="67.0" width="461.2" height="12" rx="3"/>
+<rect class="sp-both" x="444.8" y="67.0" width="123.8" height="12" rx="3"/>
+<rect class="sp-both" x="591.0" y="67.0" width="22.5" height="12" rx="3"/>
+<text class="sp-n" x="916" y="77.0">15</text>
 </g>
 <g class="sp-row" data-stem="G02__G02r1" data-a="G02" data-b="G02r1" data-both="10" data-n="65" data-apart="69.8" tabindex="0" role="button" aria-label="G02 to G02r1, anchors 69.8 degrees apart, 10 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="72" width="990" height="34"/>
-<text class="sp-lab" x="162" y="93.0" text-anchor="end">G02 → G02r1</text>
-<rect class="sp-track" x="172" y="84.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="84.0" width="463.1" height="10" rx="2"/>
-<rect class="sp-b" x="504.5" y="84.0" width="59.4" height="10" rx="2"/>
-<rect class="sp-b" x="599.5" y="84.0" width="332.5" height="10" rx="2"/>
-<rect class="sp-both" x="504.5" y="84.0" width="59.4" height="10" rx="2"/>
-<rect class="sp-both" x="599.5" y="84.0" width="35.6" height="10" rx="2"/>
-<text class="sp-n" x="942" y="93.0">10</text>
+<rect class="sp-hit" x="0" y="96" width="964" height="46"/>
+<text class="sp-lab" x="176" y="123.0" text-anchor="end">G02 → G02r1</text>
+<rect class="sp-track" x="186" y="113.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="113.0" width="438.8" height="12" rx="3"/>
+<rect class="sp-b" x="501.0" y="113.0" width="56.2" height="12" rx="3"/>
+<rect class="sp-b" x="591.0" y="113.0" width="315.0" height="12" rx="3"/>
+<rect class="sp-both" x="501.0" y="113.0" width="56.2" height="12" rx="3"/>
+<rect class="sp-both" x="591.0" y="113.0" width="33.8" height="12" rx="3"/>
+<text class="sp-n" x="916" y="123.0">10</text>
 </g>
 <g class="sp-row" data-stem="G03__G03nn" data-a="G03" data-b="G03nn" data-both="28" data-n="65" data-apart="70.7" tabindex="0" role="button" aria-label="G03 to G03nn, anchors 70.7 degrees apart, 28 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="106" width="990" height="34"/>
-<text class="sp-lab" x="162" y="127.0" text-anchor="end">G03 → G03nn</text>
-<rect class="sp-track" x="172" y="118.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="118.0" width="475.0" height="10" rx="2"/>
-<rect class="sp-a" x="670.8" y="118.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-b" x="338.2" y="118.0" width="593.8" height="10" rx="2"/>
-<rect class="sp-both" x="338.2" y="118.0" width="308.8" height="10" rx="2"/>
-<rect class="sp-both" x="670.8" y="118.0" width="2.0" height="10" rx="2"/>
-<text class="sp-n" x="942" y="127.0">28</text>
+<rect class="sp-hit" x="0" y="142" width="964" height="46"/>
+<text class="sp-lab" x="176" y="169.0" text-anchor="end">G03 → G03nn</text>
+<rect class="sp-track" x="186" y="159.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="159.0" width="450.0" height="12" rx="3"/>
+<rect class="sp-a" x="658.5" y="159.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-b" x="343.5" y="159.0" width="562.5" height="12" rx="3"/>
+<rect class="sp-both" x="343.5" y="159.0" width="292.5" height="12" rx="3"/>
+<rect class="sp-both" x="658.5" y="159.0" width="2.0" height="12" rx="3"/>
+<text class="sp-n" x="916" y="169.0">28</text>
 </g>
 <g class="sp-row" data-stem="G04__G04r2" data-a="G04" data-b="G04r2" data-both="0" data-n="65" data-apart="71.3" tabindex="0" role="button" aria-label="G04 to G04r2, anchors 71.3 degrees apart, 0 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="140" width="990" height="34"/>
-<text class="sp-lab" x="162" y="161.0" text-anchor="end">G04 → G04r2</text>
-<rect class="sp-track" x="172" y="152.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="152.0" width="344.4" height="10" rx="2"/>
-<rect class="sp-b" x="599.5" y="152.0" width="332.5" height="10" rx="2"/>
-<text class="sp-n sp-none" x="942" y="161.0">none</text>
+<rect class="sp-hit" x="0" y="188" width="964" height="46"/>
+<text class="sp-lab" x="176" y="215.0" text-anchor="end">G04 → G04r2</text>
+<rect class="sp-track" x="186" y="205.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="205.0" width="326.2" height="12" rx="3"/>
+<rect class="sp-b" x="591.0" y="205.0" width="315.0" height="12" rx="3"/>
+<text class="sp-n sp-none" x="916" y="215.0">none</text>
 </g>
 <g class="sp-row" data-stem="G05__G05nn" data-a="G05" data-b="G05nn" data-both="54" data-n="65" data-apart="71.9" tabindex="0" role="button" aria-label="G05 to G05nn, anchors 71.9 degrees apart, 54 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="174" width="990" height="34"/>
-<text class="sp-lab" x="162" y="195.0" text-anchor="end">G05 → G05nn</text>
-<rect class="sp-track" x="172" y="186.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="186.0" width="688.8" height="10" rx="2"/>
-<rect class="sp-a" x="884.5" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-a" x="908.2" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-b" x="207.6" y="186.0" width="11.9" height="10" rx="2"/>
-<rect class="sp-b" x="243.2" y="186.0" width="35.6" height="10" rx="2"/>
-<rect class="sp-b" x="302.6" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-b" x="326.4" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-b" x="350.1" y="186.0" width="581.9" height="10" rx="2"/>
-<rect class="sp-both" x="207.6" y="186.0" width="11.9" height="10" rx="2"/>
-<rect class="sp-both" x="243.2" y="186.0" width="35.6" height="10" rx="2"/>
-<rect class="sp-both" x="302.6" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-both" x="326.4" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-both" x="350.1" y="186.0" width="510.6" height="10" rx="2"/>
-<rect class="sp-both" x="884.5" y="186.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-both" x="908.2" y="186.0" width="2.0" height="10" rx="2"/>
-<text class="sp-n" x="942" y="195.0">54</text>
+<rect class="sp-hit" x="0" y="234" width="964" height="46"/>
+<text class="sp-lab" x="176" y="261.0" text-anchor="end">G05 → G05nn</text>
+<rect class="sp-track" x="186" y="251.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="251.0" width="652.5" height="12" rx="3"/>
+<rect class="sp-a" x="861.0" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-a" x="883.5" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-b" x="219.8" y="251.0" width="11.2" height="12" rx="3"/>
+<rect class="sp-b" x="253.5" y="251.0" width="33.8" height="12" rx="3"/>
+<rect class="sp-b" x="309.8" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-b" x="332.2" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-b" x="354.8" y="251.0" width="551.2" height="12" rx="3"/>
+<rect class="sp-both" x="219.8" y="251.0" width="11.2" height="12" rx="3"/>
+<rect class="sp-both" x="253.5" y="251.0" width="33.8" height="12" rx="3"/>
+<rect class="sp-both" x="309.8" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-both" x="332.2" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-both" x="354.8" y="251.0" width="483.8" height="12" rx="3"/>
+<rect class="sp-both" x="861.0" y="251.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-both" x="883.5" y="251.0" width="2.0" height="12" rx="3"/>
+<text class="sp-n" x="916" y="261.0">54</text>
 </g>
 <g class="sp-row" data-stem="G06__G06nn" data-a="G06" data-b="G06nn" data-both="27" data-n="65" data-apart="72.5" tabindex="0" role="button" aria-label="G06 to G06nn, anchors 72.5 degrees apart, 27 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="208" width="990" height="34"/>
-<text class="sp-lab" x="162" y="229.0" text-anchor="end">G06 → G06nn</text>
-<rect class="sp-track" x="172" y="220.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="220.0" width="522.5" height="10" rx="2"/>
-<rect class="sp-a" x="730.1" y="220.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-b" x="397.6" y="220.0" width="534.4" height="10" rx="2"/>
-<rect class="sp-both" x="397.6" y="220.0" width="296.9" height="10" rx="2"/>
-<rect class="sp-both" x="730.1" y="220.0" width="2.0" height="10" rx="2"/>
-<text class="sp-n" x="942" y="229.0">27</text>
+<rect class="sp-hit" x="0" y="280" width="964" height="46"/>
+<text class="sp-lab" x="176" y="307.0" text-anchor="end">G06 → G06nn</text>
+<rect class="sp-track" x="186" y="297.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="297.0" width="495.0" height="12" rx="3"/>
+<rect class="sp-a" x="714.8" y="297.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-b" x="399.8" y="297.0" width="506.2" height="12" rx="3"/>
+<rect class="sp-both" x="399.8" y="297.0" width="281.2" height="12" rx="3"/>
+<rect class="sp-both" x="714.8" y="297.0" width="2.0" height="12" rx="3"/>
+<text class="sp-n" x="916" y="307.0">27</text>
 </g>
 <g class="sp-row" data-stem="G07__G07r1" data-a="G07" data-b="G07r1" data-both="0" data-n="65" data-apart="73.1" tabindex="0" role="button" aria-label="G07 to G07r1, anchors 73.1 degrees apart, 0 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="242" width="990" height="34"/>
-<text class="sp-lab" x="162" y="263.0" text-anchor="end">G07 → G07r1</text>
-<rect class="sp-track" x="172" y="254.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="254.0" width="391.9" height="10" rx="2"/>
-<rect class="sp-b" x="658.9" y="254.0" width="273.1" height="10" rx="2"/>
-<text class="sp-n sp-none" x="942" y="263.0">none</text>
+<rect class="sp-hit" x="0" y="326" width="964" height="46"/>
+<text class="sp-lab" x="176" y="353.0" text-anchor="end">G07 → G07r1</text>
+<rect class="sp-track" x="186" y="343.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="343.0" width="371.2" height="12" rx="3"/>
+<rect class="sp-b" x="647.2" y="343.0" width="258.8" height="12" rx="3"/>
+<text class="sp-n sp-none" x="916" y="353.0">none</text>
 </g>
 <g class="sp-row" data-stem="G08__G08nn" data-a="G08" data-b="G08nn" data-both="19" data-n="65" data-apart="73.8" tabindex="0" role="button" aria-label="G08 to G08nn, anchors 73.8 degrees apart, 19 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="276" width="990" height="34"/>
-<text class="sp-lab" x="162" y="297.0" text-anchor="end">G08 → G08nn</text>
-<rect class="sp-track" x="172" y="288.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="288.0" width="427.5" height="10" rx="2"/>
-<rect class="sp-b" x="385.8" y="288.0" width="546.2" height="10" rx="2"/>
-<rect class="sp-both" x="385.8" y="288.0" width="213.8" height="10" rx="2"/>
-<text class="sp-n" x="942" y="297.0">19</text>
+<rect class="sp-hit" x="0" y="372" width="964" height="46"/>
+<text class="sp-lab" x="176" y="399.0" text-anchor="end">G08 → G08nn</text>
+<rect class="sp-track" x="186" y="389.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="389.0" width="405.0" height="12" rx="3"/>
+<rect class="sp-b" x="388.5" y="389.0" width="517.5" height="12" rx="3"/>
+<rect class="sp-both" x="388.5" y="389.0" width="202.5" height="12" rx="3"/>
+<text class="sp-n" x="916" y="399.0">19</text>
 </g>
 <g class="sp-row" data-stem="G09__G09nn" data-a="G09" data-b="G09nn" data-both="21" data-n="65" data-apart="74.9" tabindex="0" role="button" aria-label="G09 to G09nn, anchors 74.9 degrees apart, 21 of 65 renders accepted as both. Play this walk.">
-<rect class="sp-hit" x="0" y="310" width="990" height="34"/>
-<text class="sp-lab" x="162" y="331.0" text-anchor="end">G09 → G09nn</text>
-<rect class="sp-track" x="172" y="322.0" width="760" height="10" rx="2"/>
-<rect class="sp-a" x="172.0" y="322.0" width="581.9" height="10" rx="2"/>
-<rect class="sp-b" x="492.6" y="322.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-b" x="516.4" y="322.0" width="23.8" height="10" rx="2"/>
-<rect class="sp-b" x="563.9" y="322.0" width="368.1" height="10" rx="2"/>
-<rect class="sp-both" x="492.6" y="322.0" width="2.0" height="10" rx="2"/>
-<rect class="sp-both" x="516.4" y="322.0" width="23.8" height="10" rx="2"/>
-<rect class="sp-both" x="563.9" y="322.0" width="190.0" height="10" rx="2"/>
-<text class="sp-n" x="942" y="331.0">21</text>
+<rect class="sp-hit" x="0" y="418" width="964" height="46"/>
+<text class="sp-lab" x="176" y="445.0" text-anchor="end">G09 → G09nn</text>
+<rect class="sp-track" x="186" y="435.0" width="720" height="12" rx="3"/>
+<rect class="sp-a" x="186.0" y="435.0" width="551.2" height="12" rx="3"/>
+<rect class="sp-b" x="489.8" y="435.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-b" x="512.2" y="435.0" width="22.5" height="12" rx="3"/>
+<rect class="sp-b" x="557.2" y="435.0" width="348.8" height="12" rx="3"/>
+<rect class="sp-both" x="489.8" y="435.0" width="2.0" height="12" rx="3"/>
+<rect class="sp-both" x="512.2" y="435.0" width="22.5" height="12" rx="3"/>
+<rect class="sp-both" x="557.2" y="435.0" width="180.0" height="12" rx="3"/>
+<text class="sp-n" x="916" y="445.0">21</text>
 </g>
 </svg>
-            <p class="sp-legend"><span class="sp-key sp-ka"></span> accepted as the walker
-              <span class="sp-key sp-kb"></span> accepted as the stranger
-              <span class="sp-key sp-kboth"></span> accepted as <strong>both</strong></p>
+            <p class="sp-legend"><span class="sp-item"><span class="sp-key sp-ka"></span>accepted as the walker</span><span
+              class="sp-item"><span class="sp-key sp-kb"></span>accepted as the stranger</span><span
+              class="sp-item"><span class="sp-key sp-kboth"></span>accepted as <strong>&nbsp;both</strong></span></p>
           </div>
           <figure class="sp-film">
             <video id="sp-video" controls muted playsinline preload="metadata"
@@ -677,7 +677,8 @@
               that was not scored.</figcaption>
           </figure>
         </div>
-        <p class="sp-note">Host INT8 runner at the vendor threshold &mdash; <strong>not the device</strong>.
+        <p class="sp-note">Bars and films are the host INT8 runner at the vendor threshold; the same walks
+          judged on the ESP32-S3 agree on 92% of verdicts and find an overlap on 12 of 16.
           StyleGAN3 arm only. Bars show contiguous runs, so a gap is a real gap.</p>
       </div>
       <script>
@@ -707,25 +708,36 @@
       })();
       </script>
 <!-- stranger-picker:end -->
+        <figure class="figure-full">
+          <a class="figure-zoom" href="img/stranger/subject__LJp0.png" target="_blank" rel="noopener">
+            <img class="fig-light" src="img/stranger/subject__LJp0.png" loading="lazy"
+              alt="Two score curves along the chord from the subject to her nearest searched-for neighbour. Her score falls from 0.77 while his rises from 0.41; between t 0.34 and 0.70 both sit above the vendor threshold. Only the two end renders are shown; the morph between them is withheld.">
+            <img class="fig-dark" src="img/stranger/subject__LJp0_dark.png" loading="lazy" alt="">
+          </a>
+          <figcaption>The subject walked at the nearest neighbour a directed search found (74.4&deg; away).
+            <strong>26 of 65 renders are accepted as both people</strong> on the host, 33 on the chip. Only the
+            two ends of the chord are shown &mdash; who is walked, and who is walked towards. The renders
+            between them are withheld: those are the faces the system accepts as either person, and
+            publishing them would be publishing a working impersonation.</figcaption>
+        </figure>
+        <p class="beat"><b>On the chip</b> The walks were then judged again on the ESP32-S3 itself. It finds a mutually-accepted face on <b class="v">12 of the 16 walks</b> against the host&rsquo;s 13, accepts <b class="v">263</b> such renders against 287, and agrees with the host on <b class="v">92%</b> of individual verdicts; the two pairs that never overlap agree 65 of 65 on both. The subject&rsquo;s own result holds and hardens &mdash; against the nearest neighbour found by search the chip accepts <b class="v">33 of 65</b> where the host accepted 26. The one finding that does <em>not</em> survive is the weakest: her two marginal renders against the pose-excluded face score 0 on the device. And the host is not a safe upper bound &mdash; on two walks the chip is the more permissive of the two, so a host-only study would have understated the exposure there.</p>
         <p class="beat"><b>Changed</b> This is the first demonstrated impersonation on this pipeline rather than a statistic about looseness, and it retires the &ldquo;not shown yet&rdquo; that has stood on this project since the beginning. It also kills the cheap version of the defence: because distance does not predict the overlap, <b class="v">a cohort cannot be screened for this risk by measuring distances</b> &mdash; the chord has to be walked, which is exactly the thing an operator cannot do for themselves. Scope, kept narrow: the host INT8 runner not the chip, the StyleGAN3 arm only, one chord per pair and 65 samples along it, so these are existence results and not rates. The text-to-image arm needs both endpoints inverted and carries 27&ndash;37&deg; of reconstruction offset at each end, so it will be reported separately.</p>
       </details>
 
       <details class="exp" id="exp20" open>
         <summary>
           <span class="exp-num">20</span>
-          <span class="exp-tag">Proposing strangers &middot; a safety failure &middot; host only</span>
+          <span class="exp-tag">Proposing strangers &middot; a safety failure &middot; host and device</span>
           <h2>Which stranger? And what the age estimator missed</h2>
         </summary>
         <div class="scope">
-          <div class="k">Scope &mdash; not yet confirmed on the chip</div>
-          <p>Every number in this experiment comes from the <strong>host INT8 runner</strong>, the
-          software-in-the-loop stand-in for the ESP32-S3 &mdash; <strong>not from the device itself</strong>.
-          The host reproduces the chip to about a degree per surface across twenty-one identities, but
-          per direction the two differ by roughly 2&deg; and five identities&rsquo; device medians fall
-          outside the host&rsquo;s interval (experiment 17). Parity is a cohort claim, so it does not
-          license reading one identity&rsquo;s device behaviour off the host. Until the device pass is
-          run, <strong>&ldquo;the deployed pipeline accepts this face as either person&rdquo; is a claim
-          about the simulator, not the silicon.</strong></p>
+          <div class="k">Confirmed on the device</div>
+          <p>These walks have now been judged on the <strong>ESP32-S3 itself</strong> as well as on the
+          host stand-in. The chip agrees with the host on <strong>92%</strong> of individual
+          both-accepted verdicts, finds a mutually-accepted face on <strong>12 of 16</strong> walks
+          against the host&rsquo;s 13, and accepts <strong>263</strong> such renders against 287. The
+          two pairs that never overlap agree 65 of 65 both times. Note the host is <em>not</em> a safe
+          upper bound: on two walks the chip is the more permissive of the two.</p>
         </div>
         <p class="beat"><b>Question</b> Experiment 19&rsquo;s answer depends entirely on who the stranger is, and &ldquo;nearest&rdquo; was inherited from a population frame built to characterise a population rather than to ask a security question. The subject&rsquo;s nearest was 77.09&deg; only because faces failing that frame&rsquo;s pose filter were set aside. So: can nearer candidates be found without rendering millions of faces, and which exclusions are actually defensible?</p>
         <p class="beat"><b>Done</b> Mapping a latent is nearly free; rendering it and embedding the result is the entire cost. So rank first and render second. A small network was trained on the 19,950 latent-embedding pairs already on disk to predict one scalar &mdash; the cosine to the target &mdash; rather than the full embedding experiment 18 showed is hopeless. 500,000 fresh candidates were scored, drawn from a seed range disjoint from the population&rsquo;s so a proposal can never collide with an identity already measured, and only the best 1,500 were rendered.</p>
@@ -744,7 +756,7 @@
         <li>The corpus range is too narrow for cross-judge comparison: at each judge&rsquo;s own matched operating point, neither float judge (MFN or ArcFace R100) rejects inside cos&nbsp;&ge;&nbsp;0.60 &mdash; extending the shell range is a prerequisite for experiment 5 to say anything further.</li>
         <li>Host-vs-silicon parity now rests on the full grid of record: 1,024 rays, device minus host +0.4 &plusmn; 2.0&deg; per ray (experiment 17), and on the pilot&rsquo;s twenty further identities, where the same parity holds per surface (median within 1&deg; for seventeen of twenty-one, 2&deg; for nineteen) but not per identity at the extremes &mdash; five device medians sit outside the host&rsquo;s 95% interval, the largest 3.5&deg;. Parity is a cohort-level claim; it does not license reading one identity&rsquo;s device boundary off the host. The pilot-scale figures of experiments 7 and 8 stand as history.</li>
         <li>This is the software-in-the-loop runner as the primary source for the headline surface. It is a good proxy for the ESP32-S3, not a substitute (experiment 6): cosine agreement 0.980&ndash;0.983 with shared keypoints, 0.900 full pipeline.</li>
-        <li><strong>The stranger walks (experiments 19 and 20) have not been run on the device.</strong> Every &ldquo;accepted as both&rdquo; claim is the host INT8 runner, the software stand-in for the ESP32-S3. They are also existence results rather than rates: the StyleGAN3 arm only, one chord per pair at 65 samples. They show that a mutually-accepted face <em>exists</em> on those paths, not how often one would be found.</li>
+        <li>The stranger walks (experiments 19 and 20) are existence results rather than rates, now measured on both the host and the device: the StyleGAN3 arm only, one chord per pair at 65 samples. They show that a mutually-accepted face <em>exists</em> on those paths, not how often one would be found.</li>
         <li>No number here is modelled or interpolated: every boundary is found by rendering and judging real samples. Experiment 18 is the record of that being tested rather than assumed &mdash; a learned map from the latent to the embedding reached 14.6&deg; against a 1&deg; bar, because a 5&deg; step along the shell ladder already rotates the embedding 19&deg;.</li>
         <li>A landmark-order bug voided every float-judge number computed before it was fixed (commit <code>49a10c8</code>) &mdash; flagged here so it can&rsquo;t be silently re-cited.</li>
       </ul>
