@@ -90,7 +90,7 @@
     <section class="head" style="border:0">
       <div class="kicker"><span class="n">06</span> &middot; How it is measured</div>
       <h1>Can you match the render to the reference?</h1>
-      <p class="lead">Every trial below shows a reference photograph of a person, plus two synthetic renders. Exactly one render was generated from that person&rsquo;s own face-identity embedding; the other is an unrelated synthetic impostor. Both options are renders, so photographic style gives you nothing to go on &mdash; only identity does. Pick the one you think matches.</p>
+      <p class="lead">Every trial below shows a reference face &mdash; synthetic, depicting no real person &mdash; plus two synthetic renders. Exactly one render was generated from that person&rsquo;s own face-identity embedding; the other is an unrelated synthetic impostor. Both options are renders, so photographic style gives you nothing to go on &mdash; only identity does. Pick the one you think matches.</p>
     </section>
 
     <section>
@@ -100,7 +100,7 @@
         <p id="captureNoteTop" hidden>When you reveal your score, this page records your sixteen answers and how long each took, so that responses can be pooled across visitors. <strong>Nothing identifying is stored</strong> &mdash; no name, no address, no device details, no cookie &mdash; and a stored record cannot be traced back to you. Your answers are compared to the key by JavaScript running in your own browser either way.</p>
         <p><strong>Every face on this page is synthetic and depicts no real person.</strong> The reference photographs come from SFHQ-T2I, an MIT-licensed dataset of AI-generated faces &mdash; not photographs of anyone who exists. The two options in each trial are Arc2Face renders, generated from a face-identity embedding, exactly like the renders discussed elsewhere on this site.</p>
       </div>
-      <p>In each trial, one option was rendered from the same identity embedding as the reference photo; the other was rendered from a different, unrelated synthetic identity &mdash; the one the recognition model finds most confusable with the reference, out of a large candidate pool. You are not told which is which. Eight of the sixteen trials share a single recurring reference identity; the other eight each use a different reference identity, appearing only once, so you cannot simply learn one face over the course of the test and pattern-match to it.</p>
+      <p>In each trial, one option was rendered from the same identity embedding as the reference photo; the other was rendered from a different, unrelated synthetic identity &mdash; the one the recognition model finds most confusable with the reference, out of a 250-face candidate pool. You are not told which is which. Eight of the sixteen trials share a single recurring reference identity; the other eight each use a different reference identity, appearing only once, so you cannot simply learn one face over the course of the test and pattern-match to it.</p>
     </section>
 
     <section>
@@ -108,21 +108,22 @@
       <p>These figures are measurements from the underlying study &mdash; not from the images on this page, and not comparable to your score below. They come from a separate analysis of the study&rsquo;s subject: her own real photographs, and renders of her identity embedding.</p>
       <div class="tblwrap">
         <table>
-          <thead><tr><th>Comparison</th><th>Cosine similarity to her enrolled template</th></tr></thead>
+          <thead><tr><th>Comparison</th><th>Cosine similarity</th><th>Measured in</th></tr></thead>
           <tbody>
-            <tr><td>Renders of her own anchor embedding</td><td><strong>0.816</strong> median (0.751&ndash;0.840)</td></tr>
-            <tr><td>Her nine real photographs, pairwise</td><td>0.754 median (0.624&ndash;0.836)</td></tr>
-            <tr><td>1,164 synthetic impostors</td><td>0.269 max</td></tr>
+            <tr><td>Renders of her own anchor embedding, against that anchor</td><td><strong>0.816</strong> median (0.751&ndash;0.840)</td><td>the generator&rsquo;s own recognition space (Arc2Face / antelopev2)</td></tr>
+            <tr><td>Her nine real photographs, against each other</td><td>0.754 median (0.624&ndash;0.836)</td><td>the same space &mdash; pairwise, so against no template</td></tr>
+            <tr><td>1,164 synthetic impostors, against her enrolled template</td><td>0.269 max</td><td>the deployed INT8 model&rsquo;s space</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="pull">A render built purely from an identity embedding can sit closer to that identity&rsquo;s enrolled template, by the model&rsquo;s own metric, than a real person&rsquo;s own photographs sit to each other.</p>
+      <p class="pull">A render built purely from an identity embedding can sit closer to that identity&rsquo;s anchor, by the model&rsquo;s own metric, than a real person&rsquo;s own photographs sit to each other.</p>
+      <p>The first two rows and the third are <strong>not on a common scale</strong>: the first two are measured in the generator&rsquo;s own recognition space, the third in the deployed model&rsquo;s. Read down the column and you are comparing two different rulers &mdash; the rows are set out together because each is informative, not because 0.816 and 0.269 can be subtracted. For the same reason the impostor figure here and the 80&deg; nearest-stranger distance quoted on the <a href="status.html">status page</a> are different measurements over different pools, not a contradiction.</p>
       <p>The subject&rsquo;s reaction to those renders was that she did not see herself in them. An earlier version of this page took that at face value and said the renders carried little identity signal a human could use. That claim has since been tested, and it was wrong &mdash; see below. See <a href="discrimination.html">Discrimination</a> for why population metrics can&rsquo;t catch this, and the wider threshold picture behind the 0.269 figure above.</p>
     </section>
 
     <section>
       <h2>What happened when we ran this properly</h2>
-      <p>The same test was run on the study&rsquo;s subject and one other observer, using her real identity rather than the synthetic one on this page. On the trials that targeted her, observers picked the correct render <strong>16 times out of 16</strong>, in about a second per trial &mdash; including the observer who had never met her and was working purely from the reference photograph.</p>
+      <p>The same test was run on the study&rsquo;s subject and one other observer, using her real identity rather than the synthetic one on this page. On the trials that targeted her, observers picked the correct render <strong>16 times out of 16</strong> &mdash; eight such trials in each of two sessions &mdash; in about a second per trial. One of those sessions was run by an observer working only from the reference photograph, who had never met her, and that is the load-bearing half of the result: it rules out recognition from memory. It rests on a single stranger, though, and the two sessions share a trial set, so a second independent observer is still owed before this is more than one person&rsquo;s result.</p>
       <p>So the renders do carry identity a human can match. Her reaction and that result are both true at once, and stating them together is the actual finding: <strong>these renders sit above stranger-level identity signal and below felt likeness.</strong> &ldquo;I can tell which one came from my photograph&rdquo; and &ldquo;that does not look like me&rdquo; are different claims, and a cosine similarity speaks to neither.</p>
       <p>That result came from an easy version of the test. The distractors in it were the most confusable faces in a 250-face pool, but they still sat around 0.08 cosine from her template &mdash; plainly different people. <strong>The test on this page is substantially harder:</strong> its distractors sit 2.6&times; closer, a median of 0.208 and a maximum of 0.336. If you find these trials difficult, that is the test working, not you failing. The difficulty is the measurement.</p>
     </section>
@@ -190,21 +191,21 @@
   (function(){
     var TRIALS = [
       {correct:"A", target:"synthetic"},
-      {correct:"B", target:"subject"},
+      {correct:"B", target:"recurring"},
       {correct:"A", target:"synthetic"},
       {correct:"B", target:"synthetic"},
       {correct:"A", target:"synthetic"},
-      {correct:"A", target:"subject"},
-      {correct:"A", target:"subject"},
+      {correct:"A", target:"recurring"},
+      {correct:"A", target:"recurring"},
       {correct:"B", target:"synthetic"},
-      {correct:"A", target:"subject"},
-      {correct:"B", target:"subject"},
+      {correct:"A", target:"recurring"},
+      {correct:"B", target:"recurring"},
       {correct:"B", target:"synthetic"},
       {correct:"A", target:"synthetic"},
       {correct:"B", target:"synthetic"},
-      {correct:"B", target:"subject"},
-      {correct:"A", target:"subject"},
-      {correct:"B", target:"subject"}
+      {correct:"B", target:"recurring"},
+      {correct:"A", target:"recurring"},
+      {correct:"B", target:"recurring"}
     ];
     var N = TRIALS.length;
     var chosen = new Array(N).fill(null);

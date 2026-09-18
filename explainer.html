@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The acceptance sphere &mdash; Identity Acceptance Surfaces</title>
-  <meta name="description" content="An interactive picture of an identity acceptance region: accepted inside, rejected outside, why a real boundary is ragged, and how the tool finds it by bracketing and bisecting along each ray.">
+  <meta name="description" content="An interactive picture of an identity acceptance region: accepted inside, rejected outside, why a real boundary is ragged, and how the tool finds it from a fixed grid of shells at known angles.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -72,7 +72,7 @@
 
     <div class="ov readouts">
       <div>threshold&nbsp;&nbsp;<b>cos <span id="rThr">0.800</span></b></div>
-      <div>boundary&nbsp;&nbsp;<b>&epsilon; <span id="rEps">0.750</span></b></div>
+      <div>boundary&nbsp;&nbsp;<b>&theta; <span id="rEps">36.9</span>&deg;</b></div>
       <div id="rLine3"><span id="rLabel">inside</span>&nbsp;&nbsp;<b style="color:#7fb3d3"><span id="rPct">50</span><span id="rUnit">%</span></b></div>
     </div>
 
@@ -90,10 +90,10 @@
     <div class="controls">
       <div class="grp"><button class="cbtn on" id="b3d">3D</button><button class="cbtn" id="b2d">2D slice</button></div>
       <button class="cbtn play" id="bSearch">&#9658; Find the boundary</button>
-      <div class="grp"><button class="cbtn" id="bIdeal">Ideal</button><button class="cbtn on" id="bMeas">Measured</button></div>
-      <div class="slider"><span>looser</span><input type="range" id="thr" min="0.60" max="0.98" step="0.005" value="0.80"><span>stricter</span></div>
+      <div class="grp"><button class="cbtn" id="bIdeal">Ideal</button><button class="cbtn on" id="bMeas">Ragged</button></div>
+      <div class="slider"><span>looser</span><input type="range" id="thr" min="0.50" max="0.98" step="0.005" value="0.80" list="thrmarks"><datalist id="thrmarks"><option value="0.50" label="vendor"></option></datalist><span>stricter</span></div>
       <span class="hint" id="hint">drag to rotate</span>
-      <a class="cbtn" href="explorer.html" style="text-decoration:none;margin-left:auto">04 &middot; The measured surface &rarr;</a>
+      <a class="cbtn" href="explorer.html" style="text-decoration:none;margin-left:auto">04 &middot; The data &rarr;</a>
     </div>
   </div>
 
@@ -103,6 +103,8 @@
     var state={threshold:0.80, mode:"3d", surface:"measured"};
     var rotY=22, rotX=-16, drag=null, S3=150, S2=150;
     function epsFor(c){return Math.sqrt(1/(c*c)-1);}
+    // theta is the parameter of record everywhere else on this site (degrees); epsilon stays the drawing unit
+    function degFor(e){return (Math.atan(e)*180/Math.PI).toFixed(1);}
     function wob(az){return 0.55*Math.sin(3*az+0.7)+0.28*Math.sin(5*az+2.1)+0.17*Math.sin(2*az-1.0);}
     function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
     function localEps(az){return epsFor(state.threshold)*(1+(state.surface==="measured"?0.30*wob(az):0));}
@@ -195,35 +197,35 @@
       // captions + readouts for the search
       var cap={
         grid:["Step 1 — the fixed grid","The pre-computed perturbations: concentric shells of samples along every ray. Cheap to score in bulk, so each sample is already accepted (cyan) or rejected (amber). This is the low-granularity surface."],
-        bracket:["Step 2 — bracket the flip","On this ray the innermost reject sits just past the outermost accept. The crossing is somewhere in that gap — the bracket (gold)."],
-        bisect:["Step 3 — bisect","Sample halfway between the accepting and rejecting ends, score it, and keep the half that still straddles the flip. A few halvings pin the boundary to tolerance — Newton–Raphson in spirit, robust like bisection."],
-        done:["The refined surface","Repeat across ray directions and the pinned crossings trace the real boundary — far tighter than the grid alone, and only where it matters."],
-        hold:["The refined surface","Repeat across ray directions and the pinned crossings trace the real boundary — far tighter than the grid alone, and only where it matters."]
+        bracket:["Step 2 — find the crossing","On this ray the innermost reject sits just past the outermost accept. The boundary is the first place the score curve crosses the threshold, somewhere in that gap (gold)."],
+        bisect:["Step 3 — interpolate, in degrees","Read the crossing off the curve between those two shells and record the angle it lands at. The grid is dense enough to interpolate rather than search, which is why the shells are targeted to a known angle in the first place. Earlier versions bisected here by rendering more faces; the fixed grid replaced that."],
+        done:["The measured surface","Repeat across every ray direction and the crossings trace the boundary — one number per direction, each an angle that was measured on the render rather than requested."],
+        hold:["The measured surface","Repeat across every ray direction and the crossings trace the boundary — one number per direction, each an angle that was measured on the render rather than requested."]
       }[sp.phase]||["Finding the boundary",""];
       document.getElementById("capK").textContent=cap[0];
       document.getElementById("capB").textContent=cap[1];
       document.getElementById("tK").textContent="Finding the boundary";
-      document.getElementById("tH").textContent="Coarse grid first, then refine where it flips";
-      document.getElementById("tP").textContent="A million points would be wasteful. Score a coarse grid, find the accept→reject bracket on each ray, and bisect only there.";
+      document.getElementById("tH").textContent="A fixed grid of shells, then the first crossing on each ray";
+      document.getElementById("tP").textContent="A million points would be wasteful. Score a fixed grid of shells at known angles, then read off where each ray's score curve first crosses the threshold.";
       document.getElementById("rLabel").textContent="rays pinned";
       document.getElementById("rUnit").textContent="";
       document.getElementById("rPct").textContent=sp.pinned.length+" / "+sp.rays.length;
       document.getElementById("rThr").textContent=state.threshold.toFixed(3);
-      document.getElementById("rEps").textContent=epsFor(state.threshold).toFixed(3);
+      document.getElementById("rEps").textContent=degFor(epsFor(state.threshold));
     }
 
     function renderStatic(){
       var th=state.threshold, measured=state.surface==="measured", baseEps=epsFor(th);
       document.getElementById("rThr").textContent=th.toFixed(3);
-      document.getElementById("rEps").textContent=baseEps.toFixed(3);
+      document.getElementById("rEps").textContent=degFor(baseEps);
       document.getElementById("rLabel").textContent="inside"; document.getElementById("rUnit").textContent="%";
       document.getElementById("tK").textContent="The acceptance sphere";
       document.getElementById("tH").textContent="How far can you drift and still be recognised as you?";
       document.getElementById("tP").textContent="Your identity sits at the centre. Everything the system still accepts as you fills a region around it. Inside, you’re still you; cross the edge and you’re rejected.";
-      document.getElementById("capK").textContent=measured?"Measured — a real INT8 model":"Ideal — a perfect system";
+      document.getElementById("capK").textContent=measured?"Ragged — shaped like a real INT8 surface":"Ideal — a perfect system";
       document.getElementById("capB").textContent=measured
-        ?"The boundary is ragged. Some directions stay accepted much farther out than others; a face just inside on one heading is already rejected on another. Mapping that raggedness is the whole point."
-        :"One crisp radius in every direction. Drift within it and you are accepted; cross it and you are not. Real edge models are almost never this clean — switch to Measured.";
+        ?"Illustrative, not measured: the shape here is drawn to behave like a real one. The boundary is ragged — some directions stay accepted much farther out than others, and a face just inside on one heading is already rejected on another. On the real surface the spread across directions is about 4°, with the extremes at 52° and 80°. Mapping that raggedness is the whole point."
+        :"One crisp radius in every direction. Drift within it and you are accepted; cross it and you are not. Real edge models are almost never this clean — switch to Ragged.";
 
       if(state.mode==="3d"){
         stage.style.display=""; slice.style.display="none";
