@@ -232,9 +232,14 @@ body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
   /* below this .wrap already fills the viewport, so the bleed would push the
      page sideways by exactly its padding. */
   .figure-bleed{width:100%;margin-left:0;transform:none}
-  /* a six-column numeric table cannot reflow; let it scroll inside itself
-     rather than pushing the whole page sideways */
-  .numtable{display:block;overflow-x:auto;max-width:100%;white-space:nowrap}
+  /* A six-column numeric table cannot reflow, so it scrolls inside itself.
+     Two things are needed for that to actually contain it: the nowrap has to
+     be on the CELLS (on the table it becomes the min-content width), and the
+     grid/flex parent needs min-width:0 -- children default to min-width:auto,
+     so a wide child drags the whole page sideways instead of overflowing. */
+  .numtable{display:block;overflow-x:auto;max-width:100%}
+  .numtable th,.numtable td:not(:first-child){white-space:nowrap}
+  .row>*,.herogrid>*,.figgrid>*,.tilesplit>*{min-width:0}
 }
 
 /* A date/status pill must not break across lines. */
