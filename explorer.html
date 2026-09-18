@@ -109,7 +109,7 @@
     .exp figcaption{font-size:12.5px;line-height:1.55;color:var(--ex-muted);margin:9px 2px 0}
 
     /* tau-slider interactive (exp 16). Hidden until data/m2_rays.json loads;
-       with no fetch (file://, JS off) the static figures above it stand alone. */
+       with no fetch (file://, JS off) the static notice and figures stand alone. */
     .tauwidget{display:none;margin:16px 0 6px;background:var(--ex-card);border:1px solid var(--ex-line);border-radius:8px;padding:14px 16px 12px}
     .tauwidget .tw-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 4px}
     .tauwidget .tw-head label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ex-muted);white-space:nowrap}
@@ -161,41 +161,6 @@
       </figure>
     </section>
 
-    <div class="withdrawn" id="provenance-notice">
-      <div class="k">Withdrawn 2026-08-23 &mdash; the two figures below are this data</div>
-      <p><strong>These figures are withdrawn pending re-measurement.</strong> They are kept on the page because they are where the chain starts, not because they are current. The successor figures are experiment 16; the project&rsquo;s current boundary measurement is experiment 17, above.</p>
-      <p>The run that produced them recorded no render configuration &mdash; <code>surface_runs</code> stored the backend name and nothing else, with no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine during the day these renders were made, and a re-run under a known configuration moved every one of thirteen re-tested rays in the same direction. That is more consistent with a changed rendering pipeline than with thirteen independent corrections, and there is no record that would settle it.</p>
-      <p style="font-size:13.5px;margin-bottom:4px">Not affected: the perturbation geometry (<code>unit(anchor + &epsilon;&middot;tangent)</code>, cos&nbsp;=&nbsp;1/&radic;(1+&epsilon;&sup2;)); the ESP-DL SiL defect findings and their upstream reports; that the acceptance region is direction-dependent &mdash; the shape is not in question, the numbers are.</p>
-      <div class="stats" style="opacity:.75;margin-top:12px">
-        <div class="stat" data-stat="wd">well-determined <b>51 / 64</b></div>
-        <div class="stat" data-stat="censored">censored <b>7 / 64</b></div>
-        <div class="stat" data-stat="rejected">anchor-rejected <b>3 / 64</b></div>
-        <div class="stat" data-stat="flagged">flagged (&lt;4 evals) <b>3 / 64</b></div>
-        <div class="stat" data-stat="angle">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
-        <div class="stat" data-stat="extremes">extremes ratio <b>7.6&times;</b></div>
-        <div class="stat" data-stat="p90p10">robust P90/P10 <b>3.8&times;</b></div>
-      </div>
-    </div>
-
-    <div class="figures is-withdrawn">
-      <div class="fig">
-        <h2>Boundary by direction</h2>
-        <p class="sub">64 spokes, spaced evenly for legibility &mdash; only the radius carries meaning. Anchor-rejected rays sit at the centre.</p>
-        <svg id="ex-polar" viewBox="0 0 380 380" role="img" aria-label="Polar plot of 64 measured boundary angles, showing a star-shaped surface rather than a circle, with censored, flagged and anchor-rejected rays marked separately"></svg>
-      </div>
-      <div class="fig">
-        <h2>Same 64 rays, sorted</h2>
-        <p class="sub">Bounded rays sorted by boundary angle. Censored rays sit at the right, marked open; flagged rays (fewer than 4 evaluations) are hatched.</p>
-        <svg id="ex-bars" viewBox="0 0 380 380" role="img" aria-label="Bar chart of 64 boundary angles sorted ascending, with censored and flagged rays marked distinctly"></svg>
-      </div>
-    </div>
-    <div class="legend">
-      <span><i class="sw bounded"></i>well-determined &mdash; &ge;4 evaluations, bisected boundary</span>
-      <span><i class="sw censored"></i>censored &mdash; still accepted at the dataset edge (cos 0.60)</span>
-      <span><i class="sw weak"></i>flagged &mdash; boundary decided by &lt;4 evaluations, excluded from headline stats</span>
-      <span><i class="sw rejected"></i>anchor-rejected &mdash; the unperturbed render itself was rejected</span>
-      <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
-    </div>
 
     <p class="bridge">What follows is the whole chain: seventeen experiments, in the order they happened, each one prompted by something the previous experiment threw up &mdash; a problem, a bug, or a question the last result couldn&rsquo;t answer. Experiments 12&ndash;15 turn the apparatus on itself: what the renderer was allowed to be, what it actually does to a request, whether the two rigs were even shown the same pixels, and the framing experiment that ended with Arc2Face retired as the stimulus generator. The sixteenth closes the loop the withdrawal opened: the same boundary diagrams, re-measured under full provenance. Earlier entries are folded to keep the page walkable &mdash; open any of them, or jump from the list below; the most recent, the re-measurement, is already open.</p>
 
@@ -205,7 +170,7 @@
         <li><span class="n">01</span><a href="#exp1">Shell sampling and the pilot sweep</a></li>
         <li><span class="n">02</span><a href="#exp2">Tier-0 compositing trial</a></li>
         <li><span class="n">03</span><a href="#exp3">Per-direction refinement, 20 directions</a></li>
-        <li><span class="n">04</span><a href="#exp4">Higher angular resolution, 64 directions</a></li>
+        <li><span class="n">04</span><a href="#exp4">Higher angular resolution, 64 directions</a> <span style="color:var(--ex-warn)">&mdash; withdrawn</span></li>
         <li><span class="n">05</span><a href="#exp5">Four judges and FAR calibration</a></li>
         <li><span class="n">06</span><a href="#exp6">Hardware-in-the-loop parity</a></li>
         <li><span class="n">07</span><a href="#exp7">Boundary displacement</a></li>
@@ -264,13 +229,50 @@
       <details class="exp" id="exp4">
         <summary>
           <span class="exp-num">04</span>
-          <span class="exp-tag">Headline surface &middot; 64 directions</span>
+          <span class="exp-tag">Withdrawn 2026-08-23 &middot; 64 directions</span>
           <h2>Higher angular resolution, 64 directions</h2>
         </summary>
         <p class="beat"><b>Question</b> 20 rays established that the shape was real, but was too few to trust an individual boundary or a precise anisotropy ratio.</p>
         <p class="beat"><b>Done</b> Three further refinement runs extended the pilot&rsquo;s 20 rays to 64 (one run&rsquo;s summary json was never written &mdash; the machine crashed before the flush &mdash; and was recovered from its sqlite), then merged with quality filtering.</p>
         <p class="beat"><b>Came back</b> Well-determined mean boundary 37.7&deg; (95% CI 34.0&ndash;41.1&deg;), extremes ratio 7.6&times;, robust P90/P10 spread 3.8&times;, 51 of 64 rays well-determined. The merge caught two defects in the project&rsquo;s own analysis, both fixed here: three rays whose <em>unperturbed</em> render was itself rejected had been recorded as 0&deg; boundaries, which made the naive anisotropy ratio infinite; and two of the tightest rays had each been decided from only two evaluations, driving a spurious 30&times; headline (a third ray, decided from three, was caught by the same rule).</p>
-        <p class="beat"><b>Changed</b> 7.6&times; replaces 7.2&times; and the spurious 30&times; as the number to cite. Anchor-rejected, flagged and censored are now first-class fields on every ray, excluded from the headline statistic and shown rather than silently dropped &mdash; the visualisation above marks all three.</p>
+        <p class="beat"><b>Changed</b> 7.6&times; replaces 7.2&times; and the spurious 30&times; as the number to cite. Anchor-rejected, flagged and censored are now first-class fields on every ray, excluded from the headline statistic and shown rather than silently dropped &mdash; the visualisation below marks all three.</p>
+
+        <p class="beat"><b>The figures</b> These are that surface &mdash; the ones this page led with until 2026-09-18, kept here because they are where the chain starts. They are withdrawn, and the notice below says why.</p>
+      <div class="withdrawn" id="provenance-notice">
+        <div class="k">Withdrawn 2026-08-23 &mdash; the two figures below are this data</div>
+        <p><strong>These figures are withdrawn pending re-measurement.</strong> They are kept on the page because they are where the chain starts, not because they are current. The successor figures are experiment 16; the project&rsquo;s current boundary measurement is experiment 17, above.</p>
+        <p>The run that produced them recorded no render configuration &mdash; <code>surface_runs</code> stored the backend name and nothing else, with no preset, adapter scales, steps or weight digests. Model assets were added and removed on the machine during the day these renders were made, and a re-run under a known configuration moved every one of thirteen re-tested rays in the same direction. That is more consistent with a changed rendering pipeline than with thirteen independent corrections, and there is no record that would settle it.</p>
+        <p style="font-size:13.5px;margin-bottom:4px">Not affected: the perturbation geometry (<code>unit(anchor + &epsilon;&middot;tangent)</code>, cos&nbsp;=&nbsp;1/&radic;(1+&epsilon;&sup2;)); the ESP-DL SiL defect findings and their upstream reports; that the acceptance region is direction-dependent &mdash; the shape is not in question, the numbers are.</p>
+        <div class="stats" style="opacity:.75;margin-top:12px">
+          <div class="stat" data-stat="wd">well-determined <b>51 / 64</b></div>
+          <div class="stat" data-stat="censored">censored <b>7 / 64</b></div>
+          <div class="stat" data-stat="rejected">anchor-rejected <b>3 / 64</b></div>
+          <div class="stat" data-stat="flagged">flagged (&lt;4 evals) <b>3 / 64</b></div>
+          <div class="stat" data-stat="angle">boundary angle <b>37.7&deg;</b> <span style="opacity:.7">(95% CI 34.0&ndash;41.1&deg;)</span></div>
+          <div class="stat" data-stat="extremes">extremes ratio <b>7.6&times;</b></div>
+          <div class="stat" data-stat="p90p10">robust P90/P10 <b>3.8&times;</b></div>
+        </div>
+      </div>
+
+      <div class="figures is-withdrawn">
+        <div class="fig">
+          <h2>Boundary by direction</h2>
+          <p class="sub">64 spokes, spaced evenly for legibility &mdash; only the radius carries meaning. Anchor-rejected rays sit at the centre.</p>
+          <svg id="ex-polar" viewBox="0 0 380 380" role="img" aria-label="Polar plot of 64 measured boundary angles, showing a star-shaped surface rather than a circle, with censored, flagged and anchor-rejected rays marked separately"></svg>
+        </div>
+        <div class="fig">
+          <h2>Same 64 rays, sorted</h2>
+          <p class="sub">Bounded rays sorted by boundary angle. Censored rays sit at the right, marked open; flagged rays (fewer than 4 evaluations) are hatched.</p>
+          <svg id="ex-bars" viewBox="0 0 380 380" role="img" aria-label="Bar chart of 64 boundary angles sorted ascending, with censored and flagged rays marked distinctly"></svg>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="sw bounded"></i>well-determined &mdash; &ge;4 evaluations, bisected boundary</span>
+        <span><i class="sw censored"></i>censored &mdash; still accepted at the dataset edge (cos 0.60)</span>
+        <span><i class="sw weak"></i>flagged &mdash; boundary decided by &lt;4 evaluations, excluded from headline stats</span>
+        <span><i class="sw rejected"></i>anchor-rejected &mdash; the unperturbed render itself was rejected</span>
+        <span><i class="sw band"></i>mean &amp; 95% CI &mdash; 37.7&deg; (34.0&ndash;41.1&deg;), well-determined rays only</span>
+      </div>
       </details>
 
       <details class="exp" id="exp5">
@@ -472,7 +474,7 @@
       <h2>Read this whole chain for what it is</h2>
       <ul>
         <li>One identity measured to the end (experiment 17), plus a pilot of twenty synthetic identities on 128 directions each; a consented real cohort is the intended end use. Twenty is a pilot, not a population &mdash; nothing on this page is yet a population result.</li>
-        <li>Experiments 1&ndash;16 render with Arc2Face; experiment 17 with StyleGAN3. For the Arc2Face experiments its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out. Its measured cost as an instrument is experiment 13 (33.6&deg; offset, 6.9&deg; noise floor), and it has since been retired as the stimulus generator (experiment 15). That retirement neither reinstates the withdrawn surface figures nor withdraws anything further &mdash; the provenance notice above is unchanged by it.</li>
+        <li>Experiments 1&ndash;16 render with Arc2Face; experiment 17 with StyleGAN3. For the Arc2Face experiments its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out. Its measured cost as an instrument is experiment 13 (33.6&deg; offset, 6.9&deg; noise floor), and it has since been retired as the stimulus generator (experiment 15). That retirement neither reinstates the withdrawn surface figures nor withdraws anything further &mdash; the withdrawal notice in experiment 4 is unchanged by it.</li>
         <li>The SiL&rsquo;s detector runs at a relaxed score threshold of 0.3 (vendor default 0.5) because raw renders sit under the default &mdash; see experiment 2 for the compositing trade-off this creates.</li>
         <li>3 of the 64 rays reject the unperturbed anchor render outright (anchor-rejected) and are excluded from the headline statistics; a further 3 were decided from fewer than 4 evaluations and are flagged rather than silently kept. Both classes are shown, not dropped &mdash; see experiment 4.</li>
         <li>7 rays remain right-censored at the dataset&rsquo;s cos-0.60 edge; their true boundary lies further out, unmeasured.</li>
