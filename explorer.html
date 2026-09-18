@@ -43,6 +43,12 @@
     .figures.is-withdrawn .fig{opacity:.55}
     /* The withdrawal notice: static, so it cannot fail open. Same shape the JS
        used to build, in this page's own palette. */
+    .scope{border:1px solid var(--ex-accent);border-left:3px solid var(--ex-accent);border-radius:8px;
+      background:var(--ex-accent-soft);padding:14px 18px;margin:0 0 18px}
+    .scope .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--ex-accent);margin-bottom:6px}
+    .scope p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ex-ink)}
+    .scope strong{color:var(--ex-ink);font-weight:600}
     .withdrawn{border:1px solid var(--ex-warn);border-left:3px solid var(--ex-warn);border-radius:8px;
       background:var(--ex-warn-soft);padding:18px 20px;margin:22px 0 0}
     .withdrawn .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
@@ -187,8 +193,8 @@
         <li><span class="n">16</span><a href="#exp16">Re-measured: the successor figures</a></li>
         <li><span class="n">17</span><a href="#exp17">StyleGAN3: one surface to the end, and a population begun</a></li>
         <li><span class="n">18</span><a href="#exp18">Can the boundary be predicted instead of measured?</a></li>
-        <li><span class="n">19</span><a href="#exp19">Walking at a named stranger</a></li>
-        <li><span class="n">20</span><a href="#exp20">Which stranger? And what the age estimator missed</a></li>
+        <li><span class="n">19</span><a href="#exp19">Walking at a named stranger</a> <span style="color:var(--ex-muted)">&mdash; host only</span></li>
+        <li><span class="n">20</span><a href="#exp20">Which stranger? And what the age estimator missed</a> <span style="color:var(--ex-muted)">&mdash; host only</span></li>
       </ol>
     </nav>
 
@@ -490,9 +496,20 @@
       <details class="exp" id="exp19" open>
         <summary>
           <span class="exp-num">19</span>
-          <span class="exp-tag">Stranger walks &middot; the security question</span>
+          <span class="exp-tag">Stranger walks &middot; the security question &middot; host only</span>
           <h2>Walking at a named stranger</h2>
         </summary>
+        <div class="scope">
+          <div class="k">Scope &mdash; not yet confirmed on the chip</div>
+          <p>Every number in this experiment comes from the <strong>host INT8 runner</strong>, the
+          software-in-the-loop stand-in for the ESP32-S3 &mdash; <strong>not from the device itself</strong>.
+          The host reproduces the chip to about a degree per surface across twenty-one identities, but
+          per direction the two differ by roughly 2&deg; and five identities&rsquo; device medians fall
+          outside the host&rsquo;s interval (experiment 17). Parity is a cohort claim, so it does not
+          license reading one identity&rsquo;s device behaviour off the host. Until the device pass is
+          run, <strong>&ldquo;the deployed pipeline accepts this face as either person&rdquo; is a claim
+          about the simulator, not the silicon.</strong></p>
+        </div>
         <p class="beat"><b>Question</b> Everything on this page so far compares radii. The acceptance region is measured outward in every direction, the nearest stranger is measured as a distance, and the two are set beside each other &mdash; but the stranger lies along its own direction and is never actually approached. The question an operator has is different and has never been answered here: does the region <em>reach somebody else</em>?</p>
         <p class="beat"><b>Done</b> Walked the chord in the generator&rsquo;s latent space straight at a named person &mdash; <code>w(t) = w<sub>a</sub> + t&middot;(w<sub>b</sub> &minus; w<sub>a</sub>)</code>, so t&nbsp;=&nbsp;0 is the walker and t&nbsp;=&nbsp;1 <em>is</em> the stranger and the path arrives rather than pointing. 65 samples a chord, uniform in t, with no targeting loop: a chord has two ends, so the parameterisation is already given. Every render is judged <em>twice</em>, once against each person&rsquo;s enrolment, so one image answers &ldquo;has she left&rdquo; and &ldquo;has he arrived&rdquo; together. Ten StyleGAN3 identities walked to their true nearest neighbour out of a 17,515-face frame &mdash; no inversion needed, because those neighbours&rsquo; latents were already on disk &mdash; and then the subject herself, nine real photographs inverted once, walked at her own nearest.</p>
         <p class="beat"><b>Came back</b> <b class="v">Eight of the ten chords contain a render the deployed pipeline accepts as BOTH people</b> at the vendor threshold &mdash; 213 images in all, each a single detected face that would be let through as either of two enrolled identities. Not marginal artefacts: the overlaps are contiguous bands, on one pair a quarter of the whole path. And separation does <em>not</em> predict it &mdash; correlation <b class="v">&minus;0.20</b> across the ten. G05 overlaps on 54 of 65 samples at 71.9&deg; while G04 at 71.3&deg; and G07 at 73.1&deg; never overlap at all; G05&rsquo;s anchor already scores 0.442 against its neighbour&rsquo;s template with no morphing whatsoever. The paths bulge far outside the geodesic: at the crossover a render sits about 60&deg; from <em>both</em> anchors though the anchors are only 68.7&deg; apart, which is experiment 18&rsquo;s curvature finding appearing as a physical fact. The subject <em>appeared</em> to be the exception &mdash; against her nearest eligible neighbour (77.09&deg;) no render is accepted as both, and she sits in the 99.94th percentile for sparseness. Experiment 20 shows that was an artefact of which stranger she was walked to.</p>
@@ -502,9 +519,20 @@
       <details class="exp" id="exp20" open>
         <summary>
           <span class="exp-num">20</span>
-          <span class="exp-tag">Proposing strangers &middot; a safety failure</span>
+          <span class="exp-tag">Proposing strangers &middot; a safety failure &middot; host only</span>
           <h2>Which stranger? And what the age estimator missed</h2>
         </summary>
+        <div class="scope">
+          <div class="k">Scope &mdash; not yet confirmed on the chip</div>
+          <p>Every number in this experiment comes from the <strong>host INT8 runner</strong>, the
+          software-in-the-loop stand-in for the ESP32-S3 &mdash; <strong>not from the device itself</strong>.
+          The host reproduces the chip to about a degree per surface across twenty-one identities, but
+          per direction the two differ by roughly 2&deg; and five identities&rsquo; device medians fall
+          outside the host&rsquo;s interval (experiment 17). Parity is a cohort claim, so it does not
+          license reading one identity&rsquo;s device behaviour off the host. Until the device pass is
+          run, <strong>&ldquo;the deployed pipeline accepts this face as either person&rdquo; is a claim
+          about the simulator, not the silicon.</strong></p>
+        </div>
         <p class="beat"><b>Question</b> Experiment 19&rsquo;s answer depends entirely on who the stranger is, and &ldquo;nearest&rdquo; was inherited from a population frame built to characterise a population rather than to ask a security question. The subject&rsquo;s nearest was 77.09&deg; only because faces failing that frame&rsquo;s pose filter were set aside. So: can nearer candidates be found without rendering millions of faces, and which exclusions are actually defensible?</p>
         <p class="beat"><b>Done</b> Mapping a latent is nearly free; rendering it and embedding the result is the entire cost. So rank first and render second. A small network was trained on the 19,950 latent-embedding pairs already on disk to predict one scalar &mdash; the cosine to the target &mdash; rather than the full embedding experiment 18 showed is hopeless. 500,000 fresh candidates were scored, drawn from a seed range disjoint from the population&rsquo;s so a proposal can never collide with an identity already measured, and only the best 1,500 were rendered.</p>
         <p class="beat"><b>Came back</b> The ranker is <em>inaccurate</em> &mdash; correlation 0.375 &mdash; and it does not matter, because it does not need to estimate, only to concentrate: its top 1% of held-out candidates contains the single nearest face in the whole set, an enrichment of <b class="v">12.8&times;</b>. Rendering 0.3% of the pool found a fully frontal, fully eligible face at <b class="v">74.37&deg;</b> against the subject&rsquo;s previous nearest of 77.09&deg;. Walking to those proposed neighbours then overturned experiment 19's one reassuring result. Against her frame-recorded nearest (77.09&deg;) the subject had no mutually-accepted render at all; against the searched-for neighbours she has <b class="v">26 of 65</b> at 74.37&deg;, <b class="v">30 of 65</b> at 74.96&deg;, 13 at 75.28&deg; and 3 at 76.03&deg; &mdash; wide contiguous bands, 74 renders in all. Her sparseness never protected her. It measured her distance from twenty thousand faces drawn at random, not her distance from the nearest face the generator can be asked to make. Then the result that matters more. Among the six nearest frontal proposals, the one ranked fourth &mdash; scored <b class="v">age 47</b> by the age model &mdash; is a young child on visual review. Not a borderline teenager read a few years out: a small child returned as middle-aged. It was deleted and quarantined in the record.</p>
@@ -522,7 +550,7 @@
         <li>The corpus range is too narrow for cross-judge comparison: at each judge&rsquo;s own matched operating point, neither float judge (MFN or ArcFace R100) rejects inside cos&nbsp;&ge;&nbsp;0.60 &mdash; extending the shell range is a prerequisite for experiment 5 to say anything further.</li>
         <li>Host-vs-silicon parity now rests on the full grid of record: 1,024 rays, device minus host +0.4 &plusmn; 2.0&deg; per ray (experiment 17), and on the pilot&rsquo;s twenty further identities, where the same parity holds per surface (median within 1&deg; for seventeen of twenty-one, 2&deg; for nineteen) but not per identity at the extremes &mdash; five device medians sit outside the host&rsquo;s 95% interval, the largest 3.5&deg;. Parity is a cohort-level claim; it does not license reading one identity&rsquo;s device boundary off the host. The pilot-scale figures of experiments 7 and 8 stand as history.</li>
         <li>This is the software-in-the-loop runner as the primary source for the headline surface. It is a good proxy for the ESP32-S3, not a substitute (experiment 6): cosine agreement 0.980&ndash;0.983 with shared keypoints, 0.900 full pipeline.</li>
-        <li>The stranger walks (experiment 19) are existence results, not rates: the host INT8 runner rather than the chip, the StyleGAN3 arm only, one chord per pair at 65 samples. They show that a mutually-accepted face <em>exists</em> on those paths, not how often one would be found.</li>
+        <li><strong>The stranger walks (experiments 19 and 20) have not been run on the device.</strong> Every &ldquo;accepted as both&rdquo; claim is the host INT8 runner, the software stand-in for the ESP32-S3. They are also existence results rather than rates: the StyleGAN3 arm only, one chord per pair at 65 samples. They show that a mutually-accepted face <em>exists</em> on those paths, not how often one would be found.</li>
         <li>No number here is modelled or interpolated: every boundary is found by rendering and judging real samples. Experiment 18 is the record of that being tested rather than assumed &mdash; a learned map from the latent to the embedding reached 14.6&deg; against a 1&deg; bar, because a 5&deg; step along the shell ladder already rotates the embedding 19&deg;.</li>
         <li>A landmark-order bug voided every float-judge number computed before it was fixed (commit <code>49a10c8</code>) &mdash; flagged here so it can&rsquo;t be silently re-cited.</li>
       </ul>
