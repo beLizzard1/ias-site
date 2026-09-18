@@ -117,12 +117,21 @@
   <main class="wrap">
     <section class="head" id="surface">
       <div class="kicker"><span class="n">04</span> &middot; The data</div>
-      <h1>The measured acceptance surface<span class="pill">Pilot &middot; n=1 identity</span></h1>
-      <div class="updated">Measured 2026-08-22 &middot; ESP-DL SiL &middot; one identity, 64 directions</div>
+      <h1>The measured acceptance surface<span class="pill">One identity &middot; a pilot of twenty in progress</span></h1>
+      <div class="updated">Current measurement 2026-09-17 &middot; StyleGAN3 &middot; one identity, 1,024 directions, five judges &middot; the surface drawn below is experiment 4&rsquo;s, withdrawn 2026-08-23, kept for the chain</div>
+      <div class="stats" style="margin-top:16px">
+        <div class="stat">grid of record <b>1,024 directions</b> <span style="opacity:.7">11,667 renders, each judged five times</span></div>
+        <div class="stat">bounded at &tau; 0.5 <b>1,004 / 1,024</b></div>
+        <div class="stat">INT8 median boundary <b>67.4&deg;</b> <span style="opacity:.7">(95% CI 67.1&ndash;67.7; 67.2&deg; on a corrected enrolment template)</span></div>
+        <div class="stat">spread across rays <b>sd 4.2&deg;</b> <span style="opacity:.7">desktop R100 2.2&deg;</span></div>
+        <div class="stat">device &minus; host <b>+0.4&deg;</b></div>
+        <div class="stat"><a href="status.html">the radar and films, on the status page &rarr;</a></div>
+      </div>
       <p class="lead">64 fixed directions around one real identity (Dr James&rsquo;), each bisected against the ESP-DL edge model to find where it stops accepting the face. It isn&rsquo;t a circle &mdash; and the chain below is sixteen experiments long: the eleven that produced this figure, each one forced by a problem or a surprise the last one turned up, four more that put the instrument itself under the same scrutiny and ended by retiring it, and a sixteenth that re-measured the boundaries under full provenance &mdash; the successor figures to the withdrawn set shown here. This page walks the whole chain, not just the headline.</p>
     </section>
 
-    <div class="stats">
+    <div class="stats" style="opacity:.75">
+      <div class="stat" style="width:100%;opacity:1"><b>Experiment 4&rsquo;s surface (withdrawn 2026-08-23; the interactive below is that data)</b></div>
       <div class="stat" data-stat="wd">well-determined <b>51 / 64</b></div>
       <div class="stat" data-stat="censored">censored <b>7 / 64</b></div>
       <div class="stat" data-stat="rejected">anchor-rejected <b>3 / 64</b></div>
@@ -175,6 +184,7 @@
         <li><span class="n">14</span><a href="#exp14">One pixel buffer</a></li>
         <li><span class="n">15</span><a href="#exp15">Framing, and the StyleGAN3 decision</a></li>
         <li><span class="n">16</span><a href="#exp16">Re-measured: the successor figures</a></li>
+        <li><span class="n">17</span><a href="#exp17">StyleGAN3: one surface to the end, and a population begun</a></li>
       </ol>
     </nav>
 
@@ -361,7 +371,7 @@
         <p class="beat"><b>Changed</b> The retirement was invalid, and any FFHQ-aligned generator is usable with a recorded padding stage. Decision (2026-08-23): Arc2Face is not capable of what the measurement needs &mdash; too few renders survive the pipeline even under honest conditioning, on top of experiment 13&rsquo;s 33.6&deg; offset and 6.9&deg; floor. The next stimulus generator is StyleGAN3: invert the identity anchor to W once (the only place a photograph enters the pipeline), perturb W directly, render <code>G(w)</code> per sample &mdash; &asymp;50&nbsp;ms against &asymp;11&nbsp;s, every W point a face, deterministic, no per-probe optimisation and so no judge circularity. Adopted, not yet run &mdash; with its costs stated as requirements: boundaries reported only in achieved ArcFace coordinates, the padding stage mandatory and recorded, and cross-identity anisotropy treated as generator-confounded until a two-generator control runs.</p>
       </details>
 
-      <details class="exp" id="exp16" open>
+      <details class="exp" id="exp16">
         <summary>
           <span class="exp-num">16</span>
           <span class="exp-tag">Re-measurement &middot; full provenance</span>
@@ -404,16 +414,36 @@
       </details>
     </div>
 
+      <details class="exp" id="exp17" open>
+        <summary>
+          <span class="exp-num">17</span>
+          <span class="exp-tag">StyleGAN3 &middot; the grid of record &middot; the population</span>
+          <h2>StyleGAN3: one surface to the end, and a population begun</h2>
+        </summary>
+        <p class="beat"><b>Question</b> With Arc2Face retired (experiment 15), can a generator that makes a face at every point of its latent carry the measurement to its intended scale &mdash; and what does one identity&rsquo;s surface look like when every direction is measured, every render judged by every model, and the device run over all of it?</p>
+        <p class="beat"><b>Done</b> The subject&rsquo;s nine photographs inverted once into StyleGAN3&rsquo;s W under a full-covariance prior (anchor gate 28.3&deg; against a 37.6&deg; bar); 1,024 directions &mdash; two orthonormal bases, prefix-stable &mdash; walked in whitened W with the achieved angle targeted to within 1&deg; per shell from 30&deg; to 85&deg;, one deterministic render each, stopping at the detector edge; 11,667 renders judged by the fidelity scorer (the abscissa), a desktop ArcFace R100, a float MobileFaceNet, and the INT8 pipeline on the host and on the ESP32-S3. Then three flat cross-sections rendered and walked on film, and a population frame: all 122,726 SFHQ-T2I images and 20,000 StyleGAN3 faces embedded, two pilot cohorts of ten chosen across how crowded each identity&rsquo;s neighbourhood is.</p>
+        <p class="beat"><b>Came back</b> At the vendor threshold the INT8 pipeline accepts her out to a median of <b style="color:var(--ex-ink);font-family:inherit;text-transform:none;letter-spacing:normal">67.4&deg;</b> (1,004 of 1,024 rays bounded; middle half 64.5&ndash;70.2&deg;; extremes 52&ndash;80&deg;), 30&ndash;45&deg; beyond her own photographs; the desktop model 60.8&deg; and round (sd 2.2&deg;), the float MobileFaceNet 59.8&deg;, the INT8 pipeline the most uneven (sd 4.2&deg;) and unevenness growing as the threshold tightens; the device reproduces the host ray by ray (+0.4 &plusmn; 2.0&deg;). Direction predicts the boundary only weakly (held-out r 0.23) and the predicted weakest direction did not beat the sampled minimum. In the population frame, text-to-image faces pack about 9&deg; closer than StyleGAN3&rsquo;s own; she sits in a sparse region of StyleGAN3&rsquo;s space whether measured from her photographs or her own render. A correction on 2026-09-18: enrolment had run on the full-size image while the judges use a 320-px buffer (templates 21&ndash;23&deg; apart); re-judged on the pipeline&rsquo;s own buffer her median is 67.2&deg;, inside the interval.</p>
+        <figure>
+          <img src="img/sg3/surface_ecdf.png" loading="lazy" alt="Five panels, one per threshold, each the fraction of rays rejected by a given angle for four models; the INT8 host and device curves overlap and sit about seven degrees beyond the desktop and float curves.">
+          <figcaption>Where each model stops accepting her, over all 1,024 rays, one panel per threshold. A curve that ends below the top is rays still accepted at their last rendered point.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/population/sparse.png" loading="lazy" alt="Left: nearest-neighbour angle against pool size; typical faces close in as the pool grows while the subject stays near 77 degrees. Right: the full-pool distribution with her nearest marked beyond almost all of it.">
+          <figcaption>The population frame: as the pool grows, typical synthetic faces find closer neighbours; she does not.</figcaption>
+        </figure>
+        <p class="beat"><b>Changed</b> This is the project&rsquo;s current measurement, and the first at the scale the method was designed for; the twelve-ray figures of experiment 16 are its preview. The population phase is under way: two pilot cohorts of ten &mdash; one from a text-to-image dataset, one from StyleGAN3&rsquo;s own faces &mdash; each measured on the same 128 directions, host and device, with each identity&rsquo;s own nearest neighbour as its stranger. Their numbers join this entry as they land; the status page carries them first.</p>
+      </details>
+
     <div class="callout">
       <h2>Read this whole chain for what it is</h2>
       <ul>
-        <li>One identity, still. Every number above describes Dr James&rsquo; enrolment against this SUT &mdash; not a population result. Cross-identity comparison needs the synthetic identity corpus, which is prepared but not yet run.</li>
-        <li>Renders come from Arc2Face, so its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out. Its measured cost as an instrument is experiment 13 (33.6&deg; offset, 6.9&deg; noise floor), and it has since been retired as the stimulus generator (experiment 15). That retirement neither reinstates the withdrawn surface figures nor withdraws anything further &mdash; the provenance notice above is unchanged by it.</li>
+        <li>One identity measured to the end (experiment 17); a pilot of twenty synthetic identities is being measured now, and a consented real cohort is the intended end use. Nothing on this page is yet a population result.</li>
+        <li>Experiments 1&ndash;16 render with Arc2Face; experiment 17 with StyleGAN3. For the Arc2Face experiments its presentation noise (hair, lighting, styling redrawn per seed) is inside every boundary measurement, not filtered out. Its measured cost as an instrument is experiment 13 (33.6&deg; offset, 6.9&deg; noise floor), and it has since been retired as the stimulus generator (experiment 15). That retirement neither reinstates the withdrawn surface figures nor withdraws anything further &mdash; the provenance notice above is unchanged by it.</li>
         <li>The SiL&rsquo;s detector runs at a relaxed score threshold of 0.3 (vendor default 0.5) because raw renders sit under the default &mdash; see experiment 2 for the compositing trade-off this creates.</li>
         <li>3 of the 64 rays reject the unperturbed anchor render outright (anchor-rejected) and are excluded from the headline statistics; a further 3 were decided from fewer than 4 evaluations and are flagged rather than silently kept. Both classes are shown, not dropped &mdash; see experiment 4.</li>
         <li>7 rays remain right-censored at the dataset&rsquo;s cos-0.60 edge; their true boundary lies further out, unmeasured.</li>
         <li>The corpus range is too narrow for cross-judge comparison: at each judge&rsquo;s own matched operating point, neither float judge (MFN or ArcFace R100) rejects inside cos&nbsp;&ge;&nbsp;0.60 &mdash; extending the shell range is a prerequisite for experiment 5 to say anything further.</li>
-        <li>Host-vs-silicon parity is settled only at pilot scale: 8 rays for boundary displacement (six coarse probes each) and 9 images for detector agreement &mdash; not yet run over the full 64-direction surface.</li>
+        <li>Host-vs-silicon parity now rests on the full grid of record: 1,024 rays, device minus host +0.4 &plusmn; 2.0&deg; per ray (experiment 17). The pilot-scale figures of experiments 7 and 8 stand as history.</li>
         <li>This is the software-in-the-loop runner as the primary source for the headline surface. It is a good proxy for the ESP32-S3, not a substitute (experiment 6): cosine agreement 0.980&ndash;0.983 with shared keypoints, 0.900 full pipeline.</li>
         <li>A landmark-order bug voided every float-judge number computed before it was fixed (commit <code>49a10c8</code>) &mdash; flagged here so it can&rsquo;t be silently re-cited.</li>
       </ul>
