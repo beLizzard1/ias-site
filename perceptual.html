@@ -22,6 +22,11 @@
   <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
+    .note{margin:18px 0 0;border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;padding:14px 16px;background:var(--paper-2)}
+    .note p{margin:0;font-size:14.5px}
+    .degfig{margin:18px 0 8px}
+    .degfig img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px}
+    .degfig figcaption{font-size:13px;line-height:1.55;color:var(--muted);margin:9px 2px 0;max-width:76ch}
     .wrap{max-width:820px;margin:0 auto;padding:0 28px}
     .head{padding:52px 0 6px}
     .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
@@ -139,6 +144,42 @@
       <p>The same test was run on the study&rsquo;s subject and one other observer, using her real identity rather than the synthetic one on this page. On the trials that targeted her, observers picked the correct render <strong>16 times out of 16</strong> &mdash; eight such trials in each of two sessions &mdash; in about a second per trial. One of those sessions was run by an observer working only from the reference photograph, who had never met her, and that is the load-bearing half of the result: it rules out recognition from memory. It rests on a single stranger, though, and the two sessions share a trial set, so a second independent observer is still owed before this is more than one person&rsquo;s result.</p>
       <p>So the renders do carry identity a human can match. Her reaction and that result are both true at once, and stating them together is the actual finding: <strong>these renders sit above stranger-level identity signal and below felt likeness.</strong> &ldquo;I can tell which one came from my photograph&rdquo; and &ldquo;that does not look like me&rdquo; are different claims, and a cosine similarity speaks to neither.</p>
       <p>That result came from an easy version of the test. The distractors in it were the most confusable faces in a 250-face pool, but they still sat around 0.08 cosine from her template &mdash; plainly different people. <strong>The test on this page is substantially harder:</strong> its distractors sit 2.6&times; closer, a median of 0.208 and a maximum of 0.336. If you find these trials difficult, that is the test working, not you failing. The difficulty is the measurement.</p>
+    </section>
+
+    <section>
+      <h2>Where that leaves the machine</h2>
+      <p>Those two results are usually stated apart, and together they are the point of this
+        project. Observers matched the correct render <strong>16 times out of 16</strong>, in about
+        a second each: the identity signal in these renders is real, and a person can use it. So
+        when the deployed pipeline accepts an altered face, &ldquo;a human could not have told
+        either&rdquo; is not the explanation.</p>
+      <p>Set that beside what the chip accepts. On the measured surface it goes on calling the
+        subject herself out to a median of <strong>67&deg;</strong>, and this is the face on the
+        way there &mdash; the fifth one is 65&deg; out, scored 0.56, and <em>accepted</em>:</p>
+      <figure class="degfig">
+        <a class="figure-zoom" href="img/sg3/degrees.png" target="_blank" rel="noopener">
+          <img class="fig-light" src="img/sg3/degrees.png" loading="lazy" width="2152" height="457"
+               alt="Seven faces in a row, the same person altered further and further. Her enrolled template, then renders 30, 44, 59 and 65 degrees away which the chip still accepts as her, scoring 0.75 down to 0.56; then 71 and 81 degrees, which it rejects at 0.47 and 0.32. By 65 degrees the face reads as a visibly different person.">
+          <img class="fig-dark" src="img/sg3/degrees_dark.png" loading="lazy" width="2152" height="457" alt="" aria-hidden="true">
+        </a>
+        <figcaption>One of the 1,024 measured directions &mdash; the one whose boundary is exactly
+          the median, so it is the typical case. Every face was rendered and scored.</figcaption>
+      </figure>
+      <p><strong>The machine&rsquo;s accepted region reaches past the point where a person stops
+        seeing the same face.</strong> That is the gap this project measures, and the test above is
+        what rules out the comfortable reading of it: these renders are not adversarial noise that
+        defeats human and machine alike. A person can follow the identity in them. The pipeline
+        simply keeps saying yes for longer.</p>
+      <div class="note">
+        <p><strong>Why there is no single number comparing the two.</strong> It is tempting to set
+          the distractor similarities on this page (a median of 0.208 against her template) beside
+          the 67&deg; boundary and quote a ratio. They are not on one scale: those cosines are
+          measured in the <em>deployed INT8 model&rsquo;s</em> space, and the boundary is an angle
+          on the <em>fidelity scorer&rsquo;s</em> abscissa against her photograph centroid.
+          Converting one into the other and subtracting is exactly the error that invalidated an
+          earlier experiment here, and it is not repeated to make a tidier comparison. The faces
+          above are the honest bridge, because each carries the score the chip actually gave it.</p>
+      </div>
     </section>
 
     <section>
