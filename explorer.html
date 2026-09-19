@@ -52,10 +52,12 @@
     .sp-row{cursor:pointer}
     .sp-row:hover .sp-hit,.sp-row:focus .sp-hit{fill:var(--ex-accent-soft)}
     .sp-row:focus{outline:none}
+    .sp-row:focus-visible .sp-hit{stroke:var(--ex-accent);stroke-width:2}
     .sp-row:focus .sp-lab{text-decoration:underline}
     .sp-row.is-on .sp-hit{fill:var(--ex-accent-soft)}
     .sp-lab{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ex-ink)}
-    .sp-n{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1baf7a}
+    .sp-n{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#0f7a55}
+    :root[data-theme="dark"] .sp-n,:root:not([data-theme="light"]) .sp-n{fill:#1baf7a}
     .sp-n.sp-none{fill:var(--ex-muted)}
     .sp-track{fill:var(--ex-grid)}
     .sp-a{fill:#2a78d6;opacity:.5}
@@ -143,7 +145,7 @@
        only the border follows the tokens. */
     .exp figure{margin:14px 0 6px;background:#ffffff;border:1px solid var(--ex-line);border-radius:8px;padding:12px 12px 10px}
     .exp figure img{display:block;width:100%;max-width:100%;height:auto;border-radius:4px}
-    .exp figcaption{font-size:12.5px;line-height:1.55;color:var(--ex-muted);margin:9px 2px 0}
+    .exp figcaption{font-size:12.5px;line-height:1.55;color:#3d423f;margin:9px 2px 0}
 
     /* tau-slider interactive (exp 16). Hidden until data/m2_rays.json loads;
        with no fetch (file://, JS off) the static notice and figures stand alone. */
@@ -151,6 +153,7 @@
     .tauwidget .tw-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 4px}
     .tauwidget .tw-head label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ex-muted);white-space:nowrap}
     .tauwidget .tw-val{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ex-ink);min-width:74px}
+    .tauwidget input[type=range]:focus-visible{outline:2px solid var(--ex-accent);outline-offset:3px}
     .tauwidget input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:var(--ex-line);border-radius:3px;outline:none;flex:1;min-width:150px;max-width:360px}
     .tauwidget input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--ex-accent);cursor:pointer}
     .tauwidget input[type=range]::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;background:var(--ex-accent);cursor:pointer}
@@ -473,7 +476,7 @@
         <div class="tauwidget" id="tau-widget">
           <div class="tw-head">
             <label for="tau-range">operating point</label>
-            <input type="range" id="tau-range" min="0" max="8" step="1" value="4" aria-label="Decision threshold tau">
+            <input type="range" id="tau-range" min="0" max="8" step="1" value="4">
             <span class="tw-val" id="tau-val">&tau; = 0.50</span>
           </div>
           <div class="tw-stats" id="tau-stats"></div>
@@ -545,7 +548,7 @@
         <p class="sp-k">Pick a pair &mdash; the bar is the control</p>
         <div class="sp-grid">
           <div class="sp-chart">
-            <svg class="sp-svg" viewBox="0 0 708 568" role="img" aria-label="Ten stranger walks; bars show where each identity is accepted along the chord.">
+            <svg class="sp-svg" viewBox="0 0 708 568" role="group" aria-label="Ten stranger walks; bars show where each identity is accepted along the chord.">
 <g class="sp-row" data-stem="G00r1__G00r1nn" data-a="G00r1" data-b="G00r1nn" data-both="39" data-n="65" data-apart="66.4" tabindex="0" role="button" aria-label="G00r1 to G00r1nn, anchors 66.4 degrees apart, 39 of 65 renders accepted as both. Play this walk.">
 <rect class="sp-hit" x="0" y="4" width="708" height="56"/>
 <text class="sp-lab" x="140" y="36.0" text-anchor="end">G00r1 → G00r1nn</text>

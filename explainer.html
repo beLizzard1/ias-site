@@ -57,6 +57,8 @@
     .cbtn.play.on{background:#183123;border-color:#4d8a5e;color:#d7f5df}
     .slider{display:flex;align-items:center;gap:12px;flex:1;max-width:380px;min-width:200px}
     .slider span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
+    .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:#2a3341;border-radius:3px;outline:none;flex:1}
     input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#7fb3d3;cursor:pointer;box-shadow:0 0 8px rgba(127,179,211,.4)}
     input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#7fb3d3;cursor:pointer}
@@ -103,7 +105,7 @@
       <div class="grp"><button class="cbtn on" id="b3d">3D</button><button class="cbtn" id="b2d">2D slice</button></div>
       <button class="cbtn play" id="bSearch">&#9658; Find the boundary</button>
       <div class="grp"><button class="cbtn" id="bIdeal">Ideal</button><button class="cbtn on" id="bMeas">Ragged</button></div>
-      <div class="slider"><span>looser</span><input type="range" id="thr" min="0.50" max="0.98" step="0.005" value="0.80" list="thrmarks"><datalist id="thrmarks"><option value="0.50" label="vendor"></option></datalist><span>stricter</span></div>
+      <div class="slider"><label for="thr" class="vh">acceptance threshold</label><span aria-hidden="true">looser</span><input type="range" id="thr" min="0.50" max="0.98" step="0.005" value="0.80" list="thrmarks" aria-valuetext="0.80"><datalist id="thrmarks"><option value="0.50" label="vendor"></option></datalist><span>stricter</span></div>
       <span class="hint" id="hint">drag to rotate</span>
       <a class="cbtn" href="explorer.html" style="text-decoration:none;margin-left:auto">04 &middot; The data &rarr;</a>
     </div>
