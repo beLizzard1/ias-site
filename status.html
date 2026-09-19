@@ -22,6 +22,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
+    .xref{display:inline-block;margin:2px 0 0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+    .xref:hover,.xref:focus-visible{border-bottom-style:solid}
     .wrap{max-width:900px;margin:0 auto;padding:0 28px}
     .head{padding:52px 0 8px}
     .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(28px,5vw,40px);font-weight:400;line-height:1.1;margin:12px 0 10px}
@@ -88,6 +90,7 @@
       <h1>Project status</h1>
       <div class="updated">Last updated 2026-09-18</div>
       <p class="lead">A running snapshot, told in phases: building the apparatus, measuring with Arc2Face until the instrument itself failed the audit, one identity measured through the generator that replaced it, and the population next &mdash; newest first. The motivation throughout: an operator who buys a face-verification system is handed population rates, and this is a process for measuring what those hide, per enrolled person, on the deployed device. Completed phases are folded up with their &ldquo;so what&rdquo; left in view; the honest failures stay recorded inside them.</p>
+      <p class="lead" style="margin-top:10px">This page is the <em>state</em>: what is settled, what each phase concluded, and what is still open. The <a href="explorer.html">experiment chain</a> is the <em>working</em> &mdash; the runs that produced these verdicts, in order, each with what was asked, what was done and what came back. Entries below link to the experiment behind them, so you should not need to read both to follow either.</p>
     </section>
 
     <details class="phase" open>
@@ -280,21 +283,21 @@
       </div>
 
       <div class="row">
-        <div><h3>The threshold band &amp; enrolment</h3><div class="st"><span class="pill done">Measured</span></div></div>
+        <div><h3>The threshold band &amp; enrolment</h3><a class="xref" href="explorer.html#exp10">experiment 10 &rarr;</a><div class="st"><span class="pill done">Measured</span></div></div>
         <div>
           <p>Any decision threshold between <strong>0.269 and 0.602</strong> gives zero false accepts and zero false rejects on this subject&rsquo;s nine photographs and 1,164 synthetic impostors &mdash; and across that flat, perfect band the acceptance region goes from &ldquo;95% of directions still accepted at the edge of the corpus&rdquo; to &ldquo;a bounded star averaging 28.8&deg;&rdquo;. An operator tuning against FAR and FRR alone sees nothing changing underneath. Also settled: anchoring on the centroid of several photographs beats a single image by +0.115 leave-one-out and widens the impostor margin from +0.462 to +0.623, so the centroid stays.</p>
         </div>
       </div>
 
       <div class="row">
-        <div><h3>Do the renders look like the person?</h3><div class="st"><span class="pill done">Tested</span></div></div>
+        <div><h3>Do the renders look like the person?</h3><a class="xref" href="explorer.html#exp11">experiment 11 &rarr;</a><div class="st"><span class="pill done">Tested</span></div></div>
         <div>
           <p>The recognition model said the renders were <em>more</em> like the subject than her own photographs are like each other; the subject did not see herself in them. Forced choice with the reference visible settled the direction: <strong>16 of 16</strong> subject-targeted trials correct, including an observer who had never met her &mdash; above stranger-level identity signal, below felt likeness, and a floor rather than a ceiling. One stranger, two sessions sharing a trial set: a second independent observer is still owed. The <a href="perceptual.html">public version</a> is 2.6&times; harder and measures human accuracy as a function of embedding distance. The subject is also not poorly represented: her renders sit at the 50th percentile of 20 comparison identities.</p>
         </div>
       </div>
 
       <div class="row">
-        <div><h3>Rendering (Arc2Face)</h3><div class="st"><span class="pill next">Retired as generator</span></div></div>
+        <div><h3>Rendering (Arc2Face)</h3><a class="xref" href="explorer.html#exp12">experiment 12 &rarr;</a><div class="st"><span class="pill next">Retired as generator</span></div></div>
         <div>
           <p>Ten presets became one. The audit that followed the withdrawal found that every preset except <code>pure_math</code> conditioned the render on the subject&rsquo;s own photograph &mdash; ControlNet on its structure, IP-Adapter on its identity, SMIRK on its expression &mdash; which measures how far the embedding can move while the render is still structurally that photograph: the wrong question. Two presets were byte-identical configurations under different names. The machinery was deleted, not just the preset entries, so the silent-default contamination behind the withdrawal cannot recur.</p>
           <p>The one remaining recipe was then characterised as an instrument, on 1,330 renders through the clean measurement path with full configuration recorded (these renders post-date, and are not subject to, the withdrawal above): <strong>achieved &theta; = 0.644 &times; target &theta; + 33.6&deg;</strong>, r&nbsp;=&nbsp;0.867, residual sd <strong>6.9&deg;</strong>. Ask for a face 20&deg; from the anchor and you get one about 46&deg; away. The offset and the compression are correctable bias; the 6.9&deg; spread is the instrument&rsquo;s noise floor, and it bounds how precisely any boundary can be placed &mdash; &asymp;4.0&deg; with 3 renders per point, &asymp;3.1&deg; with 5.</p>
@@ -303,14 +306,14 @@
       </div>
 
       <div class="row">
-        <div><h3>A residual leak, recorded</h3><div class="st"><span class="pill prog">Recorded, not fixed</span></div></div>
+        <div><h3>A residual leak, recorded</h3><a class="xref" href="explorer.html#exp13">experiment 13 &rarr;</a><div class="st"><span class="pill prog">Recorded, not fixed</span></div></div>
         <div>
           <p>The cleanup left one leak in place, on purpose and on the record. The anchor&rsquo;s <em>reference</em> image is picked best-of-8, and <strong>35% of that selection weight is resemblance to the subject&rsquo;s own photograph</strong> &mdash; in embedding and in pixels. That is the deleted presets&rsquo; leak moved from the diffusion stage into the selection stage. It is confined to the reference image: the measurement path renders exactly one image per (embedding, seed), no candidate ranking, no re-render on a low score, and which renders are kept is decided by detection, never by similarity. The condition for fixing it is named &mdash; before the reference path is used for anything load-bearing, the selection must be reduced to its target term and re-characterised rather than assumed harmless.</p>
         </div>
       </div>
 
       <div class="row">
-        <div><h3>One pixel buffer</h3><div class="st"><span class="pill done">Measured</span></div></div>
+        <div><h3>One pixel buffer</h3><a class="xref" href="explorer.html#exp14">experiment 14 &rarr;</a><div class="st"><span class="pill done">Measured</span></div></div>
         <div>
           <p>Three code paths fed the same model three differently prepared images; on eight renders one path found 8 faces at 0.79&ndash;1.00 and another found 2. Six detectable faces would have been recorded as rejections, and host-versus-device parity would have been confounded with resolution. The buffer is now prepared in one module used by every ESP-DL path, and after unification SiL and HiL agree on <strong>8/8</strong> detections with a mean score delta of &minus;0.0017 (max 0.0139, n=3) &mdash; against previously documented disagreement of &asymp;1.4&nbsp;px on landmarks and &asymp;0.19 on score. The full device pass over the same 1,330-render set has since completed on the board, and the comparison is measured. Row-for-row: detection agrees on <strong>1,328 of 1,330</strong> (99.8%; two SiL-only detections, no HiL-only). Over the 533 co-detected probes the mean score delta is &minus;0.00034 with sd 0.023, no systematic bias in either direction. Accept decisions at the vendor &tau; agree <strong>527/533</strong>, with all six flips between 0.479 and 0.534 &mdash; borderline probes inside the rounding noise, not disagreements about an identity.</p>
           <p>The comparison that matters is at boundary level, because boundaries are the deliverable: the same extraction over both judges&rsquo; rows classifies <strong>all 12 rays identically</strong> (the same 9 bounded, the same 3 censored-right), and over the 9 co-bounded rays the boundaries differ by <strong>mean +0.46&deg;, sd 0.98&deg;, max 1.72&deg;</strong> &mdash; an order of magnitude inside the renderer&rsquo;s 6.9&deg; residual. Host-computed boundaries describe the silicon. One scope caveat, kept deliberately: this was measured on Arc2Face renders, and the framing experiment below proves the detector is image-distribution-sensitive, so it does not yet license computing StyleGAN3 curves host-side &mdash; a 50&ndash;100 render HiL spot-check is owed when the first SG3 calibration set exists.</p>
@@ -318,7 +321,7 @@
       </div>
 
       <div class="row">
-        <div><h3>Detection is framing-sensitive</h3><div class="st"><span class="pill done">Measured 2026-08-23</span></div></div>
+        <div><h3>Detection is framing-sensitive</h3><a class="xref" href="explorer.html#exp15">experiment 15 &rarr;</a><div class="st"><span class="pill done">Measured 2026-08-23</span></div></div>
         <div>
           <p>FFHQ-tight framing &mdash; the framing every StyleGAN output has by construction &mdash; is found by the detector <strong>37 of 40</strong> times at threshold 0.1 with refinement scores around 0.999, and does not exist at the vendor 0.5: <strong>0 of 40</strong>. The proposal stage gates on framing; the scoring stage doesn&rsquo;t see it. Resolution is irrelevant (512 versus 1024 changes nothing in either direction), and a 50% pad partially restores vendor-threshold detection &mdash; a presentation transform, applied after the identity is fixed, parameters recorded per render.</p>
           <p>Two consequences. The record that retired StyleGAN from this project months ago &mdash; a 100% detection failure &mdash; was never evidence: it scored the reconstruction and the real photograph it was compared against at the same constant 0.531209, the identical-embeddings SiL defect since fixed, measured through a pipeline since deleted. And Arc2Face&rsquo;s own vendor-threshold losses (14/40 native) are partly framing, previously attributed wholly to render quality.</p>
