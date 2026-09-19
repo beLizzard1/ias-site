@@ -52,7 +52,7 @@
   <main id="main" class="wrap">
     <section class="head" style="border:0">
       <div class="kicker"><span class="n">07</span> &middot; Running it for real</div>
-      <h1>Faces are special-category data. This page says what that means here.</h1>
+      <h1>Faces are special-category data. Here is what you would need to measure your own users.</h1>
       <p class="lead">What this project processes, on what basis, what it has deliberately not done, and what an operator would need in place to run the same measurement on the people actually enrolled in their system. A reflection under UK and EU GDPR by the person whose face is the data, not legal advice.</p>
     </section>
 
@@ -189,6 +189,77 @@
         <p style="margin-top:10px"><strong>Please confirm.</strong><br>&#9744; I am 18 or over.<br>&#9744; I understand altered images of my face will be generated and scored for this test only.<br>&#9744; I agree to the processing described above, until [date].<br>&#9744; (optional) I am willing for the following self-described characteristics to be used for group-level reporting, in groups of at least ten people: [free text].<br>&#9744; (optional) I agree that generated images may be kept, encrypted, for audit until [date].</p>
         <p style="margin-top:10px">Name &nbsp; ____________________ &nbsp;&nbsp; Signature &nbsp; ____________________ &nbsp;&nbsp; Date &nbsp; __________</p>
       </div>
+    </section>
+
+    <section>
+      <h2>Where this sits in the rules</h2>
+      <p>Two regimes are usually named when a face-recognition deployment is questioned. Neither
+        asks for what this project measures, and the reasons are worth stating precisely, because
+        the gaps are the argument.</p>
+
+      <h3>The EU AI Act: a face unlock is probably not the high-risk case</h3>
+      <p>Annex III of Regulation (EU) 2024/1689 makes biometric systems high-risk, and the
+        obligations that follow &mdash; a risk-management system, data governance including
+        examination for bias, and declared accuracy and robustness metrics &mdash; are close to
+        what an assurance programme would want. But the biometric entry is aimed at
+        <strong>remote biometric identification</strong> (one face against many), and biometric
+        <strong>verification</strong> whose sole purpose is confirming that someone is who they
+        claim to be is carved out of it.</p>
+      <p>A phone or door unlock is verification. So the systems that are deployed in the largest
+        numbers, against the most people, are the ones least likely to attract the Annex III
+        duties &mdash; and a per-identity measurement of the kind on this site is not required of
+        them by anybody. Where it <em>does</em> bite is when the same model is put to
+        identification, or used in one of the Annex III contexts such as employment or border
+        control; then the accuracy and robustness obligations apply, and the question becomes
+        which accuracy, measured how.</p>
+      <p>That is where this work has something to say. The metric a vendor declares is a
+        population false-match and false-non-match rate. The finding here is that a population
+        rate conceals per-identity behaviour: on one threshold, across twenty-one identities, the
+        measured acceptance region ranged from 55&deg; to 68&deg;. A declared FAR is true of the
+        population and silent about the person in front of the sensor.</p>
+
+      <h3>NIST: demographic groups, not individuals</h3>
+      <p>NIST's face-recognition evaluations, and the demographic-effects work in particular,
+        measure differentials <strong>between demographic groups</strong> &mdash; how false-match
+        rates vary by sex, age band and region of origin. That is a real and important axis, and
+        it is not this one.</p>
+      <p>This project measures spread <em>within</em> any such group: two identities that would
+        land in the same demographic cell differed here by about thirteen degrees of boundary,
+        and the pilot's between-identity spread (sd 2.4&ndash;3.6&deg;) sits alongside a
+        within-identity, across-direction spread of 4.2&ndash;5.0&deg;. Group parity does not
+        imply individual parity, and a system could pass a demographic audit while still giving
+        two people in the same cell materially different security. The two measurements are
+        complementary; neither substitutes for the other.</p>
+
+      <div class="note">
+        <p><strong>This is a reading, not legal advice</strong>, by someone whose face is the data
+          rather than a lawyer &mdash; the same caveat as the rest of this page. The carve-out for
+          verification, and how a given deployment is classified, are exactly the points to put to
+          someone qualified before relying on them. What is not in doubt is the measurement: a
+          single declared threshold produced materially different acceptance regions for
+          different people, and neither regime currently asks anyone to check that.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>If you want to run this</h2>
+      <p>The honest limit of this project is its sample. One real identity &mdash; the author's,
+        measured to 1,024 directions on the deployed chip &mdash; and twenty synthetic ones. That
+        is enough to show the method works, to show that per-identity variation is real and large,
+        and to show that a host stand-in cannot be trusted for an individual. It is not enough to
+        tell an operator what the spread looks like across <em>their</em> enrolled users, which is
+        the question that matters.</p>
+      <p>That study needs a consented cohort of real people enrolled in a real deployment, and it
+        needs to be run by whoever operates such a system, under their own ethics approval. It is
+        not something this project can do for itself, and it is not waiting on anything here.</p>
+      <p>Everything required to run it is public: the method is in the
+        <a href="explorer.html">experiment chain</a>, the procedure is in the repository's
+        playbook, the controls and an example consent form are above, and the code is on
+        <a href="https://github.com/beLizzard1/ias-site">GitHub</a>. <strong>If a group wants to
+        take this on and will do the ethics properly, the author is glad to support it.</strong>
+        The sample-size arithmetic is already measured rather than guessed: 128 directions give an
+        identity's median boundary to about half a degree, and resolving a real three-degree
+        difference between two people needs roughly thirty directions each.</p>
     </section>
 
     <section>
