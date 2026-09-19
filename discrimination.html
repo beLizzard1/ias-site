@@ -40,6 +40,7 @@
     .tblwrap{overflow-x:auto;margin:6px 0 12px}
     table{border-collapse:collapse;width:100%;font-size:14.5px}
     th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    .tnote{font-size:12.5px;color:var(--muted);margin:2px 0 12px;max-width:70ch}
     th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:500;border-bottom:1px solid var(--line)}
     tbody tr:last-child td{border-bottom:none}
     .callout{margin:6px 0 16px;background:var(--paper-2);border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;padding:18px 20px}
@@ -90,11 +91,13 @@
           <thead><tr><th>Cohort</th><th>INT8 median</th><th>Between identities</th><th>Within one, across directions</th><th>vs desktop model</th></tr></thead>
           <tbody>
             <tr><td class="rowlbl">Text-to-image (10)</td><td>55.1&ndash;65.9&deg;</td><td>sd 3.6&deg;</td><td>sd 5.0&deg;</td><td>0.9&deg; <em>inside</em></td></tr>
-            <tr><td class="rowlbl">StyleGAN3 (10)</td><td>60.7&ndash;67.7&deg;</td><td>sd 2.4&deg;</td><td>sd 4.2&deg;</td><td>2.5&deg; outside</td></tr>
+            <tr><td class="rowlbl">StyleGAN3 (10)</td><td>60.7&ndash;67.7&deg;</td><td>sd 2.4&deg;</td><td>sd 4.2&deg;</td><td>2.8&deg; outside</td></tr>
             <tr><td class="rowlbl">The subject</td><td>67.6&deg;</td><td>&mdash;</td><td>sd 4.4&deg;</td><td>6.8&deg; outside</td></tr>
           </tbody>
         </table>
-        <p><strong>One of those columns does not generalise, and one does.</strong> &ldquo;The deployed model is looser than the desktop one&rdquo; is true of the subject by 6.7&deg; &mdash; and false for nine of the twenty, where the INT8 boundary sits <em>inside</em> the desktop model&rsquo;s. What is general is unevenness: for every single identity, the INT8 pipeline&rsquo;s boundary is the most direction-dependent of the four judges. A result measured on one person was partly a fact about the system and partly a fact about her, and only a cohort could tell them apart.</p>
+        <p class="tnote">Medians at the vendor threshold (&tau; 0.5), achieved angle to each
+          identity&rsquo;s own anchor. The subject&rsquo;s row is her first <strong>128</strong> directions, so that it is measured like the cohort; her full grid of record is 1,024 directions and gives 67.4&deg;.</p>
+        <p><strong>One of those columns does not generalise, and one does.</strong> &ldquo;The deployed model is looser than the desktop one&rdquo; is true of the subject by 6.8&deg; &mdash; and false for nine of the twenty, where the INT8 boundary sits <em>inside</em> the desktop model&rsquo;s. What is general is unevenness: for every single identity, the INT8 pipeline&rsquo;s boundary is the most direction-dependent of the four judges. A result measured on one person was partly a fact about the system and partly a fact about her, and only a cohort could tell them apart.</p>
         <p><strong>Exposure is unequal in the way that matters to an operator.</strong> At the vendor threshold, for the most crowded identities <strong>87&ndash;98%</strong> of directions reach beyond where their nearest other identity sits; for the most isolated, 0&ndash;3%; the subject, 1%. That is driven by how near the neighbour is (correlation &minus;0.8), not by the region being wider for crowded people (&minus;0.1 to &minus;0.4). The crowded are exposed because strangers are close, not because the system is more generous to them.</p>
       </div>
 
