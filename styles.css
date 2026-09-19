@@ -264,3 +264,13 @@ body.dark{display:flex;flex-direction:column;min-height:100vh;overflow:auto}
   background:var(--paper);color:var(--ink);border:1px solid var(--accent);
   border-radius:0 0 6px 0;font-size:14px;text-decoration:none}
 .skip:focus{left:0}
+
+/* Lifted from the inline blocks 2026-09-19: these six were defined
+   IDENTICALLY on the prose pages. Scoped to .doc, which is on exactly
+   those pages, so nothing gains or loses a declaration. The page
+   chassis (.wrap, .lead, footer, .head) is deliberately NOT here --
+   those have already diverged into four variants each. */
+.doc section{border-top:1px solid var(--line);padding:26px 0}
+.doc section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
+.doc strong{color:var(--ink);font-weight:600}
+.doc section p{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0 0 12px;max-width:66ch}

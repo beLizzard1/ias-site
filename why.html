@@ -26,11 +26,6 @@
     .head{padding:52px 0 6px}
     .head h1{font-family:'Newsreader',Georgia,serif;font-size:clamp(30px,6vw,46px);font-weight:400;line-height:1.06;margin:12px 0 12px}
     .lead{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:60ch;margin:0}
-    section{padding:26px 0;border-top:1px solid var(--line)}
-    section h2{font-family:'Newsreader',serif;font-weight:500;font-size:23px;margin:0 0 10px}
-    section p{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0 0 12px;max-width:66ch}
-    section p:last-child{margin-bottom:0}
-    strong{color:var(--ink);font-weight:600}
     .faults{display:grid;gap:14px;margin:6px 0 0}
     .fault{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:14px 16px;background:var(--card)}
     .fault h3{margin:0 0 4px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:600}
@@ -43,9 +38,10 @@
     .withdrawn{margin:22px 0;border:1px solid var(--warn);border-left:3px solid var(--warn);
       border-radius:8px;background:var(--warn-soft);padding:18px 20px}
     .withdrawn p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:0 0 10px;max-width:70ch}
-    .withdrawn p:last-child{margin-bottom:0}
     .withdrawn .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
       text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+    section p:last-child{margin-bottom:0}
+    .withdrawn p:last-child{margin-bottom:0}
   </style>
   <link rel="stylesheet" href="responsive.css">
 </head>
@@ -56,7 +52,7 @@
     <div class="links"><span class="grp"><a href="why.html" class="on" aria-current="page">Why</a><a href="discrimination.html">Discrimination</a><a href="data-protection.html">Data protection</a></span><span class="sep"></span><span class="grp"><a href="explainer.html">Explainer</a><a href="explorer.html">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
   </header>
 
-  <main id="main" class="wrap">
+  <main id="main" class="wrap doc">
     <section class="head" style="border:0">
       <div class="kicker"><span class="n">01</span> &middot; The argument</div>
       <h1>You can measure a password. Can you measure a face?</h1>
