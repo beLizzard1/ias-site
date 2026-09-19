@@ -22,7 +22,6 @@
   <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
-    body.dark{display:flex;flex-direction:column;height:100vh}
     .app{position:relative;flex:1;overflow:hidden;color:var(--stage-ink);background:radial-gradient(ellipse at 50% 44%,#131a25 0%,#0b0e14 62%,#080a0f 100%)}
     .stage{position:absolute;inset:0;perspective:1100px;perspective-origin:50% 46%;touch-action:none;cursor:grab}
     .stage:active{cursor:grabbing}
@@ -57,23 +56,28 @@
     .cbtn.play.on{background:#183123;border-color:#4d8a5e;color:#d7f5df}
     .slider{display:flex;align-items:center;gap:12px;flex:1;max-width:380px;min-width:200px}
     .slider span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
+    .vh-footer{padding:14px 20px;color:var(--stage-muted,#8896a8);background:#090c11;
+      font-family:'IBM Plex Mono',monospace;font-size:12px;border-top:1px solid #1b2129}
+    .vh-footer a{color:var(--stage-muted,#8896a8)}
     .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
     input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     input[type=range]{-webkit-appearance:none;appearance:none;height:3px;background:#2a3341;border-radius:3px;outline:none;flex:1}
     input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#7fb3d3;cursor:pointer;box-shadow:0 0 8px rgba(127,179,211,.4)}
     input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#7fb3d3;cursor:pointer}
-    .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5f6c7e;white-space:nowrap}
+    .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8896a8;white-space:nowrap}
     @media (max-width:720px){.title p,.legend{display:none}.cap{width:auto;right:28px}}
   </style>
   <link rel="stylesheet" href="responsive.css">
 </head>
 <body class="dark">
+  <a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <a class="brand" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.5" style="stroke:var(--accent, #2f5d62)"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="7" opacity=".6"/><circle cx="12" cy="12" r="11" opacity=".32"/><line x1="12" y1="12" x2="23" y2="12" opacity=".5"/></svg> IAS</a>
-    <div class="links"><span class="grp"><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a><a href="data-protection.html">Data protection</a></span><span class="sep"></span><span class="grp"><a href="explainer.html" class="on">Explainer</a><a href="explorer.html">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
+    <div class="links"><span class="grp"><a href="why.html">Why</a><a href="discrimination.html">Discrimination</a><a href="data-protection.html">Data protection</a></span><span class="sep"></span><span class="grp"><a href="explainer.html" class="on" aria-current="page">Explainer</a><a href="explorer.html">Explorer</a></span><span class="sep"></span><span class="grp"><a href="why-rigs.html">SiL &amp; HiL</a><a href="perceptual.html">Perceptual test</a></span><span class="sep"></span><span class="grp"><a href="status.html">Status</a><a href="https://github.com/beLizzard1/ias-site">GitHub</a></span><div class="theme" role="group" aria-label="Colour theme"><button type="button" class="th" data-set="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="18.6" y1="5.4" x2="16.9" y2="7.1"/><line x1="7.1" y1="16.9" x2="5.4" y2="18.6"/></svg></button><button type="button" class="th" data-set="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button></div></div>
   </header>
 
-  <div class="app" id="app">
+  <main id="main">
+    <div class="app" id="app">
     <div class="stage" id="stage"><div class="spin" id="spin"></div></div>
     <svg class="slice" id="slice" width="520" height="520" viewBox="0 0 460 460"></svg>
 
@@ -90,9 +94,15 @@
       <div id="rLine3"><span id="rLabel">inside</span>&nbsp;&nbsp;<b style="color:#7fb3d3"><span id="rPct">50</span><span id="rUnit">%</span></b></div>
     </div>
 
+    <!-- NOTHING on this page is measured data: there is no fetch, no .json, no
+         .npy. The geometry is drawn (a sum of sines) to BEHAVE like a real
+         surface. The JS says so once it runs, but this static markup is what
+         ships before JS, with JS off, and in every screenshot and scrape -- so
+         it must not claim otherwise. -->
     <div class="ov cap">
-      <div class="k" id="capK">Measured &mdash; a real INT8 model</div>
-      <div class="b" id="capB"></div>
+      <div class="k" id="capK">Ragged &mdash; shaped like a real INT8 surface</div>
+      <div class="b" id="capB">Illustrative, not measured: the shape here is drawn to behave like a
+        real one. The measured surface is in <a href="explorer.html#exp17">the data</a>.</div>
     </div>
 
     <div class="ov legend" id="legend">
@@ -109,7 +119,8 @@
       <span class="hint" id="hint">drag to rotate</span>
       <a class="cbtn" href="explorer.html" style="text-decoration:none;margin-left:auto">04 &middot; The data &rarr;</a>
     </div>
-  </div>
+    </div>
+  </main>
 
   <script>
   (function(){
@@ -337,5 +348,6 @@
     m.addEventListener&&m.addEventListener("change",paint);
     paint();
   })();</script>
+  <footer class="vh-footer">Identity Acceptance Surfaces &mdash; <a href="explorer.html">the measured data</a> &middot; <a href="index.html">home</a></footer>
 </body>
 </html>

@@ -100,7 +100,11 @@ a:hover{color:var(--accent-strong)}
 .nextstep .go:hover{background:var(--accent-soft)}
 
 /* explainer.html is a full-viewport app: layout only, no colour. */
-body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+/* min-height, not height, and no clip: at 200% zoom the control bar wraps and
+   the absolutely positioned overlays grow, and overflow:hidden cut them off
+   with no way to scroll to them (SC 1.4.4/1.4.10). Clipped content is not
+   overflow, so the automated responsive check could not see this. */
+body.dark{display:flex;flex-direction:column;min-height:100vh;overflow:auto}
 
 @media (max-width:900px){
   .nav .links{gap:12px;font-size:13px}
@@ -253,3 +257,10 @@ body.dark{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .numtable td:not(:first-child){font-family:'IBM Plex Mono',monospace;color:var(--ink)}
 .numtable tbody tr:last-child td{border-bottom:none}
 .numtable .rowlbl{font-family:'IBM Plex Sans',sans-serif;color:var(--ink-2)}
+
+/* Every page opens with a twelve-link nav and a theme group: fourteen tab
+   stops before content, on every navigation. Off-screen until focused. */
+.skip{position:absolute;left:-9999px;top:0;z-index:100;padding:10px 14px;
+  background:var(--paper);color:var(--ink);border:1px solid var(--accent);
+  border-radius:0 0 6px 0;font-size:14px;text-decoration:none}
+.skip:focus{left:0}
