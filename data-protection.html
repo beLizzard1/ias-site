@@ -135,7 +135,7 @@
         <tr><td><strong>Access control and audit</strong></td><td>Named individuals only; every run logged (who, when, which configuration, which identities); exports of anything but aggregates need two people.</td><td>T2, T11, T12</td></tr>
         <tr><td><strong>Generated faces treated as spoof material</strong></td><td>Never leave the measurement environment; deleted once boundaries are extracted; if retained for audit, watermarked and encrypted with access logged.</td><td>T2</td></tr>
         <tr><td><strong>No attribute inference; safe group reporting</strong></td><td>Only self-reported attributes, and only where the participant opted in; groups reported at a minimum size (ten is a defensible floor); no single-person cells.</td><td>T6, T9</td></tr>
-        <tr><td><strong>Age verified, not estimated</strong></td><td>Adults only, confirmed at consent; no automatic age gate in place of it.</td><td>T8</td></tr>
+        <tr><td><strong>Age verified, not estimated</strong></td><td>Adults only, confirmed at consent; no automatic age gate in place of it. Every synthetic identity is reviewed by eye before anything is generated towards it, and that review is the control rather than a backstop behind an estimator &mdash; see below for why this is stated as a measurement and not a preference.</td><td>T8</td></tr>
         <tr><td><strong>Publication rule</strong></td><td>Distributions, aggregates and figures without faces; small-number suppression; a review by eye before anything leaves.</td><td>T9</td></tr>
         <tr><td><strong>Provenance and integrity</strong></td><td>Every run records configuration, weight digests, per-render detection and the identity of the code; result files hashed; withdrawals and corrections recorded rather than overwritten. <em>Extended 2026-09-18:</em> the enrolment template&rsquo;s own digest and the path that produced it are recorded too &mdash; configuration, weights and code were all logged correctly while the template was made through the wrong image buffer, so provenance over the probes alone does not catch a per-identity error.</td><td>T11, T14</td></tr>
         <tr><td><strong>Per-identity claims measured on the device</strong></td><td>A host stand-in may be used to screen a cohort, rank it, or estimate its spread; anything reported about a named individual is measured on the deployed hardware. The two agree about a cohort and disagree about people.</td><td>T14</td></tr>
@@ -144,6 +144,33 @@
         <tr><td><strong>Vendor terms and roles settled</strong></td><td>Off-line testing permitted in the contract; controller and processor roles for templates written down; nothing exported to the vendor.</td><td>T7, T12</td></tr>
         <tr><td><strong>Breach plan that admits the limit</strong></td><td>Participants told promptly; because a face cannot be rotated, the plan is scope limitation &mdash; small data, short retention, strong encryption &mdash; rather than recovery.</td><td>T1</td></tr>
       </table>
+
+      <div class="note">
+        <p><strong>Why the age control is a human one: the estimator failed, and no threshold
+        would have caught it.</strong> On 2026-09-18 this project searched for synthetic
+        identities near the subject&rsquo;s, and screened the candidates with
+        <code>genderage.onnx</code> &mdash; the age model shipped with InsightFace. Of the six
+        nearest frontal proposals, the one ranked fourth was scored <strong>age 47</strong>. On
+        visual review it is a young child. Not a borderline teenager who might reasonably be
+        read as an adult: a small child returned as middle-aged. It was deleted and
+        quarantined.</p>
+        <p>The number matters more than the incident. An estimator that is merely noisy can be
+        made safe with a margin &mdash; refuse anything under 25, under 30, under 40. This
+        estimate cleared the eligibility bar of 18 by <strong>29 years</strong>. To have
+        rejected this face on the estimate alone, the gate would have to refuse everything
+        scored below 47 &mdash; which refuses most of the adult population with it. There is
+        no threshold that removes this failure and leaves the method usable. The
+        estimator cannot be a gate, and it cannot be a backstop behind a human check either,
+        because a reviewer who knows a model is also looking is a reviewer looking less
+        carefully.</p>
+        <p>This generalises past this project. <em>Any</em> pipeline that proposes identities
+        by similarity to a target face will surface minors, because similarity in an embedding
+        space is not conditioned on age &mdash; and the more effective the search, the more
+        reliably it will do so. An operator adopting this method inherits that property. The
+        control is review by eye of every materialised identity, before anything is generated
+        towards it, by a named person, recorded. It is slower and it does not scale, which is
+        the honest cost of the method rather than an argument against the control.</p>
+      </div>
     </section>
 
     <section>
