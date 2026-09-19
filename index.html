@@ -22,6 +22,9 @@
   <script>(function(){var t;try{t=localStorage.getItem("ias-theme")}catch(e){}if(t==="dark"||t==="light")document.documentElement.dataset.theme=t;})();</script>
   <link rel="stylesheet" href="styles.css">
   <style>
+    .degfig{margin:34px 0 8px}
+    .degfig img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px}
+    .degfig figcaption{font-size:13px;line-height:1.55;color:var(--muted);margin:9px 2px 0;max-width:76ch}
     .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
     .hero{padding:56px 0 8px}
     .herogrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:44px;align-items:start}
@@ -139,9 +142,9 @@
         <div class="margin">
           <p class="rk">Each shell is an initial sample at known distances from the anchor identity, in the embedding metric &mdash; that first pass is run against the system under test. Per direction, those results show where a new test case is needed to pin down the acceptance threshold; across many directions that builds up the acceptance surface, which we compare to the ideal one.</p>
           <div class="reads">
-            <div class="lbl">Reads as</div>
-            <div class="row">cos 0.80 &rarr; &epsilon; 0.750 &rarr; 36.9&deg;</div>
-            <div class="row">cos 0.70 &rarr; &epsilon; 1.020 &rarr; 45.6&deg;</div>
+            <div class="lbl">Degrees, here</div>
+            <div class="row">0&deg; = the enrolled template</div>
+            <div class="row">two different people &asymp; 70&ndash;80&deg; apart</div>
           </div>
           <div class="cta">
             <a class="btn primary" href="explorer.html">Open the live explorer &rarr;</a>
@@ -174,6 +177,18 @@
 ias shells-probe \
   --dataset outputs/shells/liz \
   --discriminator <span style="color:#8fc4c9">cosine</span> --threshold <span style="color:#e0b48f">0.80</span> --anchor <span style="color:#8fc4c9">anchor.json</span></pre></div>
+
+      <figure class="degfig">
+        <a class="figure-zoom" href="img/sg3/degrees.png" target="_blank" rel="noopener">
+          <img class="fig-light" src="img/sg3/degrees.png" loading="lazy" width="2152" height="457"
+               alt="Seven faces in a row, the same person altered further and further. Her enrolled template, then renders 30, 44, 59 and 65 degrees away which the chip still accepts as her, scoring 0.75 down to 0.56; then 71 and 81 degrees, which it rejects at 0.47 and 0.32. By 65 degrees the face reads as a visibly different person.">
+          <img class="fig-dark" src="img/sg3/degrees_dark.png" loading="lazy" width="2152" height="457" alt="" aria-hidden="true">
+        </a>
+        <figcaption>What 67&deg; looks like. One of the 1,024 measured directions &mdash; the one whose
+          boundary is exactly the median, so this is the typical case, not the loosest. Every face was
+          rendered and scored; none is interpolated. The chip stops calling her herself between the
+          fifth and sixth face.</figcaption>
+      </figure>
 
       <h2 class="serif" style="font-weight:500;margin:44px 0 4px">Where to start</h2>
       <p class="startp">Four ways in. The chain runs 01 to 07 across the top nav; these are the doors most people use.</p>
