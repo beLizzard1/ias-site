@@ -14,7 +14,7 @@
   <meta property="og:image" content="https://belizzard1.github.io/ias-site/img/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="One identity's measured acceptance region: one spoke for each of 1,001 bounded directions of 1,024 measured, around a median boundary of 67.4 degrees on the deployed ESP32-S3, against a desktop-class model's tighter dashed ring.">
+  <meta property="og:image:alt" content="One identity's measured acceptance region: one spoke for each of 1,004 bounded directions of 1,024 measured, around a median boundary of 67.4 degrees on the deployed ESP32-S3, against a desktop-class model's tighter dashed ring.">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -91,7 +91,7 @@
           <tbody>
             <tr><td class="rowlbl">Text-to-image (10)</td><td>55.1&ndash;65.9&deg;</td><td>sd 3.6&deg;</td><td>sd 5.0&deg;</td><td>0.9&deg; <em>inside</em></td></tr>
             <tr><td class="rowlbl">StyleGAN3 (10)</td><td>60.7&ndash;67.7&deg;</td><td>sd 2.4&deg;</td><td>sd 4.2&deg;</td><td>2.5&deg; outside</td></tr>
-            <tr><td class="rowlbl">The subject</td><td>67.4&deg;</td><td>&mdash;</td><td>sd 4.3&deg;</td><td>6.7&deg; outside</td></tr>
+            <tr><td class="rowlbl">The subject</td><td>67.6&deg;</td><td>&mdash;</td><td>sd 4.4&deg;</td><td>6.8&deg; outside</td></tr>
           </tbody>
         </table>
         <p><strong>One of those columns does not generalise, and one does.</strong> &ldquo;The deployed model is looser than the desktop one&rdquo; is true of the subject by 6.7&deg; &mdash; and false for nine of the twenty, where the INT8 boundary sits <em>inside</em> the desktop model&rsquo;s. What is general is unevenness: for every single identity, the INT8 pipeline&rsquo;s boundary is the most direction-dependent of the four judges. A result measured on one person was partly a fact about the system and partly a fact about her, and only a cohort could tell them apart.</p>
@@ -160,7 +160,7 @@
         <li>Scale: one identity on <strong>1,024 directions</strong>, all five judges, host and device; twenty synthetic identities on <strong>128 directions</strong> each, host and device. One render per point.</li>
         <li><strong>Synthetic identities, from two generators that pack faces differently</strong>, with prompt-derived or model-estimated labels used only to spread the sample. Cross-identity claims about real people wait for a consented real cohort.</li>
         <li><strong>Exposure is radius against radius</strong>: a boundary compared with the distance to a neighbour lying in another direction. The path from one identity towards its neighbour &mdash; the actual impersonation measurement &mdash; is next.</li>
-        <li><strong>The device is the arbiter; the host is a valid proxy for a cohort, not for one person</strong>: over 1,024 rays the ESP32-S3 reproduces the subject&rsquo;s host boundary to +0.4 &plusmn; 2.0&deg; per direction, and across the twenty the cohort statistics reproduce &mdash; but five of the twenty-one individual medians fall outside the host&rsquo;s own interval, so a single identity&rsquo;s boundary cannot be read off the host (above).</li>
+        <li><strong>The device is the arbiter; the host is a valid proxy for a cohort, not for one person</strong>: over 1,024 rays the ESP32-S3 reproduces the subject&rsquo;s host boundary to +0.4 &plusmn; 2.1&deg; per direction, and across the twenty the cohort statistics reproduce &mdash; but five of the twenty-one individual medians fall outside the host&rsquo;s own interval, so a single identity&rsquo;s boundary cannot be read off the host (above).</li>
         <li>A correction of 2026-09-18: enrolment had run on the full-size image while the judges use the pipeline&rsquo;s 320-px buffer; re-judged on the right buffer the subject&rsquo;s boundary moved 0.2&deg;. Recorded, not hidden.</li>
       </ul>
       <p>Stating this precisely matters more than usual here. The purpose of the tool is to let someone challenge a claim with evidence; a tool that overstates its own evidence cannot do that.</p>
